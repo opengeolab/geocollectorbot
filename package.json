@@ -1,0 +1,23 @@
+{
+  "name": "geo-collector-bot",
+  "version": "0.1.0",
+  "description": "Telegram BOT for geodata collection, developed within the Interreg Project INSUBRI.PARKS",
+  "license": "MIT",
+  "author": "Edoardo Pessina <edoardopessina.priv@gmail.com>",
+  "main": "index.js",
+  "scripts": {
+    "update-docker-version": "sed -i.bck \"s|version=\\\"[0-9]*\\.[0-9]*\\.[0-9]*.*\\\"|version=\\\"${npm_package_version}\\\"|\" Dockerfile",
+    "update-changelog": "node ./scripts/update-changelog.js ${npm_package_version}",
+    "version": "npm run update-changelog && npm run update-docker-version && rm -fr Dockerfile.bck && git add CHANGELOG.md Dockerfile"
+  },
+  "dependencies": {},
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@gitlab.com/geolab.como/geocollectorbot.git"
+  },
+  "bugs": {
+    "url": "https://gitlab.com/geolab.como/geocollectorbot/issues"
+  },
+  "homepage": "https://gitlab.com/geolab.como/geocollectorbot#readme"
+}
