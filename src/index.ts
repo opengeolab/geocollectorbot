@@ -1,28 +1,20 @@
-/* eslint-disable no-console */
-import Fastify, {FastifyInstance} from 'fastify'
-import fastifyEnv, {fastifyEnvOpt} from 'fastify-env'
+import fastifyBuilder, {FastifyInstance, FastifyServerOptions} from 'fastify'
+import loadEnv from './setup/loadEnv'
 
-import {envSchema} from './models/env'
+const launchFastify = async() => {
+  const environment = loadEnv()
 
-const options: fastifyEnvOpt = {
-  schema: envSchema,
-  dotenv: true,
-}
-
-const fastify: FastifyInstance = Fastify()
-fastify.register(fastifyEnv, options)
-
-fastify.get('/ping', async(request, reply) => {
-  return 'pong\n'
-})
-
-fastify.listen(8000, (error, address) => {
-  if (error) {
-    console.error(error)
-    throw error
+  const fastifyOpts: FastifyServerOptions = {
+    logger: {level: environment.LOG_LEVEL},
   }
 
-  console.log(fastify.config)
+  const fastify: FastifyInstance = fastifyBuilder(fastifyOpts)
 
-  console.log(`Server listening at ${address}`)
-})
+  fastify.decorate('config', environment)
+
+  await fastify.ready()
+
+  await fastify.listen(environment.HTTP_PORT, '0.0.0.0')
+}
+
+launchFastify()
