@@ -4,20 +4,39 @@
   "description": "Telegram BOT for geodata collection, developed within the Interreg Project INSUBRI.PARKS",
   "license": "MIT",
   "author": "Edoardo Pessina <edoardopessina.priv@gmail.com>",
-  "main": "index.js",
   "scripts": {
+    "prepare": "husky install",
+    "lint": "eslint src --ext .js,.ts,.tsx",
+    "build": "tsc -p tsconfig.json",
+    "start": "node build/index.js",
+    "unit": "jest --passWithNoTests",
+    "test": "yarn lint && yarn unit",
     "update-docker-version": "sed -i.bck \"s|version=\\\"[0-9]*\\.[0-9]*\\.[0-9]*.*\\\"|version=\\\"${npm_package_version}\\\"|\" Dockerfile",
     "update-changelog": "node ./scripts/update-changelog.js ${npm_package_version}",
     "version": "npm run update-changelog && npm run update-docker-version && rm -fr Dockerfile.bck && git add CHANGELOG.md Dockerfile"
   },
-  "dependencies": {},
-  "devDependencies": {},
-  "repository": {
-    "type": "git",
-    "url": "git+ssh://git@gitlab.com/geolab.como/geocollectorbot.git"
+  "dependencies": {
+    "fastify": "^3.20.1"
   },
-  "bugs": {
-    "url": "https://gitlab.com/geolab.como/geocollectorbot/issues"
+  "devDependencies": {
+    "@babel/preset-env": "^7.13.15",
+    "@mia-platform/eslint-config-mia": "^3.0.0",
+    "@types/jest": "^26.0.22",
+    "@types/node": "^16.4.1",
+    "@typescript-eslint/parser": "^4.29.0",
+    "eslint": "^7.23.0",
+    "eslint-config-standard": "^16.0.2",
+    "eslint-plugin-import": "^2.24.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^5.1.0",
+    "eslint-plugin-standard": "^5.0.0",
+    "husky": "^7.0.1",
+    "jest": "^27.0.6",
+    "ts-jest": "^27.0.4",
+    "ts-node": "^10.1.0",
+    "typescript": "^4.2.3"
   },
+  "repository": "git+ssh://git@gitlab.com/geolab.como/geocollectorbot.git",
+  "bugs": "https://gitlab.com/geolab.como/geocollectorbot/issues",
   "homepage": "https://gitlab.com/geolab.como/geocollectorbot#readme"
 }

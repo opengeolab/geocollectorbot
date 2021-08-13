@@ -10,15 +10,18 @@ Telegram BOT for geodata collection, developed within the Interreg Project INSUB
 To develop the service locally you need:
 
 - Node 14+
+- Yarn 1.x.x
 
 To set up Node, please if possible try to use [nvm](https://github.com/nvm-sh/nvm), so you can manage multiple
 versions easily. Once you have installed nvm, you can go inside the directory of the project and simply run
 `nvm install` and the `.nvmrc` file will install and select the correct version of Node if you don’t already have it.
 
+To install Yarn, run `npm install --global yarn`.
+
 Once you have all the dependencies in place, you can launch:
 
 ```shell
-npm i
+yarn install
 ```
 
 This command will install the dependencies. Now you can create your local copy of the `env` variables needed for
@@ -31,7 +34,8 @@ cp ./example.env ./.env
 Once you have all your dependency in place, you can launch:
 
 ```shell
-npm run dev
+yarn build
+yarn start
 ```
 
 and you will have the service exposed on your machine on the port `8000`.
