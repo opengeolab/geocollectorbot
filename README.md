@@ -46,9 +46,8 @@ Developed by [Edoardo Pessina](mailto:edoardopessina.priv@gmail.com) - [GitHub](
 
 A special thanks to the project partners:
 
-- Politecnico di Milano
-- Geolab Como
+- [GEOlab](http://www.geolab.polimi.it/) - Politecnico di Milano
 
 ## License
 
-[MIT](https://opensource.org/licenses/MIT) © [Geolab Como](mailto:geolab.como@gmail.com)
+[MIT](https://opensource.org/licenses/MIT) © [GEOlab](mailto:geolab.como@gmail.com)
