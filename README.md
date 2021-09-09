@@ -42,7 +42,7 @@ and you will have the service exposed on your machine on the port `8000`.
 
 ## Contributions
 
-[GEOlab](http://www.geolab.polimi.it/) - Politecnico di Milano ([Daniele Oxoli](mailto:daniele.oxoli@polimi.it))
+[GEOlab](http://www.geolab.polimi.it/) - Politecnico di Milano (Contact: [Daniele Oxoli](mailto:daniele.oxoli@polimi.it))
 
 Developed by [Edoardo Pessina](mailto:edoardopessina.priv@gmail.com) - [GitHub](https://github.com/epessina)
 
