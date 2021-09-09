@@ -3,7 +3,7 @@
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![javascript style guide](https://img.shields.io/badge/code_style-standard--mia-orange.svg)](https://github.com/mia-platform/eslint-config-mia)
 
-Telegram BOT for geodata collection, developed within the Interreg Project INSUBRI.PARKS.
+Telegram BOT for geodata collection, developed within the project [INSUBRI.PARKS](https://insubriparksturismo.eu) funded by the Interreg Co-operation Programme 2014 -2020 (ID 605472)
 
 ## Local development
 
