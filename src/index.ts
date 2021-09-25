@@ -1,5 +1,14 @@
 import fastifyBuilder, {FastifyInstance, FastifyServerOptions} from 'fastify'
-import loadEnv from './setup/loadEnv'
+import {onCloseHookHandler} from 'fastify/types/hooks'
+
+import loadEnv from './setup/environment'
+import buildBot from './setup/bot'
+import helpCommandHandler from './handlers/helpCommandHandler'
+
+const onFastifyCloseHandler: onCloseHookHandler = (fastify, done) => {
+  fastify.bot.stop()
+  done()
+}
 
 const launchFastify = async() => {
   const environment = loadEnv()
@@ -11,6 +20,15 @@ const launchFastify = async() => {
   const fastify: FastifyInstance = fastifyBuilder(fastifyOpts)
 
   fastify.decorate('config', environment)
+
+  const bot = buildBot(environment)
+  fastify.decorate('bot', bot)
+
+  bot.command('help', helpCommandHandler)
+
+  await bot.launch()
+
+  fastify.addHook('onClose', onFastifyCloseHandler)
 
   await fastify.ready()
 

@@ -14,8 +14,11 @@ export const environmentSchema = {
       enum: ['fatal', 'error', 'warn', 'info', 'debug', 'trace', 'silent'],
       default: 'info',
     },
+    TELEGRAM_AUTH_TOKEN: {
+      type: 'string',
+    },
   },
-  required: ['HTTP_PORT', 'LOG_LEVEL'],
+  required: ['HTTP_PORT', 'LOG_LEVEL', 'TELEGRAM_AUTH_TOKEN'],
 } as const
 
 export type Environment = FromSchema<typeof environmentSchema>
