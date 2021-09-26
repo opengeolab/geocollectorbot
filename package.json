@@ -9,6 +9,7 @@
     "lint": "eslint src --ext .js,.ts,.tsx",
     "build": "tsc -p tsconfig.json",
     "start": "node build/index.js",
+    "dev": "ts-node --files ./src/index.ts",
     "unit": "jest --passWithNoTests",
     "test": "yarn lint && yarn unit",
     "update-docker-version": "sed -i.bck \"s|version=\\\"[0-9]*\\.[0-9]*\\.[0-9]*.*\\\"|version=\\\"${npm_package_version}\\\"|\" Dockerfile",
@@ -17,7 +18,8 @@
   },
   "dependencies": {
     "env-schema": "^3.2.0",
-    "fastify": "^3.20.1"
+    "fastify": "^3.20.1",
+    "telegraf": "^4.4.2"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.13.15",

@@ -1,6 +1,6 @@
 import {envSchema, EnvSchemaData} from 'env-schema'
 
-import {Environment, environmentSchema} from '../models/environment'
+import {Environment, environmentSchema} from '../models/Environment'
 
 const options: EnvSchemaData = {
   schema: environmentSchema,
