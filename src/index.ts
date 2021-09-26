@@ -4,6 +4,8 @@ import {onCloseHookHandler} from 'fastify/types/hooks'
 import loadEnv from './setup/environment'
 import buildBot from './setup/bot'
 import helpCommandHandler from './handlers/helpCommandHandler'
+import startCommandHandler from './handlers/startCommandHandler'
+import collectCommandHandler from './handlers/collectCommandHandler'
 
 const onFastifyCloseHandler: onCloseHookHandler = (fastify, done) => {
   fastify.bot.stop()
@@ -25,6 +27,8 @@ const launchFastify = async() => {
   fastify.decorate('bot', bot)
 
   bot.command('help', helpCommandHandler)
+  bot.command('start', startCommandHandler)
+  bot.command('collect', collectCommandHandler)
 
   await bot.launch()
 
