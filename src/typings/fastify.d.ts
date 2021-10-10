@@ -2,11 +2,15 @@
 import fastify from 'fastify'
 import {Telegraf} from 'telegraf'
 
-import {Environment} from '../models/environment'
+import {Environment} from '../schemas/environment'
+import {Configuration} from '../schemas/configuration'
+import {StorageClient} from '../clients/storage'
 
 declare module 'fastify' {
   interface FastifyInstance {
-    config: Environment
+    env: Environment
+    configuration: Configuration
     bot: Telegraf
+    storageClient: StorageClient
   }
 }

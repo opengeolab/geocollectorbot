@@ -1,14 +1,17 @@
 import fastifyBuilder, {FastifyInstance, FastifyServerOptions} from 'fastify'
 import {onCloseHookHandler} from 'fastify/types/hooks'
 
-import loadEnv from './setup/environment'
-import buildBot from './setup/bot'
-import helpCommandHandler from './handlers/helpCommandHandler'
-import startCommandHandler from './handlers/startCommandHandler'
-import collectCommandHandler from './handlers/collectCommandHandler'
+import {loadEnv, decorateEnv} from './setup/environment'
+import {decorateBot} from './setup/bot'
+import {decorateStorageClient} from './clients/storage'
+import {decorateConfiguration} from './setup/configuration'
 
 const onFastifyCloseHandler: onCloseHookHandler = (fastify, done) => {
-  fastify.bot.stop()
+  const {bot, storageClient} = fastify
+
+  bot?.stop()
+  storageClient?.stop()
+
   done()
 }
 
@@ -21,16 +24,16 @@ const launchFastify = async() => {
 
   const fastify: FastifyInstance = fastifyBuilder(fastifyOpts)
 
-  fastify.decorate('config', environment)
+  decorateEnv(fastify, environment)
+  await decorateConfiguration(fastify)
+  decorateBot(fastify)
+  decorateStorageClient(fastify)
 
-  const bot = buildBot(environment)
-  fastify.decorate('bot', bot)
-
-  bot.command('help', helpCommandHandler)
-  bot.command('start', startCommandHandler)
-  bot.command('collect', collectCommandHandler)
-
-  await bot.launch()
+  // bot.command('help', helpCommandHandler)
+  // bot.command('start', startCommandHandler)
+  // bot.command('collect', collectCommandHandler)
+  //
+  // await bot.launch()
 
   fastify.addHook('onClose', onFastifyCloseHandler)
 

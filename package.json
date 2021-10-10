@@ -17,15 +17,19 @@
     "version": "npm run update-changelog && npm run update-docker-version && rm -fr Dockerfile.bck && git add CHANGELOG.md Dockerfile"
   },
   "dependencies": {
+    "ajv": "^8.6.3",
     "env-schema": "^3.2.0",
     "fastify": "^3.20.1",
+    "pg": "^8.7.1",
     "telegraf": "^4.4.2"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.13.15",
     "@mia-platform/eslint-config-mia": "^3.0.0",
     "@types/jest": "^26.0.22",
+    "@types/json-schema": "^7.0.9",
     "@types/node": "^16.4.1",
+    "@types/pg": "^8.6.1",
     "@typescript-eslint/parser": "^4.29.0",
     "eslint": "^7.23.0",
     "eslint-config-standard": "^16.0.2",
