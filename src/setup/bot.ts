@@ -7,7 +7,7 @@ const buildBot = ({TELEGRAM_AUTH_TOKEN}: Environment) => {
   return new Telegraf(TELEGRAM_AUTH_TOKEN)
 }
 
-export const decorateBot = (service: FastifyInstance) => {
+export const decorateBot = (service: Pick<FastifyInstance, 'env' | 'decorate'>) => {
   const {env, decorate} = service
 
   const bot = buildBot(env)

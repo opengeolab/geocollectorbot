@@ -12,15 +12,10 @@
   "rules": {
     "no-console": 2,
     "no-unused-vars": 2,
-    "object-curly-spacing": [
-      2,
-      "never"
-    ],
+    "object-curly-spacing": [2, "never"],
     "sort-imports": "off",
     "max-len": "off",
-    "operator-linebreak": [
-      2,
-      "after"
-    ]
+    "operator-linebreak": [2, "after"],
+    "quote-props": ["error", "as-needed"]
   }
 }

@@ -1,0 +1,12 @@
+{
+  "dataStorage": {
+    "type": "postgres",
+    "configuration": {
+      "user": "",
+      "password": "",
+      "host": "",
+      "database": "",
+      "port": 80
+    }
+  }
+}
