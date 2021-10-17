@@ -1,7 +1,17 @@
 import {Middleware, Context} from 'telegraf'
+import {FastifyInstance} from 'fastify'
 
-const collectCommandHandler: Middleware<Context> = async ctx => {
-  await ctx.reply('Collecting process explanation...')
+export const buildCollectCommandHandler = (service: FastifyInstance): Middleware<Context> => {
+  const {storageClient} = service
+
+  return async ctx => {
+    const chatId = ctx.chat?.id
+    if (!chatId) { await ctx.reply('Error! Cannot recognize the chat') }
+
+    // TODO check if there is already an ongoing interaction
+
+    await storageClient.createInteraction(chatId as number)
+
+    await ctx.reply('Collecting process explanation...')
+  }
 }
-
-export default collectCommandHandler

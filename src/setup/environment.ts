@@ -10,7 +10,4 @@ const options: EnvSchemaData = {
 
 export const loadEnv = (): Environment => envSchema(options) as Environment
 
-export const decorateEnv = (service: Pick<FastifyInstance, 'decorate'>, env: Environment) => {
-  const {decorate} = service
-  decorate('env', env)
-}
+export const decorateEnv = (service: Pick<FastifyInstance, 'decorate'>, env: Environment) => service.decorate('env', env)

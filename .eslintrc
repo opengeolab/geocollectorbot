@@ -16,6 +16,7 @@
     "sort-imports": "off",
     "max-len": "off",
     "operator-linebreak": [2, "after"],
-    "quote-props": ["error", "as-needed"]
+    "quote-props": ["error", "as-needed"],
+    "func-style": "off"
   }
 }

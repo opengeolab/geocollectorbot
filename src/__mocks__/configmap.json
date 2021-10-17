@@ -2,11 +2,12 @@
   "dataStorage": {
     "type": "postgres",
     "configuration": {
-      "user": "",
-      "password": "",
-      "host": "",
-      "database": "",
-      "port": 80
+      "user": "user",
+      "password": "password",
+      "host": "host",
+      "database": "database",
+      "port": 80,
+      "interactionsTable": "interactions_table"
     }
   }
 }

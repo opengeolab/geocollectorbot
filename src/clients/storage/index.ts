@@ -6,6 +6,8 @@ import {PgClient} from './pgClient'
 export interface StorageClient {
   getOngoingInteraction(chatId: string): Record<string, any>
 
+  createInteraction(chatId: number): Promise<void>
+
   stop(): Promise<void>
 }
 
@@ -17,12 +19,12 @@ const storageTypeToClient: Record<DataStorageConfig['type'], StorageClientConstr
   postgres: PgClient,
 }
 
-export const decorateStorageClient = (service: FastifyInstance): void => {
-  const {configuration: {dataStorage: dataStorageConfig}, decorate} = service
+export const decorateStorageClient = (service: Pick<FastifyInstance, 'configuration' | 'log' | 'decorate'>) => {
+  const {configuration: {dataStorage: dataStorageConfig}} = service
   const {type, configuration} = dataStorageConfig
 
   const Client = storageTypeToClient[type]
   const client = new Client(configuration, service.log)
 
-  decorate('storageClient', client)
+  service.decorate('storageClient', client)
 }

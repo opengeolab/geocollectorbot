@@ -24,8 +24,8 @@ const readValidateConfiguration = async(configurationPath: string): Promise<Conf
 }
 
 export const decorateConfiguration = async(service: Pick<FastifyInstance, 'decorate' | 'env'>) => {
-  const {env: {CONFIGURATION_PATH}, decorate} = service
+  const {env: {CONFIGURATION_PATH}} = service
 
   const configuration = await readValidateConfiguration(CONFIGURATION_PATH)
-  decorate('configuration', configuration)
+  service.decorate('configuration', configuration)
 }

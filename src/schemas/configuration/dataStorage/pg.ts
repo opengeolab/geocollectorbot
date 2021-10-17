@@ -8,9 +8,10 @@ export const pgConfigurationSchema = {
     host: {type: 'string'},
     database: {type: 'string'},
     port: {type: 'number'},
+    interactionsTable: {type: 'string'},
   },
   additionalProperties: false,
-  required: ['user', 'password', 'host', 'database', 'port'],
+  required: ['user', 'password', 'host', 'database', 'port', 'interactionsTable'],
 } as const
 
 export const pgSchema = {

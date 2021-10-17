@@ -8,8 +8,8 @@ const buildBot = ({TELEGRAM_AUTH_TOKEN}: Environment) => {
 }
 
 export const decorateBot = (service: Pick<FastifyInstance, 'env' | 'decorate'>) => {
-  const {env, decorate} = service
+  const {env} = service
 
   const bot = buildBot(env)
-  decorate('bot', bot)
+  service.decorate('bot', bot)
 }
