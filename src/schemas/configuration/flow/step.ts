@@ -3,9 +3,9 @@ import {localizedTextSchema} from '../../localizedText'
 export const stepSchema = {
   type: 'object',
   properties: {
-    id: 'string',
+    id: {type: 'string'},
     question: localizedTextSchema,
-    nextStep: 'string',
+    nextStepId: {type: 'string'},
   },
   additionalProperties: false,
   required: ['id', 'question'],

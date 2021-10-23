@@ -1,8 +1,8 @@
 import {decorateStorageClient} from '../index'
 import {PgClient} from '../pgClient'
-import baeConfig from '../../../__mocks__/configmap.json'
-import {Configuration} from '../../../schemas/configuration'
 import {mockLogger} from '../../../utils/testUtils'
+import {Configuration} from '../../../models/Configuration'
+import {DataStorageConfig} from '../../../schemas/configuration/dataStorage'
 
 jest.mock('../pgClient', () => ({
   ...jest.requireActual('../pgClient'),
@@ -12,27 +12,27 @@ jest.mock('../pgClient', () => ({
 describe('Storage client', () => {
   const mockDecorate = jest.fn()
 
-  const buildMockService = (config: Configuration) => ({
-    configuration: config,
-    log: mockLogger,
-    decorate: mockDecorate,
-  })
+  const buildMockService = (dataStorageConfig: DataStorageConfig) => {
+    const config: Configuration = {
+      flow: {firstStepId: 'foo', steps: {}},
+      dataStorage: dataStorageConfig,
+    }
+
+    return {configuration: config, log: mockLogger, decorate: mockDecorate}
+  }
 
   afterEach(() => jest.clearAllMocks())
 
   it('should correctly decorate with Postgres client', () => {
-    const config: Configuration = {
-      ...baeConfig,
-      dataStorage: {
-        type: 'postgres',
-        configuration: {
-          user: 'user',
-          password: 'password',
-          host: 'host',
-          database: 'database',
-          port: 80,
-          interactionsTable: 'interactions_table',
-        },
+    const config: DataStorageConfig = {
+      type: 'postgres',
+      configuration: {
+        user: 'user',
+        password: 'password',
+        host: 'host',
+        database: 'database',
+        port: 80,
+        interactionsTable: 'interactions_table',
       },
     }
 
@@ -41,7 +41,7 @@ describe('Storage client', () => {
     decorateStorageClient(mockService)
 
     expect(PgClient).toHaveBeenCalledTimes(1)
-    expect(PgClient).toHaveBeenCalledWith(config.dataStorage.configuration, mockLogger)
+    expect(PgClient).toHaveBeenCalledWith(config.configuration, mockLogger)
 
     expect(mockDecorate).toHaveBeenCalledTimes(1)
     expect(mockDecorate).toHaveBeenCalledWith('storageClient', {})

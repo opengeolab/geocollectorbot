@@ -10,7 +10,12 @@ export const buildCollectCommandHandler = (service: FastifyInstance): Middleware
 
     // TODO check if there is already an ongoing interaction
 
-    await storageClient.createInteraction(chatId as number)
+    try {
+      await storageClient.createInteraction(chatId as number)
+    } catch (error) {
+      await ctx.reply('Sorry, an error occurred on our side')
+      return
+    }
 
     await ctx.reply('Collecting process explanation...')
   }

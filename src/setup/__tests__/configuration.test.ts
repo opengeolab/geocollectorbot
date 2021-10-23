@@ -1,31 +1,71 @@
 import {join} from 'path'
 
 import {decorateConfiguration} from '../configuration'
-import configmap from '../../__mocks__/configmap.json'
-import {baseEnv} from '../../utils/testUtils'
+import configmap from '../__mocks__/configmap.json'
+import {baseEnv, mockLogger} from '../../utils/testUtils'
+import * as flow from '../flow'
 
 describe('Configuration', () => {
-  const validConfigMapPath = join(__dirname, '../../__mocks__/configmap.json')
-  const invalidConfigMapPath = join(__dirname, '../../__mocks__/invalidConfigMap.json')
+  const parseFlowMock = jest.spyOn(flow, 'parseFlow')
 
-  const mockDecorate = jest.fn()
+  const validConfigMapPath = join(__dirname, '../__mocks__/configmap.json')
+  const invalidConfigMapPath = join(__dirname, '../__mocks__/invalidConfigMap.json')
+
+  const decorateMock = jest.fn()
+
+  const buildMockService = (configPath: string) => ({
+    env: {...baseEnv, CONFIGURATION_PATH: configPath},
+    decorate: decorateMock,
+    log: mockLogger,
+  })
 
   afterEach(() => jest.clearAllMocks())
 
   it('should throw if configuration is not valid', async() => {
-    const mockService = {env: {...baseEnv, CONFIGURATION_PATH: invalidConfigMapPath}, decorate: mockDecorate}
+    parseFlowMock.mockReturnValue({firstStepId: 'foo', steps: {}})
+
+    const mockService = buildMockService(invalidConfigMapPath)
 
     try {
       await decorateConfiguration(mockService)
       expect(true).toBeFalsy()
     } catch (error: any) {
       expect(error.message).toContain('Invalid configuration:')
-      expect(mockDecorate).toHaveBeenCalledTimes(0)
     }
+
+    expect(decorateMock).toHaveBeenCalledTimes(0)
+    expect(parseFlowMock).toHaveBeenCalledTimes(0)
+  })
+
+  it('should throw if parse flow throws', async() => {
+    parseFlowMock.mockImplementation(() => { throw new Error('Parse error') })
+
+    const mockService = buildMockService(validConfigMapPath)
+
+    try {
+      await decorateConfiguration(mockService)
+      expect(true).toBeFalsy()
+    } catch (error: any) {
+      expect(error.message).toEqual('Parse error')
+    }
+
+    expect(parseFlowMock).toHaveBeenCalledTimes(1)
+    // @ts-ignore
+    expect(parseFlowMock).toHaveBeenCalledWith(configmap.flow, mockLogger)
+
+    expect(decorateMock).toHaveBeenCalledTimes(0)
   })
 
   it('should decorate correct configuration', async() => {
-    const mockService = {env: {...baseEnv, CONFIGURATION_PATH: validConfigMapPath}, decorate: mockDecorate}
+    const mockFlow = {firstStepId: 'foo', steps: {}}
+    parseFlowMock.mockReturnValue(mockFlow)
+
+    const mockService = buildMockService(validConfigMapPath)
+
+    const expectedConfiguration = {
+      dataStorage: configmap.dataStorage,
+      flow: mockFlow,
+    }
 
     try {
       await decorateConfiguration(mockService)
@@ -33,7 +73,11 @@ describe('Configuration', () => {
       expect(true).toBeFalsy()
     }
 
-    expect(mockDecorate).toHaveBeenCalledTimes(1)
-    expect(mockDecorate).toHaveBeenCalledWith('configuration', configmap)
+    expect(parseFlowMock).toHaveBeenCalledTimes(1)
+    // @ts-ignore
+    expect(parseFlowMock).toHaveBeenCalledWith(configmap.flow, mockLogger)
+
+    expect(decorateMock).toHaveBeenCalledTimes(1)
+    expect(decorateMock).toHaveBeenCalledWith('configuration', expectedConfiguration)
   })
 })

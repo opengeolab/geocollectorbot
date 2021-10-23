@@ -1,16 +1,16 @@
 import {FromSchema} from 'json-schema-to-ts'
 
-import {stepsSchema} from './steps'
 import {dataStorageSchema} from './dataStorage'
+import {flowSchema} from './flow'
 
 export const configurationSchema = {
   type: 'object',
   properties: {
-    steps: stepsSchema,
+    flow: flowSchema,
     dataStorage: dataStorageSchema,
   },
   additionalProperties: false,
-  required: ['steps', 'dataStorage'],
+  required: ['flow', 'dataStorage'],
 } as const
 
-export type Configuration = FromSchema<typeof configurationSchema>
+export type RawConfiguration = FromSchema<typeof configurationSchema>

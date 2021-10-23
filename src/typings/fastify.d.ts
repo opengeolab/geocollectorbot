@@ -3,8 +3,8 @@ import fastify from 'fastify'
 import {Telegraf} from 'telegraf'
 
 import {Environment} from '../schemas/environment'
-import {Configuration} from '../schemas/configuration'
 import {StorageClient} from '../clients/storage'
+import {Configuration} from '../models/Configuration'
 
 declare module 'fastify' {
   interface FastifyInstance {

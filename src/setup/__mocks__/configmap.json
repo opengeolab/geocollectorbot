@@ -1,4 +1,13 @@
 {
+  "flow": {
+    "firstStepId": "step_1",
+    "steps": [
+      {
+        "id": "step_1",
+        "question": "question_1"
+      }
+    ]
+  },
   "dataStorage": {
     "type": "postgres",
     "configuration": {
