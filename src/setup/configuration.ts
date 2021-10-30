@@ -1,9 +1,11 @@
 import fs from 'fs/promises'
-import {FastifyInstance} from 'fastify'
-import Ajv from 'ajv'
 
-import {configurationSchema, RawConfiguration} from '../schemas/configuration'
+import Ajv from 'ajv'
+import {FastifyInstance} from 'fastify'
+
 import {Configuration} from '../models/Configuration'
+import {configurationSchema, RawConfiguration} from '../schemas/configuration'
+
 import {parseFlow} from './flow'
 
 const readConfigurationFile = async(configurationPath: string): Promise<RawConfiguration> => {

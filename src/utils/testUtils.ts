@@ -1,4 +1,5 @@
 import {join} from 'path'
+
 import {FastifyLoggerInstance} from 'fastify'
 
 import {Environment} from '../schemas/environment'

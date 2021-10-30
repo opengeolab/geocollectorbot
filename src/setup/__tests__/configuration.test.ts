@@ -1,8 +1,8 @@
 import {join} from 'path'
 
-import {decorateConfiguration} from '../configuration'
-import configmap from '../__mocks__/configmap.json'
 import {baseEnv, mockLogger} from '../../utils/testUtils'
+import configmap from '../__mocks__/configmap.json'
+import {decorateConfiguration} from '../configuration'
 import * as flow from '../flow'
 
 describe('Configuration', () => {

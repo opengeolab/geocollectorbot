@@ -1,8 +1,8 @@
-import {decorateStorageClient} from '../index'
-import {PgClient} from '../pgClient'
-import {mockLogger} from '../../../utils/testUtils'
 import {Configuration} from '../../../models/Configuration'
 import {DataStorageConfig} from '../../../schemas/configuration/dataStorage'
+import {mockLogger} from '../../../utils/testUtils'
+import {decorateStorageClient} from '../index'
+import {PgClient} from '../pgClient'
 
 jest.mock('../pgClient', () => ({
   ...jest.requireActual('../pgClient'),

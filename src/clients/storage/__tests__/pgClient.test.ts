@@ -1,9 +1,9 @@
 import {Pool} from 'pg'
 
-import {PgClient} from '../pgClient'
-import {StorageClient} from '../index'
-import {mockLogger} from '../../../utils/testUtils'
 import {PgConfiguration} from '../../../schemas/configuration/dataStorage/pg'
+import {mockLogger} from '../../../utils/testUtils'
+import {StorageClient} from '../index'
+import {PgClient} from '../pgClient'
 
 jest.mock('pg', () => ({
   ...jest.requireActual('pg'),

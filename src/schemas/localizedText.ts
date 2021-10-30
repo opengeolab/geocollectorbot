@@ -14,4 +14,4 @@ export const localizedTextSchema = {
   ],
 } as const
 
-export type LocalizedText = string | {en: string, [key: string]: string}
+export type LocalizedText = string | {en: string; [key: string]: string}

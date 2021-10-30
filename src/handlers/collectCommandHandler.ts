@@ -1,5 +1,5 @@
-import {Middleware, Context} from 'telegraf'
 import {FastifyInstance} from 'fastify'
+import {Middleware, Context} from 'telegraf'
 
 import {resolveLocalizedText} from '../utils/localizer'
 

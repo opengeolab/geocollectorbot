@@ -1,5 +1,5 @@
-import {mockLogger} from '../../utils/testUtils'
 import {RawFlow} from '../../schemas/configuration/flow'
+import {mockLogger} from '../../utils/testUtils'
 import {parseFlow} from '../flow'
 
 describe('Flow', () => {

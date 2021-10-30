@@ -1,12 +1,11 @@
 import fastifyBuilder, {FastifyInstance, FastifyServerOptions} from 'fastify'
 import {onCloseHookHandler} from 'fastify/types/hooks'
 
-import {loadEnv, decorateEnv} from './setup/environment'
-import {decorateBot} from './setup/bot'
 import {decorateStorageClient} from './clients/storage'
-import {decorateConfiguration} from './setup/configuration'
-
 import {buildCollectCommandHandler} from './handlers/collectCommandHandler'
+import {decorateBot} from './setup/bot'
+import {decorateConfiguration} from './setup/configuration'
+import {loadEnv, decorateEnv} from './setup/environment'
 
 const onFastifyCloseHandler: onCloseHookHandler = (fastify, done) => {
   const {bot, storageClient} = fastify

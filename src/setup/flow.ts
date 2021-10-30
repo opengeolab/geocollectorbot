@@ -1,7 +1,7 @@
 import {FastifyLoggerInstance} from 'fastify'
 
-import {RawFlow} from '../schemas/configuration/flow'
 import {Flow, Steps} from '../models/Configuration'
+import {RawFlow} from '../schemas/configuration/flow'
 import {LocalizedText} from '../schemas/localizedText'
 
 export const parseFlow = (rawFlow: RawFlow, logger: FastifyLoggerInstance): Flow => {

@@ -1,6 +1,6 @@
 import {RawConfiguration} from '../schemas/configuration'
-import {LocalizedText} from '../schemas/localizedText'
 import {RawFlow} from '../schemas/configuration/flow'
+import {LocalizedText} from '../schemas/localizedText'
 
 export type Step = {
   id: string

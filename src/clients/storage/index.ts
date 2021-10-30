@@ -1,6 +1,7 @@
 import {FastifyInstance, FastifyLoggerInstance} from 'fastify'
 
 import {DataStorageConfig} from '../../schemas/configuration/dataStorage'
+
 import {PgClient} from './pgClient'
 
 export interface StorageClient {

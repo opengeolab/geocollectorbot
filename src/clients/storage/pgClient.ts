@@ -1,9 +1,10 @@
-import {Pool} from 'pg'
 import {FastifyLoggerInstance} from 'fastify'
+import {Pool} from 'pg'
+
+import {InteractionState} from '../../models/Interaction'
+import {PgConfiguration} from '../../schemas/configuration/dataStorage/pg'
 
 import {StorageClient} from './index'
-import {PgConfiguration} from '../../schemas/configuration/dataStorage/pg'
-import {InteractionState} from '../../models/Interaction'
 
 export class PgClient implements StorageClient {
   private pool: Pool
