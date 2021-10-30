@@ -43,10 +43,7 @@ const parseSteps = (rawSteps: RawFlow['steps'], logger: FastifyLoggerInstance): 
       throw new Error('Error parsing steps configuration: circular dependency')
     }
 
-    currSteps[id] = {
-      question: question as LocalizedText,
-      nextStepId,
-    }
+    currSteps[id] = {id, question: question as LocalizedText, nextStepId}
 
     return currSteps
   }, {} as Steps)

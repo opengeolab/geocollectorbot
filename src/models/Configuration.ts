@@ -3,6 +3,7 @@ import {LocalizedText} from '../schemas/localizedText'
 import {RawFlow} from '../schemas/configuration/flow'
 
 export type Step = {
+  id: string
   question: LocalizedText
   nextStepId?: string
 }

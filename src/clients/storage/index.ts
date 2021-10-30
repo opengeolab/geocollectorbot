@@ -6,7 +6,7 @@ import {PgClient} from './pgClient'
 export interface StorageClient {
   getOngoingInteraction(chatId: string): Record<string, any>
 
-  createInteraction(chatId: number): Promise<void>
+  createInteraction(chatId: number, firstStepId: string): Promise<void>
 
   stop(): Promise<void>
 }

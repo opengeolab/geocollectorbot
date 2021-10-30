@@ -79,10 +79,12 @@ describe('Flow', () => {
       firstStepId: 'step_1',
       steps: {
         step_1: {
+          id: 'step_1',
           question: 'question_1',
           nextStepId: 'step_2',
         },
         step_2: {
+          id: 'step_2',
           question: 'question_2',
           nextStepId: undefined,
         },

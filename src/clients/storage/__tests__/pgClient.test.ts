@@ -39,34 +39,33 @@ describe('Postgres client', () => {
   afterEach(() => jest.clearAllMocks())
 
   describe('createInteraction', () => {
+    const firstStepId = 'first_step'
+    const expectedQuery = 'INSERT INTO interactions_table (chat_id, currStepId, interactionState) VALUES (123, first_step, ongoing)'
+
     it('should throw if query fails', async() => {
       const expectedError = new Error('Query error')
       mockPoolQuery.mockRejectedValue(expectedError)
 
       try {
-        await pgClient.createInteraction(chatId)
+        await pgClient.createInteraction(chatId, firstStepId)
         expect(true).toBeFalsy()
       } catch (error) {
         expect(error).toEqual(expectedError)
       }
 
-      const expectedQuery = `INSERT INTO ${config.interactionsTable} (chat_id) VALUES (${chatId})`
       expect(mockPoolQuery).toHaveBeenCalledTimes(1)
       expect(mockPoolQuery).toHaveBeenCalledWith(expectedQuery)
-
-      expect(mockLogger.error).toHaveBeenCalledTimes(1)
     })
 
     it('should correctly query the db', async() => {
       mockPoolQuery.mockResolvedValue('query_result')
 
       try {
-        await pgClient.createInteraction(chatId)
+        await pgClient.createInteraction(chatId, firstStepId)
       } catch (error) {
         expect(true).toBeFalsy()
       }
 
-      const expectedQuery = `INSERT INTO ${config.interactionsTable} (chat_id) VALUES (${chatId})`
       expect(mockPoolQuery).toHaveBeenCalledTimes(1)
       expect(mockPoolQuery).toHaveBeenCalledWith(expectedQuery)
 

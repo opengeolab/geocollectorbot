@@ -3,6 +3,7 @@ import {FastifyLoggerInstance} from 'fastify'
 
 import {StorageClient} from './index'
 import {PgConfiguration} from '../../schemas/configuration/dataStorage/pg'
+import {InteractionState} from '../../models/Interaction'
 
 export class PgClient implements StorageClient {
   private pool: Pool
@@ -15,19 +16,18 @@ export class PgClient implements StorageClient {
     this.table = configuration.interactionsTable
   }
 
-  getOngoingInteraction(chatId: string): Record<string, any> {
+  getOngoingInteraction(): Record<string, any> {
     return {}
   }
 
-  async createInteraction(chatId: number) {
-    const query = `INSERT INTO ${this.table} (chat_id) VALUES (${chatId})`
+  async createInteraction(chatId: number, firstStepId: string) {
+    const query =
+      `INSERT INTO ${this.table} (chat_id, currStepId, interactionState) ` +
+      `VALUES (${chatId}, ${firstStepId}, ${InteractionState.ONGOING})`
 
-    try {
-      await this.pool.query(query)
-    } catch (error) {
-      this.logger.error({error, chatId}, 'Cannot create new interaction')
-      throw error
-    }
+    this.logger.debug({query, chatId}, 'Creating new interaction')
+
+    await this.pool.query(query)
   }
 
   async stop() {

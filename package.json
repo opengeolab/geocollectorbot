@@ -31,6 +31,7 @@
     "@types/json-schema": "^7.0.9",
     "@types/node": "^16.4.1",
     "@types/pg": "^8.6.1",
+    "@typescript-eslint/eslint-plugin": "^5.2.0",
     "@typescript-eslint/parser": "^4.29.0",
     "eslint": "^7.23.0",
     "eslint-config-standard": "^16.0.2",
