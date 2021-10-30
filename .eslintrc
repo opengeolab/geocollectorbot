@@ -24,6 +24,7 @@
     "no-eq-null": "off",
     "no-use-before-define": "off",
     "no-shadow": "off",
+    "camelcase": "off",
     "import/order": [
       "error",
       {

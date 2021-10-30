@@ -3,7 +3,7 @@ import {Middleware, Context} from 'telegraf'
 
 import {resolveLocalizedText} from '../utils/localizer'
 
-export const buildCollectCommandHandler = (service: FastifyInstance): Middleware<Context> => {
+export const buildCollectCommandHandler = (service: Pick<FastifyInstance, 'storageClient' | 'configuration' | 'log'>): Middleware<Context> => {
   const {storageClient, configuration} = service
   const {flow: {firstStepId, steps}} = configuration
 

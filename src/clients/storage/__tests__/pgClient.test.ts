@@ -40,7 +40,7 @@ describe('Postgres client', () => {
 
   describe('createInteraction', () => {
     const firstStepId = 'first_step'
-    const expectedQuery = 'INSERT INTO interactions_table (chat_id, currStepId, interactionState) VALUES (123, first_step, ongoing)'
+    const expectedQuery = "INSERT INTO interactions_table (chat_id, curr_step_id, interaction_state) VALUES (123, 'first_step', 'ongoing')"
 
     it('should throw if query fails', async() => {
       const expectedError = new Error('Query error')

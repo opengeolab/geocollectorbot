@@ -23,8 +23,8 @@ export class PgClient implements StorageClient {
 
   async createInteraction(chatId: number, firstStepId: string) {
     const query =
-      `INSERT INTO ${this.table} (chat_id, currStepId, interactionState) ` +
-      `VALUES (${chatId}, ${firstStepId}, ${InteractionState.ONGOING})`
+      `INSERT INTO ${this.table} (chat_id, curr_step_id, interaction_state) ` +
+      `VALUES (${chatId}, '${firstStepId}', '${InteractionState.ONGOING}')`
 
     this.logger.debug({query, chatId}, 'Creating new interaction')
 
