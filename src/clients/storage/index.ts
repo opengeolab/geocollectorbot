@@ -1,11 +1,12 @@
 import {FastifyInstance, FastifyLoggerInstance} from 'fastify'
 
+import {Interaction} from '../../models/Interaction'
 import {DataStorageConfig} from '../../schemas/configuration/dataStorage'
 
 import {PgClient} from './pgClient'
 
 export interface StorageClient {
-  getOngoingInteraction(chatId: string): Record<string, any>
+  getOngoingInteraction(chatId: number): Promise<Interaction>
 
   createInteraction(chatId: number, firstStepId: string): Promise<void>
 

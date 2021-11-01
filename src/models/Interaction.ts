@@ -3,7 +3,11 @@ export enum InteractionState {
 }
 
 export type Interaction = {
-  chat_id: string
-  curr_step_id: string
-  interaction_state: InteractionState
+  id: string
+  chatId: string
+  currStepId: string
+  interactionState: InteractionState
+  createdAt: string
+  updatedAt: string
+  [key: string]: unknown
 }

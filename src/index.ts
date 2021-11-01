@@ -3,6 +3,7 @@ import {onCloseHookHandler} from 'fastify/types/hooks'
 
 import {decorateStorageClient} from './clients/storage'
 import {buildCollectCommandHandler} from './handlers/collectCommandHandler'
+import {buildTextHandler} from './handlers/textHandler'
 import {decorateBot} from './setup/bot'
 import {decorateConfiguration} from './setup/configuration'
 import {loadEnv, decorateEnv} from './setup/environment'
@@ -31,6 +32,8 @@ const launchFastify = async() => {
   decorateStorageClient(fastify)
 
   fastify.bot.command('collect', buildCollectCommandHandler(fastify))
+  fastify.bot.on('text', buildTextHandler(fastify))
+
   await fastify.bot.launch()
 
   fastify.addHook('onClose', onFastifyCloseHandler)
