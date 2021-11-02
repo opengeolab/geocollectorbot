@@ -21,12 +21,15 @@
     "ajv": "^8.6.3",
     "env-schema": "^3.2.0",
     "fastify": "^3.20.1",
+    "i18next": "^21.4.0",
+    "i18next-fs-backend": "^1.1.1",
     "pg": "^8.7.1",
     "telegraf": "^4.4.2"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.13.15",
     "@mia-platform/eslint-config-mia": "^3.0.0",
+    "@types/i18next-fs-backend": "^1.1.2",
     "@types/jest": "^26.0.22",
     "@types/json-schema": "^7.0.9",
     "@types/node": "^16.4.1",

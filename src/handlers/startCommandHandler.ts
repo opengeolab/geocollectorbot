@@ -1,5 +1,7 @@
-import {Middleware, Context} from 'telegraf'
+import {Update} from 'telegraf/typings/core/types/typegram'
 
-export const startCommandHandler: Middleware<Context> = async ctx => {
-  await ctx.reply('This is the start message...')
+import {HandlerBuilder} from '../models/Buildes'
+
+export const buildStartCommandHandler: HandlerBuilder<Update.MessageUpdate> = () => async ctx => {
+  await ctx.reply(ctx.t('errors.test'))
 }

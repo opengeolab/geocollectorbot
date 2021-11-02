@@ -13,6 +13,8 @@
     "@typescript-eslint"
   ],
   "rules": {
+    "id-blacklist": "off",
+    "id-length": "off",
     "no-console": 2,
     "no-unused-vars": "off",
     "object-curly-spacing": [2, "never"],

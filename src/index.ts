@@ -3,7 +3,7 @@ import fastifyBuilder, {FastifyInstance, FastifyServerOptions} from 'fastify'
 import {decorateStorageClient} from './clients/storage'
 import {buildCollectCommandHandler} from './handlers/collectCommandHandler'
 import {helpCommandHandler} from './handlers/helpCommandHandler'
-import {startCommandHandler} from './handlers/startCommandHandler'
+import {buildStartCommandHandler} from './handlers/startCommandHandler'
 import {buildTextHandler} from './handlers/textHandler'
 import {onFastifyCloseHandler} from './hooks/onFastifyClose'
 import {buildExtractInfoMiddleware} from './middlewares/extractInfo'
@@ -12,6 +12,8 @@ import {buildRetrieveInteractionMiddleware} from './middlewares/retrieveInteract
 import {decorateBot} from './setup/bot'
 import {decorateConfiguration} from './setup/configuration'
 import {loadEnv, decorateEnv} from './setup/environment'
+import {decorateI18n} from './setup/i18n'
+import {buildSetLanguageMiddleware} from './middlewares/setLanguage'
 
 const launchFastify = async () => {
   const environment = loadEnv()
@@ -23,12 +25,14 @@ const launchFastify = async () => {
   const fastify: FastifyInstance = fastifyBuilder(fastifyOpts)
 
   decorateEnv(fastify, environment)
+  await decorateI18n(fastify)
   await decorateConfiguration(fastify)
   decorateBot(fastify)
   decorateStorageClient(fastify)
 
   fastify.bot
-    .start(startCommandHandler)
+    .use(buildSetLanguageMiddleware(fastify))
+    .start(buildStartCommandHandler(fastify))
     .help(helpCommandHandler)
     .use(buildExtractInfoMiddleware(fastify))
     .command('collect', buildCollectCommandHandler(fastify))

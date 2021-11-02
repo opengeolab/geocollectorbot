@@ -1,0 +1,6 @@
+{
+  "errors": {
+    "test": "Hello world!",
+    "chatIdNotFound": "Cannot find chat id"
+  }
+}
