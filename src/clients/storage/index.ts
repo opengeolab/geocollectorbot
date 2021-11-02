@@ -6,7 +6,7 @@ import {DataStorageConfig} from '../../schemas/configuration/dataStorage'
 import {PgClient} from './pgClient'
 
 export interface StorageClient {
-  getOngoingInteraction(chatId: number): Promise<Interaction>
+  getOngoingInteractions(chatId: number): Promise<Interaction[]>
 
   createInteraction(chatId: number, firstStepId: string): Promise<void>
 

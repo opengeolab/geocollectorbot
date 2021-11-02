@@ -25,6 +25,8 @@
     "no-use-before-define": "off",
     "no-shadow": "off",
     "camelcase": "off",
+    "space-before-function-paren": ["error", "always"],
+    "require-atomic-updates": "off",
     "import/order": [
       "error",
       {
