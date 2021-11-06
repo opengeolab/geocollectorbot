@@ -8,7 +8,7 @@ describe('Environment', () => {
 
     afterEach(() => jest.clearAllMocks())
 
-    it('should decorate with given environment', async() => {
+    it('should decorate with given environment', async () => {
       decorateEnv(mockService, baseEnv)
 
       expect(mockDecorate).toHaveBeenCalledTimes(1)

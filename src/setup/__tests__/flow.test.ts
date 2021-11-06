@@ -1,3 +1,4 @@
+import {Flow, StepType} from '../../models/Flow'
 import {RawFlow} from '../../schemas/configuration/flow'
 import {mockLogger} from '../../utils/testUtils'
 import {parseFlow} from '../flow'
@@ -6,7 +7,7 @@ describe('Flow', () => {
   it('should throw if firstStepId not found', () => {
     const rawFlow: RawFlow = {
       firstStepId: 'unknown_step',
-      steps: [{id: 'step_1', question: 'question_1', nextStepId: 'step_2'}],
+      steps: [{id: 'step_1', question: 'question_1', type: StepType.TEXT, nextStepId: 'step_2'}],
     }
 
     try {
@@ -21,9 +22,9 @@ describe('Flow', () => {
     const rawFlow: RawFlow = {
       firstStepId: 'step_1',
       steps: [
-        {id: 'step_1', question: 'question_1', nextStepId: 'step_3'},
-        {id: 'step_1', question: 'question_2', nextStepId: 'step_3'},
-        {id: 'step_3', question: 'question_3', nextStepId: 'step_3'},
+        {id: 'step_1', question: 'question_1', type: StepType.TEXT, nextStepId: 'step_3'},
+        {id: 'step_1', question: 'question_2', type: StepType.TEXT, nextStepId: 'step_3'},
+        {id: 'step_3', question: 'question_3', type: StepType.TEXT, nextStepId: 'step_3'},
       ],
     }
 
@@ -39,8 +40,8 @@ describe('Flow', () => {
     const rawFlow: RawFlow = {
       firstStepId: 'step_1',
       steps: [
-        {id: 'step_1', question: 'question_1', nextStepId: 'step_2'},
-        {id: 'step_2', question: 'question_2', nextStepId: 'step_3'},
+        {id: 'step_1', question: 'question_1', type: StepType.TEXT, nextStepId: 'step_2'},
+        {id: 'step_2', question: 'question_2', type: StepType.TEXT, nextStepId: 'step_3'},
       ],
     }
 
@@ -55,7 +56,7 @@ describe('Flow', () => {
   it('should throw if circular', () => {
     const rawFlow: RawFlow = {
       firstStepId: 'step_1',
-      steps: [{id: 'step_1', question: 'question_1', nextStepId: 'step_1'}],
+      steps: [{id: 'step_1', question: 'question_1', type: StepType.TEXT, nextStepId: 'step_1'}],
     }
 
     try {
@@ -70,24 +71,16 @@ describe('Flow', () => {
     const rawFlow: RawFlow = {
       firstStepId: 'step_1',
       steps: [
-        {id: 'step_1', question: 'question_1', nextStepId: 'step_2'},
-        {id: 'step_2', question: 'question_2'},
+        {id: 'step_1', question: 'question_1', type: StepType.TEXT, nextStepId: 'step_2'},
+        {id: 'step_2', question: 'question_2', type: StepType.TEXT, persistAs: 'persist_as'},
       ],
     }
 
-    const expectedFlow = {
+    const expectedFlow: Flow = {
       firstStepId: 'step_1',
       steps: {
-        step_1: {
-          id: 'step_1',
-          question: 'question_1',
-          nextStepId: 'step_2',
-        },
-        step_2: {
-          id: 'step_2',
-          question: 'question_2',
-          nextStepId: undefined,
-        },
+        step_1: {question: 'question_1', type: StepType.TEXT, persistAs: 'step_1', nextStepId: 'step_2'},
+        step_2: {question: 'question_2', type: StepType.TEXT, persistAs: 'persist_as', nextStepId: undefined},
       },
     }
 

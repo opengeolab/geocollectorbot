@@ -1,8 +1,9 @@
-import {StorageClient} from '../../clients/storage'
+import {StorageClient} from '../../../clients/storage'
 
 const mockStorageClient: StorageClient = {
-  getOngoingInteraction: jest.fn(),
   createInteraction: jest.fn(),
+  getOngoingInteractions: jest.fn(),
+  updateInteraction: jest.fn(),
   stop: jest.fn(),
 }
 

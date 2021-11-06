@@ -1,12 +1,11 @@
 import {FastifyLoggerInstance} from 'fastify'
 
-import {Flow, Steps} from '../models/Configuration'
+import {Flow, Steps} from '../models/Flow'
 import {RawFlow} from '../schemas/configuration/flow'
 import {LocalizedText} from '../schemas/localizedText'
 
 export const parseFlow = (rawFlow: RawFlow, logger: FastifyLoggerInstance): Flow => {
   const {firstStepId, steps: rawSteps} = rawFlow
-
   const allStepsIds = rawSteps.map(step => step.id)
 
   if (!allStepsIds.includes(firstStepId)) {
@@ -14,19 +13,15 @@ export const parseFlow = (rawFlow: RawFlow, logger: FastifyLoggerInstance): Flow
     throw new Error('Error parsing flow configuration: cannot find first step')
   }
 
-  const parsedSteps = parseSteps(rawSteps, logger)
-
-  return {
-    firstStepId,
-    steps: parsedSteps,
-  }
+  return {firstStepId, steps: parseSteps(rawSteps, logger)}
 }
 
+// TODO check that persistAs are unique and not a reserved db keyword
 const parseSteps = (rawSteps: RawFlow['steps'], logger: FastifyLoggerInstance): Steps => {
   const allStepsIds = rawSteps.map(step => step.id)
 
   return rawSteps.reduce((currSteps, currRawStep) => {
-    const {id, question, nextStepId} = currRawStep
+    const {id, question, nextStepId, type, persistAs} = currRawStep
 
     if (currSteps[id]) {
       logger.error({id}, 'Error parsing steps configuration: id is not unique')
@@ -43,7 +38,12 @@ const parseSteps = (rawSteps: RawFlow['steps'], logger: FastifyLoggerInstance): 
       throw new Error('Error parsing steps configuration: circular dependency')
     }
 
-    currSteps[id] = {id, question: question as LocalizedText, nextStepId}
+    currSteps[id] = {
+      question: question as LocalizedText,
+      type,
+      persistAs: persistAs || id,
+      nextStepId,
+    }
 
     return currSteps
   }, {} as Steps)

@@ -12,7 +12,6 @@ export const decorateI18n = async (service: Pick<FastifyInstance, 'decorate'>) =
   await i18next
     .use(i18nextBackend)
     .init({
-      debug: true,
       fallbackLng: DEFAULT_LANGUAGE,
       initImmediate: false,
       backend: {loadPath: join(localesFolder, '{{lng}}/{{ns}}.json')},

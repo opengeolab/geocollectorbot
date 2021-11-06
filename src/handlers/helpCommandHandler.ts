@@ -1,5 +1,9 @@
-import {Middleware, Context} from 'telegraf'
+import {Update} from 'telegraf/typings/core/types/typegram'
 
-export const helpCommandHandler: Middleware<Context> = async ctx => {
-  await ctx.reply('This is the help message...')
+import {HandlerBuilder} from '../models/Buildes'
+
+export const buildHelpCommandHandler: HandlerBuilder<Update.MessageUpdate> = ({log: logger}) => async ctx => {
+  logger.trace({chatId: ctx.chat?.id}, 'Executing command "/help"')
+
+  await ctx.reply(ctx.t('commands.help.content'))
 }

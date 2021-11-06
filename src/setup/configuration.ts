@@ -8,7 +8,7 @@ import {configurationSchema, RawConfiguration} from '../schemas/configuration'
 
 import {parseFlow} from './flow'
 
-const readConfigurationFile = async(configurationPath: string): Promise<RawConfiguration> => {
+const readConfigurationFile = async (configurationPath: string): Promise<RawConfiguration> => {
   const fileContent = await fs.readFile(configurationPath)
   return JSON.parse(fileContent.toString('utf-8'))
 }
@@ -20,14 +20,14 @@ const validateConfigurationContent = (configurationContent: RawConfiguration): v
   if (!isConfigValid) { throw new Error(`Invalid configuration: ${JSON.stringify(configValidator.errors)}`) }
 }
 
-const readValidateConfiguration = async(configurationPath: string): Promise<RawConfiguration> => {
+const readValidateConfiguration = async (configurationPath: string): Promise<RawConfiguration> => {
   const configurationContent = await readConfigurationFile(configurationPath)
 
   validateConfigurationContent(configurationContent)
   return configurationContent
 }
 
-export const decorateConfiguration = async(service: Pick<FastifyInstance, 'decorate' | 'env' | 'log'>) => {
+export const decorateConfiguration = async (service: Pick<FastifyInstance, 'decorate' | 'env' | 'log'>) => {
   const {env: {CONFIGURATION_PATH}} = service
 
   const {dataStorage: rawDataStorage, flow: rawFlow} = await readValidateConfiguration(CONFIGURATION_PATH)

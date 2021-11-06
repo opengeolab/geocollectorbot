@@ -1,29 +1,24 @@
-import {FastifyInstance} from 'fastify'
-import {Middleware, Context} from 'telegraf'
+import {Update} from 'telegraf/typings/core/types/typegram'
 
+import {HandlerBuilder} from '../models/Buildes'
+import {ProcessError} from '../utils/Errors'
 import {resolveLocalizedText} from '../utils/localizer'
 
-export const buildCollectCommandHandler = (service: Pick<FastifyInstance, 'storageClient' | 'configuration' | 'log'>): Middleware<Context> => {
-  const {storageClient, configuration} = service
+export const buildCollectCommandHandler: HandlerBuilder<Update.MessageUpdate> = service => {
+  const {storageClient, configuration, log: logger} = service
   const {flow: {firstStepId, steps}} = configuration
 
   return async ctx => {
-    const {chat, from: user} = ctx
-
-    const chatId = chat?.id
-    if (!chatId) {
-      await ctx.reply('Error! Cannot recognize the chat')
-      return
-    }
+    const {chatId, from: user} = ctx
+    logger.trace({chatId}, 'Executing command "/collect"')
 
     // TODO check if there is already an ongoing interaction
 
     try {
       await storageClient.createInteraction(chatId as number, firstStepId)
     } catch (error) {
-      service.log.error({error, chatId}, 'Error during interaction creation')
-      await ctx.reply('Sorry, an error occurred on our side')
-      return
+      logger.error({error, chatId}, 'Error creating new interaction')
+      throw new ProcessError('Error creating new interaction', ctx.t('errors.createInteraction'))
     }
 
     const {question} = steps[firstStepId]
