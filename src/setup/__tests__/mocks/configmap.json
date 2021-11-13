@@ -1,0 +1,30 @@
+{
+  "flow": {
+    "firstStepId": "question_1",
+    "steps": [
+      {
+        "id": "question_1",
+        "question": "First question",
+        "type": "text",
+        "nextStepId": "question_2"
+      },
+      {
+        "id": "question_2",
+        "question": "Second question",
+        "persistAs": "second_question",
+        "type": "text"
+      }
+    ]
+  },
+  "dataStorage": {
+    "type": "postgres",
+    "configuration": {
+      "user": "user",
+      "password": "password",
+      "host": "host",
+      "database": "database",
+      "port": 80,
+      "interactionsTable": "interactions_table"
+    }
+  }
+}

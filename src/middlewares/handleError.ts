@@ -23,5 +23,5 @@ export const buildHandleErrorMiddleware: ErrorMiddlewareBuilder = ({log: logger}
   }
 
   logger.error({err: error, update}, 'Unknown error in process')
-  await ctx.reply('Something wen wrong on our hand')
+  await ctx.reply(ctx.t('errors.unknown'))
 }

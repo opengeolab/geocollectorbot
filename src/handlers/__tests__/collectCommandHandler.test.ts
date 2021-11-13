@@ -1,130 +1,83 @@
-export {}
-// import {FastifyInstance} from 'fastify'
-// import {MiddlewareFn, Context} from 'telegraf'
-//
-// import {StorageClient} from '../../clients/storage'
-// import {Configuration} from '../../models/Configuration'
-// import {Flow} from '../../models/Flow'
-// import {DataStorageConfig} from '../../schemas/configuration/dataStorage'
-// import * as localizer from '../../utils/localizer'
-// import {mockLogger} from '../../utils/testUtils'
-// import mockStorageClient from '../__mocks__/mockStorageClient'
-// import {buildCollectCommandHandler} from '../collectCommandHandler'
-//
-// describe('Collect command handler', () => {
-//   jest.spyOn(localizer, 'resolveLocalizedText')
-//
-//   const mockReply = jest.fn()
-//
-//   const mockStorageConfig: DataStorageConfig = {
-//     type: 'postgres',
-//     configuration: {
-//       user: 'user',
-//       password: 'password',
-//       host: 'host',
-//       database: 'database',
-//       port: 80,
-//       interactionsTable: 'interactions_table',
-//     },
-//   }
-//
-//   type MockService = {
-//     storageClient: StorageClient
-//     configuration: Configuration
-//     log: FastifyInstance['log']
-//   }
-//
-//   const buildMockService = (flowConfig: Flow): MockService => ({
-//     storageClient: mockStorageClient,
-//     configuration: {dataStorage: mockStorageConfig, flow: flowConfig},
-//     log: mockLogger,
-//   })
-//
-//   afterEach(() => {
-//     jest.clearAllMocks()
-//     jest.resetAllMocks()
-//   })
-//
-//   it('should send an error if no chat id is found', async () => {
-//     const mockService = buildMockService({firstStepId: 'id', steps: {id: {question: 'question'}}})
-//
-//     const mockContext = {reply: mockReply}
-//
-//     const handler = buildCollectCommandHandler(mockService) as MiddlewareFn<Context>
-//     await handler(mockContext as unknown as Context, jest.fn())
-//
-//     expect(mockReply).toHaveBeenCalledTimes(1)
-//     expect(mockReply).toHaveBeenCalledWith('Error! Cannot recognize the chat')
-//
-//     expect(mockStorageClient.createInteraction).toHaveBeenCalledTimes(0)
-//   })
-//
-//   it('should send an error if cannot create interaction', async () => {
-//     (mockStorageClient.createInteraction as jest.Mock).mockRejectedValue(new Error('error'))
-//
-//     const mockService = buildMockService({firstStepId: 'id', steps: {id: {question: 'question'}}})
-//
-//     const mockContext = {
-//       chat: {id: 123},
-//       reply: mockReply,
-//     }
-//
-//     const handler = buildCollectCommandHandler(mockService) as MiddlewareFn<Context>
-//     await handler(mockContext as unknown as Context, jest.fn())
-//
-//     expect(mockReply).toHaveBeenCalledTimes(1)
-//     expect(mockReply).toHaveBeenCalledWith('Sorry, an error occurred on our side')
-//
-//     expect(mockStorageClient.createInteraction).toHaveBeenCalledTimes(1)
-//     expect(mockStorageClient.createInteraction).toHaveBeenCalledWith(123, 'id')
-//
-//     expect(localizer.resolveLocalizedText).toHaveBeenCalledTimes(0)
-//   })
-//
-//   it('should send the first question without locale', async () => {
-//     (localizer.resolveLocalizedText as jest.Mock).mockReturnValue('localized_question')
-//
-//     const mockService = buildMockService({firstStepId: 'id', steps: {id: {question: 'question'}}})
-//
-//     const mockContext = {
-//       chat: {id: 123},
-//       reply: mockReply,
-//     }
-//
-//     const handler = buildCollectCommandHandler(mockService) as MiddlewareFn<Context>
-//     await handler(mockContext as unknown as Context, jest.fn())
-//
-//     expect(mockReply).toHaveBeenCalledTimes(1)
-//     expect(mockReply).toHaveBeenCalledWith('localized_question')
-//
-//     expect(mockStorageClient.createInteraction).toHaveBeenCalledTimes(1)
-//     expect(mockStorageClient.createInteraction).toHaveBeenCalledWith(123, 'id')
-//
-//     expect(localizer.resolveLocalizedText).toHaveBeenCalledTimes(1)
-//     expect(localizer.resolveLocalizedText).toHaveBeenCalledWith('question', undefined)
-//   })
-//
-//   it('should send the first question with locale', async () => {
-//     (localizer.resolveLocalizedText as jest.Mock).mockReturnValue('localized_question')
-//
-//     const mockService = buildMockService({firstStepId: 'id', steps: {id: {question: 'question'}}})
-//
-//     const mockContext = {
-//       chat: {id: 123},
-//       from: {language_code: 'it'},
-//       reply: mockReply,
-//     }
-//
-//     const handler = buildCollectCommandHandler(mockService) as MiddlewareFn<Context>
-//     await handler(mockContext as unknown as Context, jest.fn())
-//
-//     expect(mockReply).toHaveBeenCalledTimes(1)
-//     expect(mockReply).toHaveBeenCalledWith('localized_question')
-//
-//     expect(mockStorageClient.createInteraction).toHaveBeenCalledTimes(1)
-//     expect(mockStorageClient.createInteraction).toHaveBeenCalledWith(123, 'id')
-//
-//     expect(localizer.resolveLocalizedText).toHaveBeenCalledTimes(1)
-//     expect(localizer.resolveLocalizedText).toHaveBeenCalledWith('question', 'it')
-//   })
-// })
+import {MiddlewareFn} from 'telegraf'
+
+import {DecoratedContext} from '../../models/DecoratedContext'
+import {ProcessError} from '../../utils/Errors'
+import * as localizer from '../../utils/localizer'
+import {getMockContext, getMockFastify, getMockStorageClient} from '../../utils/testUtils'
+import {buildCollectCommandHandler} from '../collectCommandHandler'
+
+describe('Collect command handler', () => {
+  const mockResolveLocalizedText = jest.spyOn(localizer, 'resolveLocalizedText')
+
+  const mockCreateInteraction = jest.fn()
+  const mockStorageClient = getMockStorageClient({createInteraction: mockCreateInteraction})
+
+  const mockService = getMockFastify({
+    storageClient: mockStorageClient,
+    configuration: {flow: {firstStepId: 'first_step', steps: {first_step: {question: 'first_question'}}}},
+  })
+
+  let handler: MiddlewareFn<DecoratedContext>
+
+  beforeEach(() => { handler = buildCollectCommandHandler(mockService) as MiddlewareFn<DecoratedContext> })
+
+  afterEach(() => {
+    jest.clearAllMocks()
+    jest.resetAllMocks()
+  })
+
+  it('should throw if cannot create interaction', async () => {
+    mockCreateInteraction.mockRejectedValue(new Error('error'))
+
+    const mockContext = getMockContext()
+
+    try {
+      await handler(mockContext, jest.fn())
+      expect(true).toBeFalsy()
+    } catch (err: any) {
+      expect(err).toBeInstanceOf(ProcessError)
+      expect(err.message).toEqual('Error creating new interaction')
+      expect(err.reply).toEqual('translation_errors.createInteraction')
+    }
+
+    expect(mockStorageClient.createInteraction).toHaveBeenCalledTimes(1)
+    expect(mockStorageClient.createInteraction).toHaveBeenCalledWith('chat_id', 'first_step')
+
+    expect(mockResolveLocalizedText).toHaveBeenCalledTimes(0)
+    expect(mockContext.reply).toHaveBeenCalledTimes(0)
+  })
+
+  it('should send the first question without locale', async () => {
+    mockCreateInteraction.mockResolvedValue(undefined)
+    mockResolveLocalizedText.mockReturnValue('localized_question')
+
+    const mockContext = getMockContext()
+    await handler(mockContext, jest.fn())
+
+    expect(mockStorageClient.createInteraction).toHaveBeenCalledTimes(1)
+    expect(mockStorageClient.createInteraction).toHaveBeenCalledWith('chat_id', 'first_step')
+
+    expect(mockResolveLocalizedText).toHaveBeenCalledTimes(1)
+    expect(mockResolveLocalizedText).toHaveBeenCalledWith('first_question', undefined)
+
+    expect(mockContext.reply).toHaveBeenCalledTimes(1)
+    expect(mockContext.reply).toHaveBeenCalledWith('localized_question')
+  })
+
+  it('should send the first question with locale', async () => {
+    mockCreateInteraction.mockResolvedValue(undefined)
+    mockResolveLocalizedText.mockReturnValue('localized_question')
+
+    const mockContext = getMockContext({from: {language_code: 'fr'}})
+    await handler(mockContext, jest.fn())
+
+    expect(mockStorageClient.createInteraction).toHaveBeenCalledTimes(1)
+    expect(mockStorageClient.createInteraction).toHaveBeenCalledWith('chat_id', 'first_step')
+
+    expect(mockResolveLocalizedText).toHaveBeenCalledTimes(1)
+    expect(mockResolveLocalizedText).toHaveBeenCalledWith('first_question', 'fr')
+
+    expect(mockContext.reply).toHaveBeenCalledTimes(1)
+    expect(mockContext.reply).toHaveBeenCalledWith('localized_question')
+  })
+})

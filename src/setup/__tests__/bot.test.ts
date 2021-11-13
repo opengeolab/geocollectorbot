@@ -14,7 +14,7 @@ describe('Bot', () => {
 
   afterEach(() => jest.clearAllMocks())
 
-  it('should decorate with bot', async() => {
+  it('should decorate with bot', async () => {
     decorateBot(mockService)
 
     expect(Telegraf).toHaveBeenCalledTimes(1)

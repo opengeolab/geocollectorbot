@@ -1,15 +1,16 @@
 import {join} from 'path'
 
 import {baseEnv, mockLogger} from '../../utils/testUtils'
-import configmap from '../__mocks__/configmap.json'
 import {decorateConfiguration} from '../configuration'
 import * as flow from '../flow'
+
+import configmap from './mocks/configmap.json'
 
 describe('Configuration', () => {
   const parseFlowMock = jest.spyOn(flow, 'parseFlow')
 
-  const validConfigMapPath = join(__dirname, '../__mocks__/configmap.json')
-  const invalidConfigMapPath = join(__dirname, '../__mocks__/invalidConfigMap.json')
+  const validConfigMapPath = join(__dirname, './mocks/configmap.json')
+  const invalidConfigMapPath = join(__dirname, './mocks/invalidConfigMap.json')
 
   const decorateMock = jest.fn()
 
@@ -21,7 +22,7 @@ describe('Configuration', () => {
 
   afterEach(() => jest.clearAllMocks())
 
-  it('should throw if configuration is not valid', async() => {
+  it('should throw if configuration is not valid', async () => {
     parseFlowMock.mockReturnValue({firstStepId: 'foo', steps: {}})
 
     const mockService = buildMockService(invalidConfigMapPath)
@@ -37,7 +38,7 @@ describe('Configuration', () => {
     expect(parseFlowMock).toHaveBeenCalledTimes(0)
   })
 
-  it('should throw if parse flow throws', async() => {
+  it('should throw if parse flow throws', async () => {
     parseFlowMock.mockImplementation(() => { throw new Error('Parse error') })
 
     const mockService = buildMockService(validConfigMapPath)
@@ -56,7 +57,7 @@ describe('Configuration', () => {
     expect(decorateMock).toHaveBeenCalledTimes(0)
   })
 
-  it('should decorate correct configuration', async() => {
+  it('should decorate correct configuration', async () => {
     const mockFlow = {firstStepId: 'foo', steps: {}}
     parseFlowMock.mockReturnValue(mockFlow)
 
