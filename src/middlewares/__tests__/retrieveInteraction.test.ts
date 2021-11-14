@@ -1,6 +1,7 @@
 import {MiddlewareFn} from 'telegraf'
 
 import {DecoratedContext} from '../../models/DecoratedContext'
+import {BaseInteractionKeys} from '../../models/Interaction'
 import {ProcessError} from '../../utils/Errors'
 import {getMockContext, getMockFastify, getMockStorageClient} from '../../utils/testUtils'
 import {buildRetrieveInteractionMiddleware} from '../retrieveInteraction'
@@ -11,7 +12,10 @@ describe('Retrieve interaction middleware', () => {
   const mockGetOngoingInteractions = jest.fn()
   const mockStorageClient = getMockStorageClient({getOngoingInteractions: mockGetOngoingInteractions})
 
-  const mockService = getMockFastify({storageClient: mockStorageClient})
+  const mockService = getMockFastify({
+    storageClient: mockStorageClient,
+    configuration: {flow: {steps: {step_1: {question: 'question_1', nextStepId: 'step_2'}, step_2: {question: 'question_2'}}}},
+  })
 
   let middleware: MiddlewareFn<DecoratedContext>
 
@@ -76,14 +80,52 @@ describe('Retrieve interaction middleware', () => {
     expect(mockCtx.t).toHaveBeenCalledWith('errors.tooManyInteractionsFound')
   })
 
-  it('should add interaction to context', async () => {
-    const interaction = {foo: 'bar'}
+  it('should throw if current step not found', async () => {
+    const interaction = {[BaseInteractionKeys.CURRENT_STEP_ID]: 'step_3'}
+    mockGetOngoingInteractions.mockReturnValue([interaction])
+
+    const mockCtx = getMockContext()
+
+    try {
+      await middleware(mockCtx, mockNext)
+      expect(true).toBeFalsy()
+    } catch (error: any) {
+      expect(error).toBeInstanceOf(ProcessError)
+      expect(error.message).toEqual('Current step not found')
+      expect(error.reply).toEqual('translation_errors.unknownStep')
+    }
+
+    expect(mockNext).toHaveBeenCalledTimes(0)
+    expect(mockCtx.t).toHaveBeenCalledTimes(1)
+    expect(mockCtx.t).toHaveBeenCalledWith('errors.unknownStep')
+  })
+
+  it('should decorate with next step', async () => {
+    const interaction = {[BaseInteractionKeys.CURRENT_STEP_ID]: 'step_1'}
     mockGetOngoingInteractions.mockReturnValue([interaction])
 
     const mockCtx = getMockContext()
     await middleware(mockCtx, mockNext)
 
     expect(mockCtx.interaction).toEqual(interaction)
+    expect(mockCtx.currStep).toStrictEqual({question: 'question_1', nextStepId: 'step_2'})
+    expect(mockCtx.nextStep).toEqual({question: 'question_2'})
+
+    expect(mockNext).toHaveBeenCalledTimes(1)
+    expect(mockCtx.t).toHaveBeenCalledTimes(0)
+  })
+
+  it('should decorate without next step', async () => {
+    const interaction = {[BaseInteractionKeys.CURRENT_STEP_ID]: 'step_2'}
+    mockGetOngoingInteractions.mockReturnValue([interaction])
+
+    const mockCtx = getMockContext()
+    await middleware(mockCtx, mockNext)
+
+    expect(mockCtx.interaction).toEqual(interaction)
+    expect(mockCtx.currStep).toStrictEqual({question: 'question_2'})
+    expect(mockCtx.nextStep).toBeUndefined()
+
     expect(mockNext).toHaveBeenCalledTimes(1)
     expect(mockCtx.t).toHaveBeenCalledTimes(0)
   })

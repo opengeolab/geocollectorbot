@@ -39,6 +39,7 @@ const parseSteps = (rawSteps: RawFlow['steps'], logger: FastifyLoggerInstance): 
     }
 
     currSteps[id] = {
+      id,
       question: question as LocalizedText,
       type,
       persistAs: persistAs || id,

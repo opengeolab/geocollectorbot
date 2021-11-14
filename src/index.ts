@@ -34,10 +34,13 @@ const launchFastify = async () => {
     .use(buildSetLanguageMiddleware(fastify))
     .start(buildStartCommandHandler(fastify))
     .help(buildHelpCommandHandler(fastify))
+    //
     .use(buildExtractInfoMiddleware(fastify))
     .command('collect', buildCollectCommandHandler(fastify))
+    //
     .use(buildRetrieveInteractionMiddleware(fastify))
     .on('text', buildTextHandler(fastify))
+    //
     .catch(buildHandleErrorMiddleware(fastify))
 
   await fastify.bot.launch()

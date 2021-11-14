@@ -79,8 +79,8 @@ describe('Flow', () => {
     const expectedFlow: Flow = {
       firstStepId: 'step_1',
       steps: {
-        step_1: {question: 'question_1', type: StepType.TEXT, persistAs: 'step_1', nextStepId: 'step_2'},
-        step_2: {question: 'question_2', type: StepType.TEXT, persistAs: 'persist_as', nextStepId: undefined},
+        step_1: {id: 'step_1', question: 'question_1', type: StepType.TEXT, persistAs: 'step_1', nextStepId: 'step_2'},
+        step_2: {id: 'step_2', question: 'question_2', type: StepType.TEXT, persistAs: 'persist_as', nextStepId: undefined},
       },
     }
 

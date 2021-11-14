@@ -1,12 +1,45 @@
+import {FastifyLoggerInstance} from 'fastify'
+
+import {StorageClient} from '../clients/storage'
 import {MiddlewareBuilder} from '../models/Buildes'
-import {Interaction} from '../models/Interaction'
+import {DecoratedContext} from '../models/DecoratedContext'
+import {BaseInteractionKeys, Interaction} from '../models/Interaction'
 import {ProcessError} from '../utils/Errors'
 
-export const buildRetrieveInteractionMiddleware: MiddlewareBuilder = ({log: logger, storageClient}) => async (ctx, next) => {
+export const buildRetrieveInteractionMiddleware: MiddlewareBuilder = ({configuration, log: logger, storageClient}) => {
+  const {flow: {steps}} = configuration
+
+  return async (ctx, next) => {
+    const {chatId} = ctx
+    logger.trace({chatId}, 'Executing middleware "retrieveInteraction"')
+
+    const interaction = await getInteractionFromStorageClient(logger, storageClient, ctx)
+    ctx.interaction = interaction
+
+    const {[BaseInteractionKeys.CURRENT_STEP_ID]: currStepId} = interaction
+    const currStep = steps[currStepId]
+
+    if (!currStep) {
+      logger.error({currStepId, chatId}, 'Current step not found')
+      throw new ProcessError('Current step not found', ctx.t('errors.unknownStep'))
+    }
+
+    ctx.currStep = currStep
+    ctx.nextStep = steps[currStep.nextStepId as string]
+
+    return next()
+  }
+}
+
+const getInteractionFromStorageClient = async (
+  logger: FastifyLoggerInstance,
+  storageClient: StorageClient,
+  ctx: DecoratedContext
+): Promise<Interaction> => {
   const {chatId} = ctx
-  logger.trace({chatId}, 'Executing middleware "retrieveInteraction"')
 
   let interactions: Interaction[]
+
   try {
     interactions = await storageClient.getOngoingInteractions(chatId)
   } catch (error: any) {
@@ -30,6 +63,5 @@ export const buildRetrieveInteractionMiddleware: MiddlewareBuilder = ({log: logg
   const [interaction] = interactions
   logger.trace({chatId, interaction}, 'Found ongoing interaction')
 
-  ctx.interaction = interaction
-  return next()
+  return interaction
 }

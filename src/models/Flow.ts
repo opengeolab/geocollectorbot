@@ -6,6 +6,7 @@ export enum StepType {
 }
 
 export type Step = {
+  id: string
   question: LocalizedText
   type: StepType
   persistAs: string

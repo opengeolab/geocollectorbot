@@ -1,15 +1,15 @@
 import {Update} from 'telegraf/typings/core/types/typegram'
 
+import {composeQuestion} from '../lib/questionComposer'
 import {HandlerBuilder} from '../models/Buildes'
 import {ProcessError} from '../utils/Errors'
-import {resolveLocalizedText} from '../utils/localizer'
 
 export const buildCollectCommandHandler: HandlerBuilder<Update.MessageUpdate> = service => {
   const {storageClient, configuration, log: logger} = service
   const {flow: {firstStepId, steps}} = configuration
 
   return async ctx => {
-    const {chatId, from: user} = ctx
+    const {chatId} = ctx
     logger.trace({chatId}, 'Executing command "/collect"')
 
     // TODO check if there is already an ongoing interaction
@@ -21,9 +21,8 @@ export const buildCollectCommandHandler: HandlerBuilder<Update.MessageUpdate> = 
       throw new ProcessError('Error creating new interaction', ctx.t('errors.createInteraction'))
     }
 
-    const {question} = steps[firstStepId]
-    const localizedQuestion = resolveLocalizedText(question, user?.language_code)
-
-    await ctx.reply(localizedQuestion)
+    ctx.nextStep = steps[firstStepId]
+    const question = composeQuestion(logger, ctx)
+    await ctx.reply(question)
   }
 }
