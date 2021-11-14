@@ -1,6 +1,6 @@
 import {Message, Update} from 'telegraf/typings/core/types/typegram'
 
-import {composeQuestion} from '../lib/questionComposer'
+import {composeReply} from '../lib/replyComposer'
 import {HandlerBuilder} from '../models/Buildes'
 import {Step, StepType} from '../models/Flow'
 import {BaseInteractionKeys, Interaction, InteractionState} from '../models/Interaction'
@@ -37,7 +37,7 @@ export const buildTextHandler: HandlerBuilder<Update.MessageUpdate> = ({storageC
       throw new ProcessError('Error updating interaction', ctx.t('errors.updateInteraction'))
     }
 
-    const question = composeQuestion(logger, ctx)
-    await ctx.reply(question)
+    const replyArgs = composeReply(logger, ctx)
+    await ctx.reply(...replyArgs)
   }
 }

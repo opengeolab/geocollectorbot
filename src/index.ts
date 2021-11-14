@@ -14,6 +14,7 @@ import {decorateBot} from './setup/bot'
 import {decorateConfiguration} from './setup/configuration'
 import {loadEnv, decorateEnv} from './setup/environment'
 import {decorateI18n} from './setup/i18n'
+import {buildLocationHandler} from './handlers/locationHandler'
 
 const launchFastify = async () => {
   const environment = loadEnv()
@@ -40,6 +41,7 @@ const launchFastify = async () => {
     //
     .use(buildRetrieveInteractionMiddleware(fastify))
     .on('text', buildTextHandler(fastify))
+    .on('location', buildLocationHandler(fastify))
     //
     .catch(buildHandleErrorMiddleware(fastify))
 

@@ -1,15 +1,41 @@
-import {FastifyLoggerInstance} from 'fastify'
+import {ExtraReplyMessage} from 'telegraf/typings/telegram-types'
 
 import {DecoratedContext} from '../models/DecoratedContext'
-import {Step} from '../models/Flow'
+import {Step, StepType} from '../models/Flow'
 import {resolveLocalizedText} from '../utils/localizer'
 
-export const composeQuestion = (logger: FastifyLoggerInstance, ctx: DecoratedContext<any>): string => {
-  const {chatId, nextStep, from: user} = ctx
-  logger.trace({chatId}, 'Composing question')
+import {ReplyArgs} from './replyComposer'
 
-  const isInteractionCompleted = !nextStep
-  const {question: nextQuestion} = nextStep as Step || {}
+export type QuestionComposerProps = {
+  ctx: DecoratedContext
+  step: Step
+}
 
-  return isInteractionCompleted ? ctx.t('events.interactionCompleted') : resolveLocalizedText(nextQuestion, user?.language_code)
+export type QuestionComposer = (props: QuestionComposerProps) => ReplyArgs
+
+const composeTextQuestion: QuestionComposer = ({ctx, step}) => {
+  const {from: user} = ctx
+  const {question} = step
+
+  const text = resolveLocalizedText(question, user?.language_code)
+  return [text]
+}
+
+const composeLocationQuestion: QuestionComposer = () => {
+  const text = 'Location request'
+
+  const extra: ExtraReplyMessage = {
+    reply_markup: {
+      keyboard: [
+        [{text: 'Access my location', request_location: true}],
+      ],
+    },
+  }
+
+  return [text, extra]
+}
+
+export const stepTypeToComposer: Record<StepType, QuestionComposer> = {
+  [StepType.TEXT]: composeTextQuestion,
+  [StepType.LOCATION]: composeLocationQuestion,
 }

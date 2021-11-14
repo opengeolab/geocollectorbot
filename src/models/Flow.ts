@@ -2,7 +2,8 @@ import {RawFlow} from '../schemas/configuration/flow'
 import {LocalizedText} from '../schemas/localizedText'
 
 export enum StepType {
-  TEXT = 'text'
+  TEXT = 'text',
+  LOCATION = 'location'
 }
 
 export type Step = {

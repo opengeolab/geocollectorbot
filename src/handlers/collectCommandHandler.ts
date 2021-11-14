@@ -1,6 +1,6 @@
 import {Update} from 'telegraf/typings/core/types/typegram'
 
-import {composeQuestion} from '../lib/questionComposer'
+import {composeReply} from '../lib/replyComposer'
 import {HandlerBuilder} from '../models/Buildes'
 import {ProcessError} from '../utils/Errors'
 
@@ -22,7 +22,7 @@ export const buildCollectCommandHandler: HandlerBuilder<Update.MessageUpdate> = 
     }
 
     ctx.nextStep = steps[firstStepId]
-    const question = composeQuestion(logger, ctx)
-    await ctx.reply(question)
+    const replyArgs = composeReply(logger, ctx)
+    await ctx.reply(...replyArgs)
   }
 }
