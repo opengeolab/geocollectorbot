@@ -1,5 +1,6 @@
 import {FastifyLoggerInstance} from 'fastify'
 import {Context} from 'telegraf'
+import {ExtraReplyMessage} from 'telegraf/typings/telegram-types'
 
 import {DecoratedContext} from '../models/DecoratedContext'
 import {Step, StepType} from '../models/Flow'
@@ -10,7 +11,11 @@ export type ReplyArgs = Parameters<Context['reply']>
 
 const composeInteractionCompletedReply = (ctx: DecoratedContext): ReplyArgs => {
   const text = ctx.t('events.interactionCompleted')
-  return [text]
+  const extra: ExtraReplyMessage = {
+    reply_markup: {remove_keyboard: true},
+  }
+
+  return [text, extra]
 }
 
 export const composeReply = (logger: FastifyLoggerInstance, ctx: DecoratedContext<any>): ReplyArgs => {
@@ -23,3 +28,5 @@ export const composeReply = (logger: FastifyLoggerInstance, ctx: DecoratedContex
 
   return isInteractionCompleted ? composeInteractionCompletedReply(ctx) : questionComposer({ctx, step: nextStep as Step})
 }
+
+export const composeErrorReply = (text: string): ReplyArgs => [text, {reply_markup: {remove_keyboard: true}}]

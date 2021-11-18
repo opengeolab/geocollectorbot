@@ -14,7 +14,7 @@ export const decorateI18n = async (service: Pick<FastifyInstance, 'decorate'>) =
     .init({
       fallbackLng: DEFAULT_LANGUAGE,
       initImmediate: false,
-      backend: {loadPath: join(localesFolder, '{{lng}}/{{ns}}.json')},
+      backend: {loadPath: join(localesFolder, '{{lng}}/{{ns}}.yaml')},
     })
 
   service.decorate('i18n', i18next)

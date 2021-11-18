@@ -13,21 +13,27 @@ export type QuestionComposerProps = {
 
 export type QuestionComposer = (props: QuestionComposerProps) => ReplyArgs
 
-const composeTextQuestion: QuestionComposer = ({ctx, step}) => {
-  const {from: user} = ctx
-  const {question} = step
+const localizeText = ({from: user}: DecoratedContext, {question}: Step): string => resolveLocalizedText(question, user?.language_code)
 
-  const text = resolveLocalizedText(question, user?.language_code)
-  return [text]
+const composeTextQuestion: QuestionComposer = ({ctx, step}) => {
+  const text = localizeText(ctx, step)
+
+  const extra: ExtraReplyMessage = {
+    reply_markup: {remove_keyboard: true},
+  }
+
+  return [text, extra]
 }
 
-const composeLocationQuestion: QuestionComposer = () => {
-  const text = 'Location request'
+const composeLocationQuestion: QuestionComposer = ({ctx, step}) => {
+  const text = localizeText(ctx, step)
 
   const extra: ExtraReplyMessage = {
     reply_markup: {
+      remove_keyboard: true,
+      one_time_keyboard: true,
       keyboard: [
-        [{text: 'Access my location', request_location: true}],
+        [{text: ctx.t('keyboards.location'), request_location: true}],
       ],
     },
   }

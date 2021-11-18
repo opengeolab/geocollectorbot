@@ -81,6 +81,10 @@ export class PgClient implements StorageClient {
     }))
   }
 
+  createSpatialPayload (lat: number, lon: number): any {
+    return `SRID=4326;POINT(${lon} ${lat})`
+  }
+
   async updateInteraction (id: string | number, body: Partial<Interaction>) {
     const now = new Date(Date.now()).toISOString()
 

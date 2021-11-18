@@ -10,6 +10,8 @@ export interface StorageClient {
 
   getOngoingInteractions(chatId: number): Promise<Interaction[]>
 
+  createSpatialPayload(lat: number, lon: number): any
+
   updateInteraction(id: string | number, body: Partial<Interaction>): Promise<void>
 
   stop(): Promise<void>

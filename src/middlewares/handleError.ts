@@ -1,3 +1,4 @@
+import {composeErrorReply} from '../lib/replyComposer'
 import {ErrorMiddlewareBuilder} from '../models/Buildes'
 import {ProcessError} from '../utils/Errors'
 
@@ -18,10 +19,10 @@ export const buildHandleErrorMiddleware: ErrorMiddlewareBuilder = ({log: logger}
 
   if (error instanceof ProcessError) {
     logger.error({err: error, update}, 'Known error in process')
-    await ctx.reply(error.reply)
+    await ctx.reply(...composeErrorReply(error.reply))
     return
   }
 
   logger.error({err: error, update}, 'Unknown error in process')
-  await ctx.reply(ctx.t('errors.unknown'))
+  await ctx.reply(...composeErrorReply(ctx.t('errors.unknown')))
 }
