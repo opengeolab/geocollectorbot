@@ -8,7 +8,7 @@ export const stepSchema = {
     question: localizedTextSchema,
     type: {
       type: 'string',
-      enum: [StepType.TEXT, StepType.LOCATION],
+      enum: [StepType.TEXT, StepType.LOCATION, StepType.PHOTO],
     },
     persistAs: {type: 'string'},
     nextStepId: {type: 'string'},

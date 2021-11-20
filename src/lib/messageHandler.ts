@@ -11,6 +11,7 @@ import {composeReply} from './replyComposer'
 
 export type StepValueBuilderProps<MsgType extends ServiceMessageBundle | CommonMessageBundle> = {
   service: FastifyInstance
+  ctx: DecoratedContext<Update.MessageUpdate>
   message: MsgType
 }
 
@@ -34,7 +35,7 @@ export const handleIncomingMessage = async <MsgType extends ServiceMessageBundle
     throw new ProcessError('Wrong current step type', ctx.t('errors.wrongStepType'))
   }
 
-  const stepValue = await stepValueBuilder({service, message: message as MsgType})
+  const stepValue = await stepValueBuilder({service, ctx, message: message as MsgType})
   await updateInteraction(service, ctx, stepValue)
 
   const replyArgs = composeReply(logger, ctx)

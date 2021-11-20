@@ -3,7 +3,8 @@ import {LocalizedText} from '../schemas/localizedText'
 
 export enum StepType {
   TEXT = 'text',
-  LOCATION = 'location'
+  LOCATION = 'location',
+  PHOTO = 'photo'
 }
 
 export type Step = {
