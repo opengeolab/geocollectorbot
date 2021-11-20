@@ -1,6 +1,6 @@
 import fastifyBuilder, {FastifyInstance, FastifyServerOptions} from 'fastify'
 
-import {decorateStorageClient} from './clients/storage'
+import {decorateDataStorageClient} from './clients/dataStorage'
 import {buildCollectCommandHandler} from './handlers/collectCommandHandler'
 import {buildHelpCommandHandler} from './handlers/helpCommandHandler'
 import {buildLocationHandler} from './handlers/locationHandler'
@@ -30,7 +30,7 @@ const launchFastify = async () => {
   await decorateI18n(fastify)
   await decorateConfiguration(fastify)
   decorateBot(fastify)
-  decorateStorageClient(fastify)
+  decorateDataStorageClient(fastify)
 
   fastify.bot
     .use(buildSetLanguageMiddleware(fastify))

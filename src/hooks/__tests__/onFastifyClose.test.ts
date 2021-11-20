@@ -1,15 +1,15 @@
 import {FastifyInstance} from 'fastify'
 
-import {getMockFastify, getMockStorageClient, mockLogger} from '../../utils/testUtils'
+import {getMockFastify, getMockDataStorageClient, mockLogger} from '../../utils/testUtils'
 import {onFastifyCloseHandler} from '../onFastifyClose'
 
 describe('onFastifyClose', () => {
   const mockDone = jest.fn()
 
   const mockBot = {stop: jest.fn()}
-  const mockStorageClient = getMockStorageClient()
+  const mockDataStorageClient = getMockDataStorageClient()
 
-  const mockFastify = getMockFastify({bot: mockBot, storageClient: mockStorageClient})
+  const mockFastify = getMockFastify({bot: mockBot, dataStorageClient: mockDataStorageClient})
 
   afterEach(() => jest.resetAllMocks())
 
@@ -17,17 +17,17 @@ describe('onFastifyClose', () => {
     onFastifyCloseHandler(mockFastify, mockDone)
 
     expect(mockBot.stop).toHaveBeenCalledTimes(1)
-    expect(mockStorageClient.stop).toHaveBeenCalledTimes(1)
+    expect(mockDataStorageClient.stop).toHaveBeenCalledTimes(1)
     expect(mockDone).toHaveBeenCalledTimes(1)
   })
 
-  it('should close correctly without bot and storage client', () => {
+  it('should close correctly without bot and data storage client', () => {
     const customMockFastify: FastifyInstance = {log: mockLogger} as unknown as FastifyInstance
 
     onFastifyCloseHandler(customMockFastify, mockDone)
 
     expect(mockBot.stop).toHaveBeenCalledTimes(0)
-    expect(mockStorageClient.stop).toHaveBeenCalledTimes(0)
+    expect(mockDataStorageClient.stop).toHaveBeenCalledTimes(0)
     expect(mockDone).toHaveBeenCalledTimes(1)
   })
 })

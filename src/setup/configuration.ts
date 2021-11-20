@@ -30,9 +30,9 @@ const readValidateConfiguration = async (configurationPath: string): Promise<Raw
 export const decorateConfiguration = async (service: Pick<FastifyInstance, 'decorate' | 'env' | 'log'>) => {
   const {env: {CONFIGURATION_PATH}} = service
 
-  const {dataStorage: rawDataStorage, flow: rawFlow} = await readValidateConfiguration(CONFIGURATION_PATH)
+  const {dataStorage: rawDataStorage, mediaStorage: rawMediaStorage, flow: rawFlow} = await readValidateConfiguration(CONFIGURATION_PATH)
   const parsedFlow = parseFlow(rawFlow, service.log)
 
-  const configuration: Configuration = {dataStorage: rawDataStorage, flow: parsedFlow}
+  const configuration: Configuration = {dataStorage: rawDataStorage, mediaStorage: rawMediaStorage, flow: parsedFlow}
   service.decorate('configuration', configuration)
 }

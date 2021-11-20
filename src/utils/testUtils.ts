@@ -2,7 +2,7 @@ import {join} from 'path'
 
 import {FastifyInstance, FastifyLoggerInstance} from 'fastify'
 
-import {StorageClient} from '../clients/storage'
+import {DataStorageClient} from '../clients/dataStorage'
 import {DecoratedContext} from '../models/DecoratedContext'
 import {Environment} from '../schemas/environment'
 
@@ -23,27 +23,30 @@ export const mockLogger: FastifyLoggerInstance = {
   child: jest.fn(),
 }
 
-export const getMockStorageClient = (props: Partial<StorageClient> = {}): StorageClient => ({
+export const getMockDataStorageClient = (props: Partial<DataStorageClient> = {}): DataStorageClient => ({
   createInteraction: props.createInteraction || jest.fn(),
   getOngoingInteractions: props.getOngoingInteractions || jest.fn(),
+  createSpatialPayload: props.createSpatialPayload || jest.fn(),
   updateInteraction: props.updateInteraction || jest.fn(),
   stop: props.stop || jest.fn(),
 })
 
 type MockFastifyProps = {
+  decorate?: jest.Mock
   bot?: Record<string, any>
-  storageClient?: Record<string, any>
+  dataStorageClient?: Record<string, any>
   i18n?: Record<string, any>
   configuration?: Record<string, any>
 }
 
 export const getMockFastify = (props: MockFastifyProps = {}): FastifyInstance => ({
+  decorate: props.decorate || jest.fn(),
   log: mockLogger,
   env: baseEnv,
   configuration: props.configuration || {},
   i18n: props.i18n || {},
   bot: props.bot || {},
-  storageClient: props.storageClient || {},
+  dataStorageClient: props.dataStorageClient || {},
 } as unknown as FastifyInstance)
 
 export type MockContextProps = {

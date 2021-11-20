@@ -3,7 +3,7 @@ import {Pool} from 'pg'
 import {BaseInteractionKeys, Interaction, InteractionState} from '../../../models/Interaction'
 import {PgConfiguration} from '../../../schemas/configuration/dataStorage/pg'
 import {mockLogger} from '../../../utils/testUtils'
-import {StorageClient} from '../index'
+import {DataStorageClient} from '../index'
 import {PgClient, PgInteraction} from '../pgClient'
 
 jest.mock('pg', () => ({
@@ -37,7 +37,7 @@ describe('Postgres client', () => {
 
   const chatId = 123
 
-  let pgClient: StorageClient
+  let pgClient: DataStorageClient
 
   beforeEach(() => { pgClient = new PgClient(config, mockLogger) })
 

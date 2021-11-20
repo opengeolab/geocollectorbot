@@ -55,7 +55,7 @@ describe('Handle error middleware', () => {
       expect(true).toBeFalsy()
     } catch (err: any) {
       expect(mockCtx.reply).toHaveBeenCalledTimes(1)
-      expect(mockCtx.reply).toHaveBeenCalledWith('process_error_reply')
+      expect(mockCtx.reply).toHaveBeenCalledWith('process_error_reply', {reply_markup: {remove_keyboard: true}})
     }
   })
 
@@ -69,7 +69,7 @@ describe('Handle error middleware', () => {
       expect(true).toBeFalsy()
     } catch (err: any) {
       expect(mockCtx.reply).toHaveBeenCalledTimes(1)
-      expect(mockCtx.reply).toHaveBeenCalledWith('translation_errors.unknown')
+      expect(mockCtx.reply).toHaveBeenCalledWith('translation_errors.unknown', {reply_markup: {remove_keyboard: true}})
     }
 
     expect(mockCtx.t).toHaveBeenCalledTimes(1)

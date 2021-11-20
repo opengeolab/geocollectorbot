@@ -1,7 +1,7 @@
 import {Configuration} from '../../../models/Configuration'
 import {DataStorageConfig} from '../../../schemas/configuration/dataStorage'
-import {mockLogger} from '../../../utils/testUtils'
-import {decorateStorageClient} from '../index'
+import {getMockFastify, mockLogger} from '../../../utils/testUtils'
+import {decorateDataStorageClient} from '../index'
 import {PgClient} from '../pgClient'
 
 jest.mock('../pgClient', () => ({
@@ -9,16 +9,16 @@ jest.mock('../pgClient', () => ({
   PgClient: jest.fn(),
 }))
 
-describe('Storage client', () => {
+describe('Data storage client', () => {
   const mockDecorate = jest.fn()
 
   const buildMockService = (dataStorageConfig: DataStorageConfig) => {
-    const config: Configuration = {
+    const configuration: Configuration = {
       flow: {firstStepId: 'foo', steps: {}},
       dataStorage: dataStorageConfig,
     }
 
-    return {configuration: config, log: mockLogger, decorate: mockDecorate}
+    return getMockFastify({configuration, decorate: mockDecorate})
   }
 
   afterEach(() => jest.clearAllMocks())
@@ -38,12 +38,12 @@ describe('Storage client', () => {
 
     const mockService = buildMockService(config)
 
-    decorateStorageClient(mockService)
+    decorateDataStorageClient(mockService)
 
     expect(PgClient).toHaveBeenCalledTimes(1)
     expect(PgClient).toHaveBeenCalledWith(config.configuration, mockLogger)
 
     expect(mockDecorate).toHaveBeenCalledTimes(1)
-    expect(mockDecorate).toHaveBeenCalledWith('storageClient', {})
+    expect(mockDecorate).toHaveBeenCalledWith('dataStorageClient', {})
   })
 })

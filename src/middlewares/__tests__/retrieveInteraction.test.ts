@@ -3,17 +3,17 @@ import {MiddlewareFn} from 'telegraf'
 import {DecoratedContext} from '../../models/DecoratedContext'
 import {BaseInteractionKeys} from '../../models/Interaction'
 import {ProcessError} from '../../utils/Errors'
-import {getMockContext, getMockFastify, getMockStorageClient} from '../../utils/testUtils'
+import {getMockContext, getMockFastify, getMockDataStorageClient} from '../../utils/testUtils'
 import {buildRetrieveInteractionMiddleware} from '../retrieveInteraction'
 
 describe('Retrieve interaction middleware', () => {
   const mockNext = jest.fn()
 
   const mockGetOngoingInteractions = jest.fn()
-  const mockStorageClient = getMockStorageClient({getOngoingInteractions: mockGetOngoingInteractions})
+  const mockStorageClient = getMockDataStorageClient({getOngoingInteractions: mockGetOngoingInteractions})
 
   const mockService = getMockFastify({
-    storageClient: mockStorageClient,
+    dataStorageClient: mockStorageClient,
     configuration: {flow: {steps: {step_1: {question: 'question_1', nextStepId: 'step_2'}, step_2: {question: 'question_2'}}}},
   })
 

@@ -7,7 +7,7 @@ import {BaseInteractionKeys, Interaction, InteractionState} from '../models/Inte
 import {ProcessError} from '../utils/Errors'
 
 export const updateInteraction = async (
-  {storageClient, log: logger}: FastifyInstance,
+  {dataStorageClient, log: logger}: FastifyInstance,
   ctx: DecoratedContext<Update.MessageUpdate>,
   stepValue: any
 ) => {
@@ -23,7 +23,7 @@ export const updateInteraction = async (
   }
 
   try {
-    await storageClient.updateInteraction(interactionId, patchBody)
+    await dataStorageClient.updateInteraction(interactionId, patchBody)
   } catch (error) {
     logger.error({error, chatId, patchBody}, 'Error updating interaction')
     throw new ProcessError('Error updating interaction', ctx.t('errors.updateInteraction'))

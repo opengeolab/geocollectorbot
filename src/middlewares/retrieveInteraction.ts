@@ -1,19 +1,19 @@
 import {FastifyLoggerInstance} from 'fastify'
 
-import {StorageClient} from '../clients/storage'
+import {DataStorageClient} from '../clients/dataStorage'
 import {MiddlewareBuilder} from '../models/Buildes'
 import {DecoratedContext} from '../models/DecoratedContext'
 import {BaseInteractionKeys, Interaction} from '../models/Interaction'
 import {ProcessError} from '../utils/Errors'
 
-export const buildRetrieveInteractionMiddleware: MiddlewareBuilder = ({configuration, log: logger, storageClient}) => {
+export const buildRetrieveInteractionMiddleware: MiddlewareBuilder = ({configuration, log: logger, dataStorageClient}) => {
   const {flow: {steps}} = configuration
 
   return async (ctx, next) => {
     const {chatId} = ctx
     logger.trace({chatId}, 'Executing middleware "retrieveInteraction"')
 
-    const interaction = await getInteractionFromStorageClient(logger, storageClient, ctx)
+    const interaction = await getInteractionFromStorageClient(logger, dataStorageClient, ctx)
     ctx.interaction = interaction
 
     const {[BaseInteractionKeys.CURRENT_STEP_ID]: currStepId} = interaction
@@ -33,7 +33,7 @@ export const buildRetrieveInteractionMiddleware: MiddlewareBuilder = ({configura
 
 const getInteractionFromStorageClient = async (
   logger: FastifyLoggerInstance,
-  storageClient: StorageClient,
+  storageClient: DataStorageClient,
   ctx: DecoratedContext
 ): Promise<Interaction> => {
   const {chatId} = ctx

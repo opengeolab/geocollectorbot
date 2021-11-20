@@ -7,9 +7,9 @@ import {StepType} from '../models/Flow'
 export const buildLocationHandler: HandlerBuilder<Update.MessageUpdate> = service => {
   const acceptedStepType = StepType.LOCATION
 
-  const stepValueBuilder: StepValueBuilder<Message.LocationMessage> = async ({service: {storageClient}, message}) => {
+  const stepValueBuilder: StepValueBuilder<Message.LocationMessage> = async ({service: {dataStorageClient}, message}) => {
     const {location: {latitude, longitude}} = message
-    return storageClient.createSpatialPayload(latitude, longitude)
+    return dataStorageClient.createSpatialPayload(latitude, longitude)
   }
 
   return async ctx => handleIncomingMessage(service, ctx, acceptedStepType, stepValueBuilder)

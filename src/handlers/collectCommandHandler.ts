@@ -5,7 +5,7 @@ import {HandlerBuilder} from '../models/Buildes'
 import {ProcessError} from '../utils/Errors'
 
 export const buildCollectCommandHandler: HandlerBuilder<Update.MessageUpdate> = service => {
-  const {storageClient, configuration, log: logger} = service
+  const {dataStorageClient, configuration, log: logger} = service
   const {flow: {firstStepId, steps}} = configuration
 
   return async ctx => {
@@ -15,7 +15,7 @@ export const buildCollectCommandHandler: HandlerBuilder<Update.MessageUpdate> = 
     // TODO check if there is already an ongoing interaction
 
     try {
-      await storageClient.createInteraction(chatId as number, firstStepId)
+      await dataStorageClient.createInteraction(chatId as number, firstStepId)
     } catch (error) {
       logger.error({error, chatId}, 'Error creating new interaction')
       throw new ProcessError('Error creating new interaction', ctx.t('errors.createInteraction'))

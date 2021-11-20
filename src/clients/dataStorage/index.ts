@@ -5,7 +5,7 @@ import {DataStorageConfig} from '../../schemas/configuration/dataStorage'
 
 import {PgClient} from './pgClient'
 
-export interface StorageClient {
+export interface DataStorageClient {
   createInteraction(chatId: number, firstStepId: string): Promise<void>
 
   getOngoingInteractions(chatId: number): Promise<Interaction[]>
@@ -17,20 +17,20 @@ export interface StorageClient {
   stop(): Promise<void>
 }
 
-interface StorageClientConstructor {
-  new (config: DataStorageConfig['configuration'], logger: FastifyLoggerInstance): StorageClient
+interface DataStorageClientConstructor {
+  new (config: DataStorageConfig['configuration'], logger: FastifyLoggerInstance): DataStorageClient
 }
 
-const storageTypeToClient: Record<DataStorageConfig['type'], StorageClientConstructor> = {
+const storageTypeToClient: Record<DataStorageConfig['type'], DataStorageClientConstructor> = {
   postgres: PgClient,
 }
 
-export const decorateStorageClient = (service: Pick<FastifyInstance, 'configuration' | 'log' | 'decorate'>) => {
-  const {configuration: {dataStorage: dataStorageConfig}} = service
-  const {type, configuration} = dataStorageConfig
+export const decorateDataStorageClient = (service: FastifyInstance) => {
+  const {configuration: {dataStorage}} = service
+  const {type, configuration} = dataStorage
 
   const Client = storageTypeToClient[type]
   const client = new Client(configuration, service.log)
 
-  service.decorate('storageClient', client)
+  service.decorate('dataStorageClient', client)
 }

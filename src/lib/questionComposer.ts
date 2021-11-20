@@ -41,7 +41,10 @@ const composeLocationQuestion: QuestionComposer = ({ctx, step}) => {
   return [text, extra]
 }
 
+const composePhotoQuestion: QuestionComposer = () => ['']
+
 export const stepTypeToComposer: Record<StepType, QuestionComposer> = {
   [StepType.TEXT]: composeTextQuestion,
   [StepType.LOCATION]: composeLocationQuestion,
+  [StepType.PHOTO]: composePhotoQuestion,
 }

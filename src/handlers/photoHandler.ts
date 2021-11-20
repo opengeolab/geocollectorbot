@@ -7,12 +7,12 @@ import {StepType} from '../models/Flow'
 export const buildPhotoHandler: HandlerBuilder<Update.MessageUpdate> = service => {
   const acceptedStepType = StepType.PHOTO
 
-  const stepValueBuilder: StepValueBuilder<Message.PhotoMessage> = async ({ctx, message}) => {
-    const {photo: photos} = message
-    const [photo] = photos
-    const {file_id: fileId} = photo
-
-    const photoLink = await ctx.telegram.getFile(fileId)
+  const stepValueBuilder: StepValueBuilder<Message.PhotoMessage> = async () => {
+    // const {photo: photos} = message
+    // const [photo] = photos
+    // const {file_id: fileId} = photo
+    //
+    // const photoLink = await ctx.telegram.getFile(fileId)
 
     return ''
   }

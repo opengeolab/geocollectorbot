@@ -5,7 +5,7 @@ import {Pool} from 'pg'
 import {BaseInteractionKeys, Interaction, InteractionState} from '../../models/Interaction'
 import {PgConfiguration} from '../../schemas/configuration/dataStorage/pg'
 
-import {StorageClient} from './index'
+import {DataStorageClient} from './index'
 
 export enum PgBaseInteractionKeys {
   ID = 'id',
@@ -26,7 +26,7 @@ export type PgInteraction = {
   [key: string]: unknown
 }
 
-export class PgClient implements StorageClient {
+export class PgClient implements DataStorageClient {
   private pool: Pool
   private logger: FastifyLoggerInstance
   private readonly table: string

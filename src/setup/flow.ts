@@ -17,6 +17,7 @@ export const parseFlow = (rawFlow: RawFlow, logger: FastifyLoggerInstance): Flow
 }
 
 // TODO check that persistAs are unique and not a reserved db keyword
+// TODO check that if a step is of media type, mediaStorage configuration is present
 const parseSteps = (rawSteps: RawFlow['steps'], logger: FastifyLoggerInstance): Steps => {
   const allStepsIds = rawSteps.map(step => step.id)
 
