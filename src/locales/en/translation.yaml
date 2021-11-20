@@ -20,3 +20,4 @@ errors:
   tooManyInteractionsFound: It seems you have multiple ongoing interactions
   unknownStep: Sorry, I couldn't determine the state of your interaction
   wrongStepType: The answer you have provided is not suitable for the question. Please, try again
+  mediaSaving: We could not save your media. Please, try again

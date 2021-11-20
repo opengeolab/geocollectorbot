@@ -4,6 +4,7 @@ import {i18n} from 'i18next'
 import {Telegraf} from 'telegraf'
 
 import {DataStorageClient} from '../clients/dataStorage'
+import {MediaStorageClient} from '../clients/mediaStorage'
 import {Configuration} from '../models/Configuration'
 import {DecoratedContext} from '../models/DecoratedContext'
 import {Environment} from '../schemas/environment'
@@ -15,5 +16,6 @@ declare module 'fastify' {
     i18n: i18n
     bot: Telegraf<DecoratedContext>
     dataStorageClient: DataStorageClient
+    mediaStorageClient?: MediaStorageClient
   }
 }
