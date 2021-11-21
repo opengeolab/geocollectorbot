@@ -4,14 +4,24 @@ import {Readable} from 'stream'
 import axios from 'axios'
 import {Message, Update} from 'telegraf/typings/core/types/typegram'
 
-import {handleIncomingMessage, StepValueBuilder} from '../lib/messageHandler'
+import {handleIncomingMessage, StepValidator, StepValueBuilder} from '../lib/messageHandler'
 import {HandlerBuilder} from '../models/Buildes'
-import {StepType} from '../models/Flow'
+import {MediaStepSubtype, StepType} from '../models/Flow'
+import {MediaStepConfig} from '../schemas/configuration/flow/step'
 import {ProcessError} from '../utils/Errors'
 
 export const buildPhotoHandler: HandlerBuilder<Update.MessageUpdate> = service => {
   const {mediaStorageClient} = service
-  const acceptedStepType = StepType.PHOTO
+
+  const stepValidator: StepValidator<Message.PhotoMessage> = ({ctx, service: {log: logger}, currStep}) => {
+    const {config} = currStep
+    const {type, subType} = config as MediaStepConfig
+
+    if (!(type === StepType.MEDIA && subType === MediaStepSubtype.PHOTO)) {
+      logger.error({currStep, acceptedType: StepType.MEDIA, acceptedSubType: MediaStepSubtype.PHOTO}, 'Wrong current step type')
+      throw new ProcessError('Wrong current step type', ctx.t('errors.wrongStepType'))
+    }
+  }
 
   const stepValueBuilder: StepValueBuilder<Message.PhotoMessage> = async ({service: {log: logger}, ctx, message}) => {
     const {photo: photos} = message
@@ -34,5 +44,5 @@ export const buildPhotoHandler: HandlerBuilder<Update.MessageUpdate> = service =
     }
   }
 
-  return async ctx => handleIncomingMessage(service, ctx, acceptedStepType, stepValueBuilder)
+  return async ctx => handleIncomingMessage(service, ctx, stepValidator, stepValueBuilder)
 }

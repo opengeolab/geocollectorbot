@@ -20,11 +20,11 @@ const composeInteractionCompletedReply = (ctx: DecoratedContext): ReplyArgs => {
 
 export const composeReply = (logger: FastifyLoggerInstance, ctx: DecoratedContext<any>): ReplyArgs => {
   const {chatId, nextStep} = ctx
-  const {type} = nextStep || {} as Step
+  const {config} = nextStep || {} as Step
   logger.trace({chatId, nextStep}, 'Composing question')
 
   const isInteractionCompleted = !nextStep
-  const questionComposer = stepTypeToComposer[type] || stepTypeToComposer[StepType.TEXT]
+  const questionComposer = stepTypeToComposer[config?.type] || stepTypeToComposer[StepType.TEXT]
 
   return isInteractionCompleted ? composeInteractionCompletedReply(ctx) : questionComposer({ctx, step: nextStep as Step})
 }

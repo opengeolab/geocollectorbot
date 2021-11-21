@@ -2,6 +2,7 @@ import {ExtraReplyMessage} from 'telegraf/typings/telegram-types'
 
 import {DecoratedContext} from '../models/DecoratedContext'
 import {Step, StepType} from '../models/Flow'
+import {MediaStepConfig} from '../schemas/configuration/flow/step'
 import {resolveLocalizedText} from '../utils/localizer'
 
 import {ReplyArgs} from './replyComposer'
@@ -17,10 +18,7 @@ const localizeText = ({from: user}: DecoratedContext, {question}: Step): string 
 
 const composeTextQuestion: QuestionComposer = ({ctx, step}) => {
   const text = localizeText(ctx, step)
-
-  const extra: ExtraReplyMessage = {
-    reply_markup: {remove_keyboard: true},
-  }
+  const extra: ExtraReplyMessage = {reply_markup: {remove_keyboard: true}}
 
   return [text, extra]
 }
@@ -41,10 +39,15 @@ const composeLocationQuestion: QuestionComposer = ({ctx, step}) => {
   return [text, extra]
 }
 
-const composePhotoQuestion: QuestionComposer = () => ['Photo']
+const composeMediaQuestion: QuestionComposer = ({ctx, step}) => {
+  const text = localizeText(ctx, step)
+  const extra: ExtraReplyMessage = {reply_markup: {remove_keyboard: true}}
+
+  return [text, extra]
+}
 
 export const stepTypeToComposer: Record<StepType, QuestionComposer> = {
   [StepType.TEXT]: composeTextQuestion,
   [StepType.LOCATION]: composeLocationQuestion,
-  [StepType.PHOTO]: composePhotoQuestion,
+  [StepType.MEDIA]: composeMediaQuestion,
 }

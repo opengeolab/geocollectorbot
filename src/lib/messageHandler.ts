@@ -3,39 +3,36 @@ import {Update} from 'telegraf/typings/core/types/typegram'
 import {CommonMessageBundle, ServiceMessageBundle} from 'typegram/message'
 
 import {DecoratedContext} from '../models/DecoratedContext'
-import {StepType} from '../models/Flow'
-import {ProcessError} from '../utils/Errors'
+import {Step} from '../models/Flow'
 
 import {updateInteraction} from './interactionHandler'
 import {composeReply} from './replyComposer'
 
-export type StepValueBuilderProps<MsgType extends ServiceMessageBundle | CommonMessageBundle> = {
+export type StepProps<MsgType extends ServiceMessageBundle | CommonMessageBundle> = {
   service: FastifyInstance
   ctx: DecoratedContext<Update.MessageUpdate>
+  currStep: Step
   message: MsgType
 }
 
-export type StepValueBuilder<MsgType extends ServiceMessageBundle | CommonMessageBundle> = (props: StepValueBuilderProps<MsgType>) => Promise<any>
+export type StepValidator<MsgType extends ServiceMessageBundle | CommonMessageBundle> = (props: StepProps<MsgType>) => void
+export type StepValueBuilder<MsgType extends ServiceMessageBundle | CommonMessageBundle> = (props: StepProps<MsgType>) => Promise<any>
 
 export const handleIncomingMessage = async <MsgType extends ServiceMessageBundle | CommonMessageBundle>(
   service: FastifyInstance,
   ctx: DecoratedContext<Update.MessageUpdate>,
-  acceptedType: StepType,
+  stepValidator: StepValidator<MsgType>,
   stepValueBuilder: StepValueBuilder<MsgType>
 ) => {
   const {log: logger} = service
   const {chatId, message, currStep} = ctx
-  const {type} = currStep
 
-  logger.trace({chatId, message}, `Handling ${acceptedType} message`)
+  logger.trace({chatId, message}, `Handling new message`)
 
-  // TODO handle the "wrong type" case
-  if (type !== acceptedType) {
-    logger.error({currStep, chatId}, 'Wrong current step type')
-    throw new ProcessError('Wrong current step type', ctx.t('errors.wrongStepType'))
-  }
+  const stepProps: StepProps<MsgType> = {service, ctx, currStep, message: message as MsgType}
 
-  const stepValue = await stepValueBuilder({service, ctx, message: message as MsgType})
+  stepValidator(stepProps)
+  const stepValue = await stepValueBuilder(stepProps)
   await updateInteraction(service, ctx, stepValue)
 
   const replyArgs = composeReply(logger, ctx)

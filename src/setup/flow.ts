@@ -22,7 +22,7 @@ const parseSteps = (rawSteps: RawFlow['steps'], logger: FastifyLoggerInstance): 
   const allStepsIds = rawSteps.map(step => step.id)
 
   return rawSteps.reduce((currSteps, currRawStep) => {
-    const {id, question, nextStepId, type, persistAs} = currRawStep
+    const {id, question, nextStepId, config, persistAs} = currRawStep
 
     if (currSteps[id]) {
       logger.error({id}, 'Error parsing steps configuration: id is not unique')
@@ -42,7 +42,7 @@ const parseSteps = (rawSteps: RawFlow['steps'], logger: FastifyLoggerInstance): 
     currSteps[id] = {
       id,
       question: question as LocalizedText,
-      type,
+      config,
       persistAs: persistAs || id,
       nextStepId,
     }
