@@ -7,7 +7,7 @@ import {Message, Update} from 'telegraf/typings/core/types/typegram'
 import {handleIncomingMessage, StepValidator, StepValueBuilder} from '../lib/messageHandler'
 import {HandlerBuilder} from '../models/Buildes'
 import {MediaStepSubtype, StepType} from '../models/Flow'
-import {MediaStepConfig} from '../schemas/configuration/flow/step'
+import {MediaStepConfig} from '../schemas/configuration/flow/stepConfig'
 import {ProcessError} from '../utils/Errors'
 
 export const buildPhotoHandler: HandlerBuilder<Update.MessageUpdate> = service => {

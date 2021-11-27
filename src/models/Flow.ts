@@ -1,9 +1,10 @@
 import {RawFlow} from '../schemas/configuration/flow'
-import {LocationStepConfig, MediaStepConfig, TextStepConfig} from '../schemas/configuration/flow/step'
+import {StepConfig} from '../schemas/configuration/flow/stepConfig'
 import {LocalizedText} from '../schemas/localizedText'
 
 export enum StepType {
   TEXT = 'text',
+  MULTIPLE_CHOICE = 'multipleChoice',
   LOCATION = 'location',
   MEDIA = 'media'
 }
@@ -11,8 +12,6 @@ export enum StepType {
 export enum MediaStepSubtype {
   PHOTO = 'photo'
 }
-
-export type StepConfig = TextStepConfig | LocationStepConfig | MediaStepConfig
 
 export type Step = {
   id: string

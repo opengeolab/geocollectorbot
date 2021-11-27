@@ -1,5 +1,4 @@
 import {FastifyInstance} from 'fastify'
-import {Update} from 'telegraf/typings/core/types/typegram'
 
 import {DecoratedContext} from '../models/DecoratedContext'
 import {Step} from '../models/Flow'
@@ -8,7 +7,7 @@ import {ProcessError} from '../utils/Errors'
 
 export const updateInteraction = async (
   {dataStorageClient, log: logger}: FastifyInstance,
-  ctx: DecoratedContext<Update.MessageUpdate>,
+  ctx: DecoratedContext<any>,
   stepValue: any
 ) => {
   const {chatId, currStep, nextStep, interaction} = ctx

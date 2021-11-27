@@ -2,6 +2,7 @@ import fastifyBuilder, {FastifyInstance, FastifyServerOptions} from 'fastify'
 
 import {decorateDataStorageClient} from './clients/dataStorage'
 import {decorateMediaStorageClient} from './clients/mediaStorage'
+import {buildCallbackQueryHandler} from './handlers/callbackQueryHandler'
 import {buildCollectCommandHandler} from './handlers/collectCommandHandler'
 import {buildHelpCommandHandler} from './handlers/helpCommandHandler'
 import {buildLocationHandler} from './handlers/locationHandler'
@@ -44,6 +45,7 @@ const launchFastify = async () => {
     //
     .use(buildRetrieveInteractionMiddleware(fastify))
     .on('text', buildTextHandler(fastify))
+    .action(/^mcq::/, buildCallbackQueryHandler(fastify))
     .on('location', buildLocationHandler(fastify))
     .on('photo', buildPhotoHandler(fastify))
     //
