@@ -5,7 +5,7 @@ commands:
     content: The help section is work in progress...
 
 events:
-  interactionCompleted: You have completed the data gathering! Thank you
+  interactionCompleted: Your data have been received correctly. Thank you for your report!
 
 keyboards:
   location: Send my current location

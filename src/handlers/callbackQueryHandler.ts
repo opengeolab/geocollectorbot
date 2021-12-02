@@ -7,7 +7,9 @@ import {composeReply} from '../lib/replyComposer'
 import {DecoratedContext} from '../models/DecoratedContext'
 import {StepType} from '../models/Flow'
 import {MultipleChoiceStepConfig} from '../schemas/configuration/flow/stepConfig'
+import {LocalizedText} from '../schemas/localizedText'
 import {ProcessError} from '../utils/Errors'
+import {resolveLocalizedText} from '../utils/localizer'
 import {parseCallbackData} from '../utils/multipleChoiceParser'
 
 type Params = Parameters<Composer<DecoratedContext>['action']>
@@ -16,7 +18,7 @@ export const buildCallbackQueryHandler: (service: FastifyInstance) => Params[1] 
   const {log: logger} = service
 
   return async ctx => {
-    const {chatId, update, currStep} = ctx
+    const {chatId, update, currStep, from: user} = ctx
 
     logger.trace({chatId, update}, `Handling new update`)
 
@@ -39,12 +41,16 @@ export const buildCallbackQueryHandler: (service: FastifyInstance) => Params[1] 
       throw new ProcessError('Steps do not match', ctx.t('errors.wrongStepId'))
     }
 
-    if (!options.flat().find(({value}) => value === selectedValue)) {
+    const selectedOption = options.flat().find(({value}) => value === selectedValue)
+    if (!selectedOption) {
       logger.error({currStep, selectedValue}, 'Selected value not among selectable options')
       throw new ProcessError('Selected value not among selectable options', ctx.t('errors.unknownOption'))
     }
 
     await updateInteraction(service, ctx as DecoratedContext, selectedValue)
+
+    const localizedSelectedText = resolveLocalizedText(selectedOption.text as LocalizedText, user?.language_code)
+    await ctx.reply(`You selected: *${localizedSelectedText}*`, {parse_mode: 'MarkdownV2'})
 
     const replyArgs = composeReply(logger, ctx as DecoratedContext)
     await ctx.reply(...replyArgs)
