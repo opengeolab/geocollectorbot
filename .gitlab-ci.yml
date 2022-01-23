@@ -1,0 +1,58 @@
+---
+variables:
+  GIT_DEPTH: 10
+  GIT_SUBMODULE_STRATEGY: recursive
+  IMAGE_NAME: geo-collector-bot
+
+workflow:
+  rules:
+    - if: "$CI_COMMIT_TAG"
+    - if: "$CI_COMMIT_BRANCH"
+
+default:
+  retry:
+    max: 1
+    when:
+      - runner_system_failure
+      - scheduler_failure
+  tags:
+    - build
+  services:
+    - name: docker:19.03.15-dind
+      alias: docker
+  image: node:fermium-alpine
+
+stages:
+  - ".pre"
+  - prepare
+  - test
+  - post-test
+  - package
+  - deploy
+  - ".post"
+
+install-dependencies:
+  stage: prepare
+  script:
+    - yarn install --frozen-lockfile
+  cache:
+    key: "${CI_COMMIT_REF_SLUG}"
+    paths:
+      - node_modules
+      - build
+
+test:
+  stage: test
+  coverage: "/^Statements\\s*:\\s*([^%]+)/"
+  script:
+    - yarn lint
+    - yarn coverage --ci
+  cache:
+    key: "${CI_COMMIT_REF_SLUG}"
+    paths:
+      - node_modules
+    policy: pull
+  artifacts:
+    reports:
+      cobertura:
+        - coverage/cobertura-coverage.xml
