@@ -1,6 +1,6 @@
-import {FromSchema} from 'json-schema-to-ts'
+import { FromSchema } from 'json-schema-to-ts'
 
-import {fsSchema} from './fs'
+import { fsSchema } from './fs'
 
 export const mediaStorageSchema = {
   oneOf: [fsSchema],

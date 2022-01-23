@@ -1,16 +1,43 @@
-import {FastifyInstance} from 'fastify'
-import {Telegraf} from 'telegraf'
+import { FastifyInstance } from 'fastify'
+import { Telegraf } from 'telegraf'
 
-import {DecoratedContext} from '../models/DecoratedContext'
-import {Environment} from '../schemas/environment'
+import {
+  buildStartCommandHandler,
+  buildCallbackQueryHandler,
+  buildHelpCommandHandler,
+  buildLocationHandler,
+  buildPhotoHandler,
+  buildTextHandler,
+  buildCollectCommandHandler,
+} from '../handlers'
+import {
+  buildSetLanguageMiddleware,
+  buildExtractInfoMiddleware,
+  buildRetrieveInteractionMiddleware,
+  buildHandleErrorMiddleware,
+} from '../middlewares'
+import { DecoratedContext } from '../models/DecoratedContext'
 
-const buildBot = ({TELEGRAM_AUTH_TOKEN}: Environment) => {
-  return new Telegraf<DecoratedContext>(TELEGRAM_AUTH_TOKEN)
-}
+export const buildBot = (service: FastifyInstance): Telegraf<DecoratedContext> => {
+  const { env: { TELEGRAM_AUTH_TOKEN } } = service
 
-export const decorateBot = (service: Pick<FastifyInstance, 'env' | 'decorate'>) => {
-  const {env} = service
+  const bot = new Telegraf<DecoratedContext>(TELEGRAM_AUTH_TOKEN)
 
-  const bot = buildBot(env)
-  service.decorate('bot', bot)
+  bot
+    .use(buildSetLanguageMiddleware(service))
+    .start(buildStartCommandHandler(service))
+    .help(buildHelpCommandHandler(service))
+    //
+    .use(buildExtractInfoMiddleware(service))
+    .command('collect', buildCollectCommandHandler(service))
+    //
+    .use(buildRetrieveInteractionMiddleware(service))
+    .on('text', buildTextHandler(service))
+    .action(/^mcq::/, buildCallbackQueryHandler(service))
+    .on('location', buildLocationHandler(service))
+    .on('photo', buildPhotoHandler(service))
+    //
+    .catch(buildHandleErrorMiddleware(service))
+
+  return bot
 }

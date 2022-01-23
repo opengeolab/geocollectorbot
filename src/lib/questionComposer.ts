@@ -1,14 +1,14 @@
-import {ExtraReplyMessage} from 'telegraf/typings/telegram-types'
-import {InlineKeyboardButton} from 'typegram/inline'
+import { ExtraReplyMessage } from 'telegraf/typings/telegram-types'
+import { InlineKeyboardButton } from 'typegram/inline'
 
-import {DecoratedContext} from '../models/DecoratedContext'
-import {Step, StepType} from '../models/Flow'
-import {MultipleChoiceStepConfig} from '../schemas/configuration/flow/stepConfig'
-import {LocalizedText} from '../schemas/localizedText'
-import {resolveLocalizedText} from '../utils/localizer'
-import {buildCallbackData} from '../utils/multipleChoiceParser'
+import { DecoratedContext } from '../models/DecoratedContext'
+import { Step, StepType } from '../models/Flow'
+import { MultipleChoiceStepConfig } from '../schemas/configuration/flow/stepConfig'
+import { LocalizedText } from '../schemas/localizedText'
+import { resolveLocalizedText } from '../utils/localizer'
+import { buildCallbackData } from '../utils/multipleChoiceParser'
 
-import {ReplyArgs} from './replyComposer'
+import { ReplyArgs } from './replyComposer'
 
 export type QuestionComposerProps = {
   ctx: DecoratedContext
@@ -17,25 +17,25 @@ export type QuestionComposerProps = {
 
 export type QuestionComposer = (props: QuestionComposerProps) => ReplyArgs
 
-const localizeText = ({from: user}: DecoratedContext, {question}: Step): string => resolveLocalizedText(question, user?.language_code)
+const localizeText = ({ from: user }: DecoratedContext, { question }: Step): string => resolveLocalizedText(question, user?.language_code)
 
-const composeTextQuestion: QuestionComposer = ({ctx, step}) => {
+const composeTextQuestion: QuestionComposer = ({ ctx, step }) => {
   const text = localizeText(ctx, step)
-  const extra: ExtraReplyMessage = {reply_markup: {remove_keyboard: true}}
+  const extra: ExtraReplyMessage = { reply_markup: { remove_keyboard: true }, parse_mode: 'MarkdownV2' }
 
   return [text, extra]
 }
 
-const composeMultipleChoiceQuestion: QuestionComposer = ({ctx, step}) => {
-  const {from: user} = ctx
-  const {id: stepId, config} = step
-  const {options} = config as MultipleChoiceStepConfig
+const composeMultipleChoiceQuestion: QuestionComposer = ({ ctx, step }) => {
+  const { from: user } = ctx
+  const { id: stepId, config } = step
+  const { options } = config as MultipleChoiceStepConfig
 
   const text = localizeText(ctx, step)
 
   const keyboardButtons: InlineKeyboardButton[][] = options
     .map(optionsRow => optionsRow
-      .map(({text: optionText, value}) => ({
+      .map(({ text: optionText, value }) => ({
         text: resolveLocalizedText(optionText as LocalizedText, user?.language_code),
         callback_data: buildCallbackData(stepId, value),
       }))
@@ -46,37 +46,39 @@ const composeMultipleChoiceQuestion: QuestionComposer = ({ctx, step}) => {
       remove_keyboard: true,
       inline_keyboard: keyboardButtons,
     },
+    parse_mode: 'MarkdownV2',
   }
 
   return [text, extra]
 }
 
-const composeLocationQuestion: QuestionComposer = ({ctx, step}) => {
+const composeLocationQuestion: QuestionComposer = ({ ctx, step }) => {
   const text = localizeText(ctx, step)
 
   const extra: ExtraReplyMessage = {
     reply_markup: {
       remove_keyboard: true,
       one_time_keyboard: true,
-      keyboard: [
-        [{text: ctx.t('keyboards.location'), request_location: true}],
-      ],
+      keyboard: [[{ text: ctx.t('keyboards.location'), request_location: true }]],
     },
+    parse_mode: 'MarkdownV2',
   }
 
   return [text, extra]
 }
 
-const composeMediaQuestion: QuestionComposer = ({ctx, step}) => {
+const composeMediaQuestion: QuestionComposer = ({ ctx, step }) => {
   const text = localizeText(ctx, step)
-  const extra: ExtraReplyMessage = {reply_markup: {remove_keyboard: true}}
+  const extra: ExtraReplyMessage = { reply_markup: { remove_keyboard: true }, parse_mode: 'MarkdownV2' }
 
   return [text, extra]
 }
 
-export const stepTypeToComposer: Record<StepType, QuestionComposer> = {
+const stepTypeToComposer: Record<StepType, QuestionComposer> = {
   [StepType.TEXT]: composeTextQuestion,
   [StepType.MULTIPLE_CHOICE]: composeMultipleChoiceQuestion,
   [StepType.LOCATION]: composeLocationQuestion,
   [StepType.MEDIA]: composeMediaQuestion,
 }
+
+export const getQuestionComposerByType = (type?: StepType) => stepTypeToComposer[type || StepType.TEXT] || stepTypeToComposer[StepType.TEXT]

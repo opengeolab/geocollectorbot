@@ -1,8 +1,8 @@
-import {Configuration} from '../../../models/Configuration'
-import {DataStorageConfig} from '../../../schemas/configuration/dataStorage'
-import {getMockFastify, mockLogger} from '../../../utils/testUtils'
-import {decorateDataStorageClient} from '../index'
-import {PgClient} from '../pgClient'
+import { Configuration } from '../../../models/Configuration'
+import { DataStorageConfig } from '../../../schemas/configuration/dataStorage'
+import { getMockFastify, mockLogger } from '../../../utils/testUtils'
+import { buildDataStorageClient, getDataStorageBaseKeys } from '../index'
+import { PgBaseInteractionKeys, PgClient } from '../pgClient'
 
 jest.mock('../pgClient', () => ({
   ...jest.requireActual('../pgClient'),
@@ -10,40 +10,44 @@ jest.mock('../pgClient', () => ({
 }))
 
 describe('Data storage client', () => {
-  const mockDecorate = jest.fn()
-
   const buildMockService = (dataStorageConfig: DataStorageConfig) => {
     const configuration: Configuration = {
-      flow: {firstStepId: 'foo', steps: {}},
+      flow: { firstStepId: 'foo', steps: {} },
       dataStorage: dataStorageConfig,
     }
 
-    return getMockFastify({configuration, decorate: mockDecorate})
+    return getMockFastify({ configuration })
   }
 
-  afterEach(() => jest.clearAllMocks())
+  describe('buildDataStorageClient', () => {
+    it('should correctly build Postgres client', () => {
+      const config: DataStorageConfig = {
+        type: 'postgres',
+        configuration: {
+          user: 'user',
+          password: 'password',
+          host: 'host',
+          database: 'database',
+          port: 80,
+          interactionsTable: 'interactions_table',
+        },
+      }
 
-  it('should correctly decorate with Postgres client', () => {
-    const config: DataStorageConfig = {
-      type: 'postgres',
-      configuration: {
-        user: 'user',
-        password: 'password',
-        host: 'host',
-        database: 'database',
-        port: 80,
-        interactionsTable: 'interactions_table',
-      },
-    }
+      const mockService = buildMockService(config)
 
-    const mockService = buildMockService(config)
+      const result = buildDataStorageClient(mockService)
 
-    decorateDataStorageClient(mockService)
+      expect(result).toBeInstanceOf(PgClient)
 
-    expect(PgClient).toHaveBeenCalledTimes(1)
-    expect(PgClient).toHaveBeenCalledWith(config.configuration, mockLogger)
+      expect(PgClient).toHaveBeenCalledTimes(1)
+      expect(PgClient).toHaveBeenCalledWith(config.configuration, mockLogger)
+    })
+  })
 
-    expect(mockDecorate).toHaveBeenCalledTimes(1)
-    expect(mockDecorate).toHaveBeenCalledWith('dataStorageClient', {})
+  describe('getDataStorageBaseKeys', () => {
+    it('should correctly return base keys', () => {
+      const pgKeys = getDataStorageBaseKeys('postgres')
+      expect(pgKeys).toEqual(Object.values(PgBaseInteractionKeys))
+    })
   })
 })

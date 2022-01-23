@@ -1,11 +1,11 @@
-import {FromSchema} from 'json-schema-to-ts'
+import { FromSchema } from 'json-schema-to-ts'
 
-import {stepSchema} from './step'
+import { RawStep, stepSchema } from './step'
 
 export const flowSchema = {
   type: 'object',
   properties: {
-    firstStepId: {type: 'string'},
+    firstStepId: { type: 'string' },
     steps: {
       type: 'array',
       items: stepSchema,
@@ -16,4 +16,4 @@ export const flowSchema = {
   required: ['firstStepId', 'steps'],
 } as const
 
-export type RawFlow = FromSchema<typeof flowSchema>
+export type RawFlow = Omit<FromSchema<typeof flowSchema>, 'steps'> & { steps: RawStep[] }

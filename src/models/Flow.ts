@@ -1,6 +1,6 @@
-import {RawFlow} from '../schemas/configuration/flow'
-import {StepConfig} from '../schemas/configuration/flow/stepConfig'
-import {LocalizedText} from '../schemas/localizedText'
+import { RawFlow } from '../schemas/configuration/flow'
+import { StepConfig } from '../schemas/configuration/flow/stepConfig'
+import { LocalizedText } from '../schemas/localizedText'
 
 export enum StepType {
   TEXT = 'text',

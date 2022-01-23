@@ -1,14 +1,14 @@
-import {FromSchema} from 'json-schema-to-ts'
+import { FromSchema } from 'json-schema-to-ts'
 
 export const pgConfigurationSchema = {
   type: 'object',
   properties: {
-    user: {type: 'string'},
-    password: {type: 'string'},
-    host: {type: 'string'},
-    database: {type: 'string'},
-    port: {type: 'number'},
-    interactionsTable: {type: 'string'},
+    user: { type: 'string' },
+    password: { type: 'string' },
+    host: { type: 'string' },
+    database: { type: 'string' },
+    port: { type: 'number' },
+    interactionsTable: { type: 'string' },
   },
   additionalProperties: false,
   required: ['user', 'password', 'host', 'database', 'port', 'interactionsTable'],

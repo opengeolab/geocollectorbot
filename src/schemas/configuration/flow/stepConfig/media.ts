@@ -1,12 +1,12 @@
-import {FromSchema} from 'json-schema-to-ts'
+import { FromSchema } from 'json-schema-to-ts'
 
-import {MediaStepSubtype, StepType} from '../../../../models/Flow'
+import { MediaStepSubtype, StepType } from '../../../../models/Flow'
 
 export const mediaStepConfigSchema = {
   type: 'object',
   properties: {
-    type: {type: 'string', const: StepType.MEDIA},
-    subType: {type: 'string', const: MediaStepSubtype.PHOTO},
+    type: { const: StepType.MEDIA },
+    subType: { const: MediaStepSubtype.PHOTO },
   },
   additionalProperties: false,
   required: ['type', 'subType'],

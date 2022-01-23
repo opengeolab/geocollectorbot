@@ -1,10 +1,10 @@
-import {Pool} from 'pg'
+import { Pool } from 'pg'
 
-import {BaseInteractionKeys, Interaction, InteractionState} from '../../../models/Interaction'
-import {PgConfiguration} from '../../../schemas/configuration/dataStorage/pg'
-import {mockLogger} from '../../../utils/testUtils'
-import {DataStorageClient} from '../index'
-import {PgClient, PgInteraction} from '../pgClient'
+import { BaseInteractionKeys, Interaction, InteractionState } from '../../../models/Interaction'
+import { PgConfiguration } from '../../../schemas/configuration/dataStorage/pg'
+import { mockLogger } from '../../../utils/testUtils'
+import { DataStorageClient } from '../index'
+import { PgClient, PgInteraction } from '../pgClient'
 
 jest.mock('pg', () => ({
   ...jest.requireActual('pg'),
@@ -41,8 +41,6 @@ describe('Postgres client', () => {
 
   beforeEach(() => { pgClient = new PgClient(config, mockLogger) })
 
-  afterEach(() => jest.clearAllMocks())
-
   afterAll(() => jest.restoreAllMocks())
 
   describe('createInteraction', () => {
@@ -54,12 +52,10 @@ describe('Postgres client', () => {
       const expectedError = new Error('Query error')
       mockPoolQuery.mockRejectedValue(expectedError)
 
-      try {
-        await pgClient.createInteraction(chatId, firstStepId)
-        expect(true).toBeFalsy()
-      } catch (error) {
-        expect(error).toEqual(expectedError)
-      }
+      const executor = pgClient.createInteraction(chatId, firstStepId)
+      await expect(executor)
+        .rejects
+        .toStrictEqual(expectedError)
 
       expect(mockPoolQuery).toHaveBeenCalledTimes(1)
       expect(mockPoolQuery).toHaveBeenCalledWith(expectedQuery, expectedValue)
@@ -68,11 +64,7 @@ describe('Postgres client', () => {
     it('should correctly query the db', async () => {
       mockPoolQuery.mockResolvedValue('query_result')
 
-      try {
-        await pgClient.createInteraction(chatId, firstStepId)
-      } catch (error) {
-        expect(true).toBeFalsy()
-      }
+      await pgClient.createInteraction(chatId, firstStepId)
 
       expect(mockPoolQuery).toHaveBeenCalledTimes(1)
       expect(mockPoolQuery).toHaveBeenCalledWith(expectedQuery, expectedValue)
@@ -87,12 +79,10 @@ describe('Postgres client', () => {
       const expectedError = new Error('Query error')
       mockPoolQuery.mockRejectedValue(expectedError)
 
-      try {
-        await pgClient.getOngoingInteractions(chatId)
-        expect(true).toBeFalsy()
-      } catch (error) {
-        expect(error).toEqual(expectedError)
-      }
+      const executor = pgClient.getOngoingInteractions(chatId)
+      await expect(executor)
+        .rejects
+        .toStrictEqual(expectedError)
 
       expect(mockPoolQuery).toHaveBeenCalledTimes(1)
       expect(mockPoolQuery).toHaveBeenCalledWith(expectedQuery, expectedValue)
@@ -108,24 +98,30 @@ describe('Postgres client', () => {
         updated_at: 'updated_at',
       }]
 
-      mockPoolQuery.mockResolvedValue({rows: pgRows})
+      mockPoolQuery.mockResolvedValue({ rows: pgRows })
 
-      try {
-        const rows = await pgClient.getOngoingInteractions(chatId)
-        expect(rows).toStrictEqual([{
+      const rows = await pgClient.getOngoingInteractions(chatId)
+
+      expect(rows).toStrictEqual([
+        {
           id: 'id',
           chatId: 123,
           currStepId: 'current_step_id',
           interactionState: InteractionState.ONGOING,
           createdAt: 'created_at',
           updatedAt: 'updated_at',
-        }])
-      } catch (error) {
-        expect(true).toBeFalsy()
-      }
+        },
+      ])
 
       expect(mockPoolQuery).toHaveBeenCalledTimes(1)
       expect(mockPoolQuery).toHaveBeenCalledWith(expectedQuery, expectedValue)
+    })
+  })
+
+  describe('createSpatialPayload', () => {
+    it('should return correct payload', () => {
+      const result = pgClient.createSpatialPayload(10, 10)
+      expect(result).toEqual('SRID=4326;POINT(10 10)')
     })
   })
 
@@ -152,12 +148,10 @@ describe('Postgres client', () => {
       const expectedError = new Error('Query error')
       mockPoolQuery.mockRejectedValue(expectedError)
 
-      try {
-        await pgClient.updateInteraction(id, body)
-        expect(true).toBeFalsy()
-      } catch (error) {
-        expect(error).toEqual(expectedError)
-      }
+      const executor = pgClient.updateInteraction(id, body)
+      await expect(executor)
+        .rejects
+        .toStrictEqual(expectedError)
 
       expect(mockPoolQuery).toHaveBeenCalledTimes(1)
       expect(mockPoolQuery).toHaveBeenCalledWith(expectedQuery, expectedValue)
@@ -165,27 +159,21 @@ describe('Postgres client', () => {
 
     it('should throw if updated rows count is not 1', async () => {
       const expectedError = new Error('Error updating interaction. 0 rows updated')
-      mockPoolQuery.mockResolvedValue({rowCount: 0})
+      mockPoolQuery.mockResolvedValue({ rowCount: 0 })
 
-      try {
-        await pgClient.updateInteraction(id, body)
-        expect(true).toBeFalsy()
-      } catch (error) {
-        expect(error).toEqual(expectedError)
-      }
+      const executor = pgClient.updateInteraction(id, body)
+      await expect(executor)
+        .rejects
+        .toStrictEqual(expectedError)
 
       expect(mockPoolQuery).toHaveBeenCalledTimes(1)
       expect(mockPoolQuery).toHaveBeenCalledWith(expectedQuery, expectedValue)
     })
 
     it('should correctly query the db', async () => {
-      mockPoolQuery.mockResolvedValue({rowCount: 1})
+      mockPoolQuery.mockResolvedValue({ rowCount: 1 })
 
-      try {
-        await pgClient.updateInteraction(id, body)
-      } catch (error) {
-        expect(true).toBeFalsy()
-      }
+      await pgClient.updateInteraction(id, body)
 
       expect(mockPoolQuery).toHaveBeenCalledTimes(1)
       expect(mockPoolQuery).toHaveBeenCalledWith(expectedQuery, expectedValue)

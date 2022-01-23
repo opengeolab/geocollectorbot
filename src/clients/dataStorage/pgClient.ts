@@ -1,11 +1,11 @@
-import {FastifyLoggerInstance} from 'fastify'
-import {Object} from 'json-schema-to-ts/lib/meta-types'
-import {Pool} from 'pg'
+import { FastifyLoggerInstance } from 'fastify'
+import { Object } from 'json-schema-to-ts/lib/meta-types'
+import { Pool } from 'pg'
 
-import {BaseInteractionKeys, Interaction, InteractionState} from '../../models/Interaction'
-import {PgConfiguration} from '../../schemas/configuration/dataStorage/pg'
+import { BaseInteractionKeys, Interaction, InteractionState } from '../../models/Interaction'
+import { PgConfiguration } from '../../schemas/configuration/dataStorage/pg'
 
-import {DataStorageClient} from './index'
+import { DataStorageClient } from './index'
 
 export enum PgBaseInteractionKeys {
   ID = 'id',
@@ -60,7 +60,7 @@ export class PgClient implements DataStorageClient {
     const query = `INSERT INTO ${this.table} (${properties.join(',')}) VALUES ($1, $2, $3, $4, $5)`
     const values = [chatId, firstStepId, InteractionState.ONGOING, now, now]
 
-    this.logger.debug({query, values}, 'Creating new interaction')
+    this.logger.debug({ query, values }, 'Creating new interaction')
     await this.pool.query(query, values)
   }
 
@@ -68,8 +68,8 @@ export class PgClient implements DataStorageClient {
     const query = `SELECT * FROM ${this.table} WHERE ${PgBaseInteractionKeys.CHAT_ID}=$1 AND ${PgBaseInteractionKeys.INTERACTION_STATE}=$2`
     const values = [chatId, InteractionState.ONGOING]
 
-    this.logger.debug({query, values}, 'Retrieving interactions')
-    const {rows} = await this.pool.query<PgInteraction>(query, values)
+    this.logger.debug({ query, values }, 'Retrieving interactions')
+    const { rows } = await this.pool.query<PgInteraction>(query, values)
 
     return rows.map(row => ({
       [BaseInteractionKeys.ID]: row[PgBaseInteractionKeys.ID],
@@ -88,7 +88,7 @@ export class PgClient implements DataStorageClient {
   async updateInteraction (id: string | number, body: Partial<Interaction>) {
     const now = new Date(Date.now()).toISOString()
 
-    const patchBody = {...body, [BaseInteractionKeys.UPDATED_AT]: now}
+    const patchBody = { ...body, [BaseInteractionKeys.UPDATED_AT]: now }
 
     const patchColumns = Object
       .keys(patchBody)
@@ -100,8 +100,8 @@ export class PgClient implements DataStorageClient {
     const query = `UPDATE ${this.table} SET ${patchColumns} WHERE ${PgBaseInteractionKeys.ID}=$${patchValues.length + 1}`
     const values = [...patchValues, id]
 
-    this.logger.debug({query, values}, 'Updating interaction')
-    const {rowCount} = await this.pool.query(query, values)
+    this.logger.debug({ query, values }, 'Updating interaction')
+    const { rowCount } = await this.pool.query(query, values)
 
     if (rowCount !== 1) { throw new Error(`Error updating interaction. ${rowCount} rows updated`) }
   }

@@ -1,38 +1,31 @@
 import fs from 'fs/promises'
 
 import Ajv from 'ajv'
-import {FastifyInstance} from 'fastify'
+import { FastifyInstance } from 'fastify'
 
-import {Configuration} from '../models/Configuration'
-import {configurationSchema, RawConfiguration} from '../schemas/configuration'
+import { Configuration } from '../models/Configuration'
+import { configurationSchema, RawConfiguration } from '../schemas/configuration'
 
-import {parseFlow} from './flow'
+import { parseFlow } from './flow'
 
-const readConfigurationFile = async (configurationPath: string): Promise<RawConfiguration> => {
-  const fileContent = await fs.readFile(configurationPath)
-  return JSON.parse(fileContent.toString('utf-8'))
-}
+export const retrieveConfiguration = async (service: FastifyInstance): Promise<Configuration> => {
+  const { env: { CONFIGURATION_PATH }, log: logger } = service
 
-const validateConfigurationContent = (configurationContent: RawConfiguration): void => {
+  const fileContent = await fs.readFile(CONFIGURATION_PATH)
+  const configurationContent: RawConfiguration = JSON.parse(fileContent.toString('utf-8'))
+
   const configValidator = new Ajv().compile(configurationSchema)
 
   const isConfigValid = configValidator(configurationContent)
-  if (!isConfigValid) { throw new Error(`Invalid configuration: ${JSON.stringify(configValidator.errors)}`) }
-}
+  if (!isConfigValid) {
+    throw new Error(`Invalid configuration: ${JSON.stringify(configValidator.errors)}`)
+  }
 
-const readValidateConfiguration = async (configurationPath: string): Promise<RawConfiguration> => {
-  const configurationContent = await readConfigurationFile(configurationPath)
+  const parsedFlow = parseFlow(configurationContent, logger)
 
-  validateConfigurationContent(configurationContent)
-  return configurationContent
-}
-
-export const decorateConfiguration = async (service: Pick<FastifyInstance, 'decorate' | 'env' | 'log'>) => {
-  const {env: {CONFIGURATION_PATH}} = service
-
-  const {dataStorage: rawDataStorage, mediaStorage: rawMediaStorage, flow: rawFlow} = await readValidateConfiguration(CONFIGURATION_PATH)
-  const parsedFlow = parseFlow(rawFlow, service.log)
-
-  const configuration: Configuration = {dataStorage: rawDataStorage, mediaStorage: rawMediaStorage, flow: parsedFlow}
-  service.decorate('configuration', configuration)
+  return {
+    dataStorage: configurationContent.dataStorage,
+    mediaStorage: configurationContent.mediaStorage,
+    flow: parsedFlow,
+  }
 }

@@ -21,5 +21,3 @@ export type Interaction = {
   [BaseInteractionKeys.UPDATED_AT]: string
   [key: string]: unknown
 }
-
-export type InteractionKeys = keyof Interaction
