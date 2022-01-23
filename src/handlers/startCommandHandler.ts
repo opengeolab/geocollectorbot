@@ -1,9 +1,10 @@
-import {Update} from 'telegraf/typings/core/types/typegram'
+import { Update } from 'telegraf/typings/core/types/typegram'
 
-import {HandlerBuilder} from '../models/Buildes'
+import { HandlerBuilder } from '../models/Buildes'
 
-export const buildStartCommandHandler: HandlerBuilder<Update.MessageUpdate> = ({log: logger}) => async ctx => {
-  logger.trace({chatId: ctx.chat?.id}, 'Executing command "/start"')
+export const buildStartCommandHandler: HandlerBuilder<Update.MessageUpdate> = ({ log: logger }) => async ctx => {
+  /* istanbul ignore next */
+  logger.trace({ chatId: ctx.chat?.id }, 'Executing command "/start"')
 
-  await ctx.reply(ctx.t('commands.start.greetingMessage'))
+  await ctx.reply(ctx.t('commands.start'), { parse_mode: 'MarkdownV2' })
 }

@@ -1,4 +1,4 @@
-import {resolveLocalizedText} from '../localizer'
+import { resolveLocalizedText } from '../localizer'
 
 describe('Localizer', () => {
   describe('resolveLocalizedText', () => {
@@ -13,22 +13,22 @@ describe('Localizer', () => {
     })
 
     it('should resolve en text without language', () => {
-      const result = resolveLocalizedText({en: 'test_en', it: 'test_it'})
+      const result = resolveLocalizedText({ en: 'test_en', it: 'test_it' })
       expect(result).toEqual('test_en')
     })
 
     it('should resolve en text without language', () => {
-      const result = resolveLocalizedText({en: 'test_en', it: 'test_it'})
+      const result = resolveLocalizedText({ en: 'test_en', it: 'test_it' })
       expect(result).toEqual('test_en')
     })
 
     it('should resolve given language text', () => {
-      const result = resolveLocalizedText({en: 'test_en', it: 'test_it'}, 'it')
+      const result = resolveLocalizedText({ en: 'test_en', it: 'test_it' }, 'it')
       expect(result).toEqual('test_it')
     })
 
     it('should resolve en text if no text in given language', () => {
-      const result = resolveLocalizedText({en: 'test_en', it: 'test_it'}, 'fr')
+      const result = resolveLocalizedText({ en: 'test_en', it: 'test_it' }, 'fr')
       expect(result).toEqual('test_en')
     })
   })

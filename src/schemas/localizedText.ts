@@ -1,15 +1,15 @@
 const localizedTextObjectSchema = {
   type: 'object',
   properties: {
-    en: {type: 'string'},
+    en: { type: 'string' },
   },
-  additionalProperties: {type: 'string'},
+  additionalProperties: { type: 'string' },
   required: ['en'],
 } as const
 
 export const localizedTextSchema = {
   oneOf: [
-    {type: 'string'},
+    { type: 'string' },
     localizedTextObjectSchema,
   ],
 } as const

@@ -1,10 +1,10 @@
-import {Readable} from 'stream'
+import { Readable } from 'stream'
 
-import {FastifyInstance, RouteHandlerMethod} from 'fastify'
+import { FastifyInstance, RouteHandlerMethod } from 'fastify'
 
-import {MediaStorageConfig} from '../../schemas/configuration/mediaStorage'
+import { MediaStorageConfig } from '../../schemas/configuration/mediaStorage'
 
-import {FsClient} from './fsClient'
+import { FsClient } from './fsClient'
 
 export const GET_MEDIA_BASE_PATH = '/media'
 
@@ -22,16 +22,20 @@ const mediaTypeToClient: Record<MediaStorageConfig['type'], MediaStorageClientCo
   fileSystem: FsClient,
 }
 
-export const decorateMediaStorageClient = (service: FastifyInstance) => {
-  const {configuration: {mediaStorage: mediaStorageConfig}} = service
+export const buildMediaStorageClient = (service: FastifyInstance): MediaStorageClient | undefined => {
+  const { configuration: { mediaStorage: mediaStorageConfig } } = service
   if (!mediaStorageConfig) { return }
 
-  const {type, configuration} = mediaStorageConfig
+  const { type, configuration } = mediaStorageConfig
 
   const Client = mediaTypeToClient[type]
-  const client = new Client(service, configuration)
+  return new Client(service, configuration)
+}
 
-  service.get(`${GET_MEDIA_BASE_PATH}/:id`, client.buildGetMediaHandler())
+export const registerGetMediaRoute = (service: FastifyInstance): void => {
+  const { mediaStorageClient } = service
+  if (!mediaStorageClient) { return }
 
-  service.decorate('mediaStorageClient', client)
+  const handler = mediaStorageClient.buildGetMediaHandler()
+  service.get(`${GET_MEDIA_BASE_PATH}/:id`, handler)
 }

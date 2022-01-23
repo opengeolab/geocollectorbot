@@ -1,9 +1,9 @@
-import {MaybePromise} from 'telegraf/typings/composer'
+import { MaybePromise } from 'telegraf/typings/composer'
 
-import {DecoratedContext} from '../../models/DecoratedContext'
-import {ProcessError} from '../../utils/Errors'
-import {getMockContext, getMockFastify} from '../../utils/testUtils'
-import {buildHandleErrorMiddleware} from '../handleError'
+import { DecoratedContext } from '../../models/DecoratedContext'
+import { ProcessError } from '../../utils/Errors'
+import { getMockContext, getMockFastify } from '../../utils/testUtils'
+import { buildHandleErrorMiddleware } from '../handleError'
 
 describe('Handle error middleware', () => {
   const mockService = getMockFastify()
@@ -11,8 +11,6 @@ describe('Handle error middleware', () => {
   let middleware: (error: unknown, ctx: DecoratedContext) => MaybePromise<void>
 
   beforeEach(() => { middleware = buildHandleErrorMiddleware(mockService) })
-
-  afterEach(() => jest.clearAllMocks())
 
   it('should exit process if instanceof is not Error', async () => {
     const mockCtx = getMockContext()
@@ -55,7 +53,10 @@ describe('Handle error middleware', () => {
       expect(true).toBeFalsy()
     } catch (err: any) {
       expect(mockCtx.reply).toHaveBeenCalledTimes(1)
-      expect(mockCtx.reply).toHaveBeenCalledWith('process_error_reply', {reply_markup: {remove_keyboard: true}})
+      expect(mockCtx.reply).toHaveBeenCalledWith(
+        'process_error_reply',
+        { reply_markup: { remove_keyboard: true }, parse_mode: 'MarkdownV2' }
+      )
     }
   })
 
@@ -69,7 +70,10 @@ describe('Handle error middleware', () => {
       expect(true).toBeFalsy()
     } catch (err: any) {
       expect(mockCtx.reply).toHaveBeenCalledTimes(1)
-      expect(mockCtx.reply).toHaveBeenCalledWith('translation_errors.unknown', {reply_markup: {remove_keyboard: true}})
+      expect(mockCtx.reply).toHaveBeenCalledWith(
+        'translation_errors.unknown',
+        { reply_markup: { remove_keyboard: true }, parse_mode: 'MarkdownV2' }
+      )
     }
 
     expect(mockCtx.t).toHaveBeenCalledTimes(1)

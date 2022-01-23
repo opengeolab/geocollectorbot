@@ -1,27 +1,25 @@
-import {MiddlewareFn} from 'telegraf'
+import { MiddlewareFn } from 'telegraf'
 
-import {DecoratedContext} from '../../models/DecoratedContext'
-import {BaseInteractionKeys} from '../../models/Interaction'
-import {ProcessError} from '../../utils/Errors'
-import {getMockContext, getMockFastify, getMockDataStorageClient} from '../../utils/testUtils'
-import {buildRetrieveInteractionMiddleware} from '../retrieveInteraction'
+import { DecoratedContext } from '../../models/DecoratedContext'
+import { BaseInteractionKeys } from '../../models/Interaction'
+import { ProcessError } from '../../utils/Errors'
+import { getMockContext, getMockFastify, getMockDataStorageClient } from '../../utils/testUtils'
+import { buildRetrieveInteractionMiddleware } from '../retrieveInteraction'
 
 describe('Retrieve interaction middleware', () => {
   const mockNext = jest.fn()
 
   const mockGetOngoingInteractions = jest.fn()
-  const mockStorageClient = getMockDataStorageClient({getOngoingInteractions: mockGetOngoingInteractions})
+  const mockStorageClient = getMockDataStorageClient({ getOngoingInteractions: mockGetOngoingInteractions })
 
   const mockService = getMockFastify({
     dataStorageClient: mockStorageClient,
-    configuration: {flow: {steps: {step_1: {question: 'question_1', nextStepId: 'step_2'}, step_2: {question: 'question_2'}}}},
+    configuration: { flow: { steps: { step_1: { question: 'question_1', nextStepId: 'step_2' }, step_2: { question: 'question_2' } } } },
   })
 
   let middleware: MiddlewareFn<DecoratedContext>
 
   beforeEach(() => { middleware = buildRetrieveInteractionMiddleware(mockService) })
-
-  afterEach(() => jest.clearAllMocks())
 
   it('should throw if getOngoingInteractions throws', async () => {
     mockGetOngoingInteractions.mockRejectedValue(new Error('error'))
@@ -62,7 +60,7 @@ describe('Retrieve interaction middleware', () => {
   })
 
   it('should throw if no more than one interaction found', async () => {
-    mockGetOngoingInteractions.mockReturnValue([{foo: 'bar'}, {foo: 'bar'}])
+    mockGetOngoingInteractions.mockReturnValue([{ foo: 'bar' }, { foo: 'bar' }])
 
     const mockCtx = getMockContext()
 
@@ -81,7 +79,7 @@ describe('Retrieve interaction middleware', () => {
   })
 
   it('should throw if current step not found', async () => {
-    const interaction = {[BaseInteractionKeys.CURRENT_STEP_ID]: 'step_3'}
+    const interaction = { [BaseInteractionKeys.CURRENT_STEP_ID]: 'step_3' }
     mockGetOngoingInteractions.mockReturnValue([interaction])
 
     const mockCtx = getMockContext()
@@ -101,29 +99,29 @@ describe('Retrieve interaction middleware', () => {
   })
 
   it('should decorate with next step', async () => {
-    const interaction = {[BaseInteractionKeys.CURRENT_STEP_ID]: 'step_1'}
+    const interaction = { [BaseInteractionKeys.CURRENT_STEP_ID]: 'step_1' }
     mockGetOngoingInteractions.mockReturnValue([interaction])
 
     const mockCtx = getMockContext()
     await middleware(mockCtx, mockNext)
 
     expect(mockCtx.interaction).toEqual(interaction)
-    expect(mockCtx.currStep).toStrictEqual({question: 'question_1', nextStepId: 'step_2'})
-    expect(mockCtx.nextStep).toEqual({question: 'question_2'})
+    expect(mockCtx.currStep).toStrictEqual({ question: 'question_1', nextStepId: 'step_2' })
+    expect(mockCtx.nextStep).toEqual({ question: 'question_2' })
 
     expect(mockNext).toHaveBeenCalledTimes(1)
     expect(mockCtx.t).toHaveBeenCalledTimes(0)
   })
 
   it('should decorate without next step', async () => {
-    const interaction = {[BaseInteractionKeys.CURRENT_STEP_ID]: 'step_2'}
+    const interaction = { [BaseInteractionKeys.CURRENT_STEP_ID]: 'step_2' }
     mockGetOngoingInteractions.mockReturnValue([interaction])
 
     const mockCtx = getMockContext()
     await middleware(mockCtx, mockNext)
 
     expect(mockCtx.interaction).toEqual(interaction)
-    expect(mockCtx.currStep).toStrictEqual({question: 'question_2'})
+    expect(mockCtx.currStep).toStrictEqual({ question: 'question_2' })
     expect(mockCtx.nextStep).toBeUndefined()
 
     expect(mockNext).toHaveBeenCalledTimes(1)

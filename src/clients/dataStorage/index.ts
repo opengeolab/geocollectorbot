@@ -1,9 +1,9 @@
-import {FastifyInstance, FastifyLoggerInstance} from 'fastify'
+import { FastifyInstance, FastifyLoggerInstance } from 'fastify'
 
-import {Interaction} from '../../models/Interaction'
-import {DataStorageConfig} from '../../schemas/configuration/dataStorage'
+import { Interaction } from '../../models/Interaction'
+import { DataStorageConfig } from '../../schemas/configuration/dataStorage'
 
-import {PgClient} from './pgClient'
+import { PgBaseInteractionKeys, PgClient } from './pgClient'
 
 export interface DataStorageClient {
   createInteraction(chatId: number, firstStepId: string): Promise<void>
@@ -25,12 +25,16 @@ const storageTypeToClient: Record<DataStorageConfig['type'], DataStorageClientCo
   postgres: PgClient,
 }
 
-export const decorateDataStorageClient = (service: FastifyInstance) => {
-  const {configuration: {dataStorage}} = service
-  const {type, configuration} = dataStorage
+const storageTypeToBaseKeys: Record<DataStorageConfig['type'], string[]> = {
+  postgres: Object.values(PgBaseInteractionKeys),
+}
+
+export const buildDataStorageClient = (service: FastifyInstance): DataStorageClient => {
+  const { configuration: { dataStorage } } = service
+  const { type, configuration } = dataStorage
 
   const Client = storageTypeToClient[type]
-  const client = new Client(configuration, service.log)
-
-  service.decorate('dataStorageClient', client)
+  return new Client(configuration, service.log)
 }
+
+export const getDataStorageBaseKeys = (type: DataStorageConfig['type']): string[] => storageTypeToBaseKeys[type]

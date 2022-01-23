@@ -17,7 +17,7 @@
     "id-length": "off",
     "no-console": 2,
     "no-unused-vars": "off",
-    "object-curly-spacing": [2, "never"],
+    "object-curly-spacing": [2, "always"],
     "sort-imports": "off",
     "max-len": "off",
     "operator-linebreak": [2, "after"],
@@ -29,6 +29,7 @@
     "camelcase": "off",
     "space-before-function-paren": ["error", "always"],
     "require-atomic-updates": "off",
+    "max-statements": "off",
     "import/order": [
       "error",
       {

@@ -1,44 +1,35 @@
-import {MiddlewareFn} from 'telegraf'
+import { MiddlewareFn } from 'telegraf'
 
 import * as replyComposer from '../../lib/replyComposer'
-import {DecoratedContext} from '../../models/DecoratedContext'
-import {ProcessError} from '../../utils/Errors'
-import {getMockContext, getMockFastify, getMockDataStorageClient} from '../../utils/testUtils'
-import {buildCollectCommandHandler} from '../collectCommandHandler'
+import { DecoratedContext } from '../../models/DecoratedContext'
+import { ProcessError } from '../../utils/Errors'
+import { getMockContext, getMockFastify, getMockDataStorageClient } from '../../utils/testUtils'
+import { buildCollectCommandHandler } from '../collectCommandHandler'
 
 describe('Collect command handler', () => {
   const mockComposeReply = jest.spyOn(replyComposer, 'composeReply')
 
   const mockCreateInteraction = jest.fn()
-  const mockStorageClient = getMockDataStorageClient({createInteraction: mockCreateInteraction})
+  const mockStorageClient = getMockDataStorageClient({ createInteraction: mockCreateInteraction })
 
   const mockService = getMockFastify({
     dataStorageClient: mockStorageClient,
-    configuration: {flow: {firstStepId: 'first_step', steps: {first_step: {question: 'first_question'}}}},
+    configuration: { flow: { firstStepId: 'first_step', steps: { first_step: { question: 'first_question' } } } },
   })
 
   let handler: MiddlewareFn<DecoratedContext>
 
   beforeEach(() => { handler = buildCollectCommandHandler(mockService) as MiddlewareFn<DecoratedContext> })
 
-  afterEach(() => {
-    jest.clearAllMocks()
-    jest.resetAllMocks()
-  })
-
   it('should throw if cannot create interaction', async () => {
     mockCreateInteraction.mockRejectedValue(new Error('error'))
 
     const mockContext = getMockContext()
 
-    try {
-      await handler(mockContext, jest.fn())
-      expect(true).toBeFalsy()
-    } catch (err: any) {
-      expect(err).toBeInstanceOf(ProcessError)
-      expect(err.message).toEqual('Error creating new interaction')
-      expect(err.reply).toEqual('translation_errors.createInteraction')
-    }
+    const executor = handler(mockContext, jest.fn())
+    await expect(executor)
+      .rejects
+      .toEqual(new ProcessError('Error creating new interaction', 'translation_errors.createInteraction'))
 
     expect(mockStorageClient.createInteraction).toHaveBeenCalledTimes(1)
     expect(mockStorageClient.createInteraction).toHaveBeenCalledWith('chat_id', 'first_step')
@@ -57,7 +48,7 @@ describe('Collect command handler', () => {
     expect(mockStorageClient.createInteraction).toHaveBeenCalledTimes(1)
     expect(mockStorageClient.createInteraction).toHaveBeenCalledWith('chat_id', 'first_step')
 
-    expect(mockContext.nextStep).toStrictEqual({question: 'first_question'})
+    expect(mockContext.nextStep).toStrictEqual({ question: 'first_question' })
 
     expect(mockComposeReply).toHaveBeenCalledTimes(1)
     expect(mockComposeReply).toHaveBeenCalledWith(mockService.log, mockContext)

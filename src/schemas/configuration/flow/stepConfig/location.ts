@@ -1,11 +1,11 @@
-import {FromSchema} from 'json-schema-to-ts'
+import { FromSchema } from 'json-schema-to-ts'
 
-import {StepType} from '../../../../models/Flow'
+import { StepType } from '../../../../models/Flow'
 
 export const locationStepConfigSchema = {
   type: 'object',
   properties: {
-    type: {type: 'string', const: StepType.LOCATION},
+    type: { const: StepType.LOCATION },
   },
   additionalProperties: false,
   required: ['type'],

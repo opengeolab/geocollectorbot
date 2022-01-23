@@ -1,9 +1,9 @@
 # Geo Collector Bot
 
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![javascript style guide](https://img.shields.io/badge/code_style-standard--mia-orange.svg)](https://github.com/mia-platform/eslint-config-mia)
 
-Telegram BOT for geodata collection, developed within the project [INSUBRI.PARKS](https://insubriparksturismo.eu) funded by the Interreg Co-operation Programme 2014 -2020 (ID 605472)
+Telegram BOT for geodata collection, developed within the project [INSUBRI.PARKS](https://insubriparksturismo.eu) funded 
+by the Interreg Co-operation Programme 2014 -2020 (ID 605472)
 
 ## Local development
 
@@ -18,7 +18,7 @@ versions easily. Once you have installed nvm, you can go inside the directory of
 
 To install Yarn, run `npm install --global yarn`.
 
-Once you have all the dependencies in place, you can launch:
+Now you can launch:
 
 ```shell
 yarn install
@@ -45,7 +45,6 @@ and you will have the service exposed on your machine on the port `8000`.
 [GEOlab](http://www.geolab.polimi.it/) - Politecnico di Milano (contact: [Daniele Oxoli](mailto:daniele.oxoli@polimi.it))
 
 Developed by [Edoardo Pessina](mailto:edoardopessina.priv@gmail.com) - [GitHub](https://github.com/epessina)
-
 
 ## License
 

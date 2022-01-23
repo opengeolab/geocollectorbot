@@ -1,12 +1,12 @@
-import {FromSchema} from 'json-schema-to-ts'
+import { FromSchema } from 'json-schema-to-ts'
 
-import {StepType} from '../../../../models/Flow'
-import {localizedTextSchema} from '../../../localizedText'
+import { StepType } from '../../../../models/Flow'
+import { localizedTextSchema } from '../../../localizedText'
 
 export const multipleChoiceStepConfigSchema = {
   type: 'object',
   properties: {
-    type: {type: 'string', const: StepType.MULTIPLE_CHOICE},
+    type: { const: StepType.MULTIPLE_CHOICE },
     options: {
       type: 'array',
       items: {
@@ -15,7 +15,7 @@ export const multipleChoiceStepConfigSchema = {
           type: 'object',
           properties: {
             text: localizedTextSchema,
-            value: {type: 'string'},
+            value: { type: 'string' },
           },
           required: ['text', 'value'],
           additionalProperties: false,

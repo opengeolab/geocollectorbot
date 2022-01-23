@@ -1,6 +1,6 @@
-import {FromSchema} from 'json-schema-to-ts'
+import { FromSchema } from 'json-schema-to-ts'
 
-import {pgSchema} from './pg'
+import { pgSchema } from './pg'
 
 export const dataStorageSchema = {
   oneOf: [pgSchema],

@@ -1,18 +1,29 @@
-import {DEFAULT_LANGUAGE} from '../../constants'
-import {decorateI18n} from '../i18n'
+import { join } from 'path'
+
+import { DEFAULT_LANGUAGE } from '../../utils/constants'
+import { getMockFastify } from '../../utils/testUtils'
+import { setupInternationalization } from '../i18n'
 
 describe('i18n', () => {
-  describe('decorateI18n', () => {
-    const mockDecorate = jest.fn()
-    const mockService = {decorate: mockDecorate}
+  describe('setupInternationalization', () => {
+    it('should use custom translation folder', async () => {
+      const mockService = getMockFastify({ env: { CUSTOM_TRANSLATIONS_FOLDER_PATH: 'custom_translation_folder_path' } })
 
-    afterEach(() => jest.clearAllMocks())
+      const result = await setupInternationalization(mockService)
 
-    it('should decorate with i18n', async () => {
-      await decorateI18n(mockService)
+      expect(result.options.fallbackLng).toEqual([DEFAULT_LANGUAGE])
+      // @ts-ignore
+      expect(result.options.backend.loadPath).toEqual('custom_translation_folder_path/{{lng}}.yaml')
+    })
 
-      expect(mockDecorate).toHaveBeenCalledTimes(1)
-      expect(mockDecorate).toHaveBeenCalledWith('i18n', expect.objectContaining({language: DEFAULT_LANGUAGE}))
+    it('should use default translation folder', async () => {
+      const mockService = getMockFastify({ env: {} })
+
+      const result = await setupInternationalization(mockService)
+
+      expect(result.options.fallbackLng).toEqual([DEFAULT_LANGUAGE])
+      // @ts-ignore
+      expect(result.options.backend.loadPath).toEqual(`${join(__dirname, '../../locales')}/{{lng}}.yaml`)
     })
   })
 })

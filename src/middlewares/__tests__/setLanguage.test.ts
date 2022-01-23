@@ -1,26 +1,25 @@
-import {i18n} from 'i18next'
-import {MiddlewareFn} from 'telegraf'
+import { FastifyInstance } from 'fastify'
+import { i18n } from 'i18next'
+import { MiddlewareFn } from 'telegraf'
 
-import {DEFAULT_LANGUAGE} from '../../constants'
-import {DecoratedContext} from '../../models/DecoratedContext'
-import {getMockContext, getMockFastify} from '../../utils/testUtils'
-import {buildSetLanguageMiddleware} from '../setLanguage'
+import { DecoratedContext } from '../../models/DecoratedContext'
+import { DEFAULT_LANGUAGE } from '../../utils/constants'
+import { getMockContext, mockLogger } from '../../utils/testUtils'
+import { buildSetLanguageMiddleware } from '../setLanguage'
 
 describe('Set language middleware', () => {
   const mockNext = jest.fn()
 
-  const mockI18n: Partial<i18n> = {getFixedT: jest.fn().mockReturnValue('getFixedT')}
+  const mockI18n: Partial<i18n> = { getFixedT: jest.fn().mockReturnValue('getFixedT') }
 
-  const mockService = getMockFastify({i18n: mockI18n})
+  const mockService = { log: mockLogger, i18n: mockI18n } as unknown as FastifyInstance
 
   let middleware: MiddlewareFn<DecoratedContext>
 
   beforeEach(() => { middleware = buildSetLanguageMiddleware(mockService) })
 
-  afterEach(() => jest.clearAllMocks())
-
   it('should use user language if found', () => {
-    const mockCtx = getMockContext({from: {language_code: 'fr'}})
+    const mockCtx = getMockContext({ from: { language_code: 'fr' } })
     middleware(mockCtx, mockNext)
 
     expect(mockCtx.lang).toEqual('fr')
@@ -31,7 +30,7 @@ describe('Set language middleware', () => {
   })
 
   it('should use default language if user language not found', () => {
-    const mockCtx = getMockContext({chat: {id: 'chatId'}})
+    const mockCtx = getMockContext({ chat: { id: 'chatId' } })
     middleware(mockCtx, mockNext)
 
     expect(mockCtx.lang).toEqual(DEFAULT_LANGUAGE)

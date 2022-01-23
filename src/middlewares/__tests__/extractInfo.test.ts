@@ -1,9 +1,9 @@
-import {MiddlewareFn} from 'telegraf'
+import { MiddlewareFn } from 'telegraf'
 
-import {DecoratedContext} from '../../models/DecoratedContext'
-import {ProcessError} from '../../utils/Errors'
-import {getMockContext, getMockFastify} from '../../utils/testUtils'
-import {buildExtractInfoMiddleware} from '../extractInfo'
+import { DecoratedContext } from '../../models/DecoratedContext'
+import { ProcessError } from '../../utils/Errors'
+import { getMockContext, getMockFastify } from '../../utils/testUtils'
+import { buildExtractInfoMiddleware } from '../extractInfo'
 
 describe('Extract info middleware', () => {
   const mockNext = jest.fn()
@@ -13,8 +13,6 @@ describe('Extract info middleware', () => {
   let middleware: MiddlewareFn<DecoratedContext>
 
   beforeEach(() => { middleware = buildExtractInfoMiddleware(mockService) })
-
-  afterEach(() => jest.clearAllMocks())
 
   it('should throw if chat id not found', () => {
     const mockCtx = getMockContext()
@@ -34,7 +32,7 @@ describe('Extract info middleware', () => {
   })
 
   it('should add chat id to context', () => {
-    const mockCtx = getMockContext({chat: {id: 'chat_id'}})
+    const mockCtx = getMockContext({ chat: { id: 'chat_id' } })
     middleware(mockCtx, mockNext)
 
     expect(mockCtx.chatId).toEqual('chat_id')

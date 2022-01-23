@@ -1,9 +1,9 @@
-import {FromSchema} from 'json-schema-to-ts'
+import { FromSchema } from 'json-schema-to-ts'
 
 export const fsConfigurationSchema = {
   type: 'object',
   properties: {
-    folderPath: {type: 'string'},
+    folderPath: { type: 'string' },
   },
   additionalProperties: false,
   required: ['folderPath'],
@@ -12,10 +12,7 @@ export const fsConfigurationSchema = {
 export const fsSchema = {
   type: 'object',
   properties: {
-    type: {
-      type: 'string',
-      const: 'fileSystem',
-    },
+    type: { const: 'fileSystem' },
     configuration: fsConfigurationSchema,
   },
   additionalProperties: false,
