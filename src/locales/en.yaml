@@ -1,16 +1,18 @@
 commands:
   # Message sent when user invokes command "/start"
-  start: Hello from Geo Collector Bot! Start collecting data with the `/collect` command.
+  start: |
+    Hello from Geo Collector Bot\!
+    Start collecting data with the `/collect` command\.
 
   # Message sent when user invokes command "/help"
-  help: The help section is work in progress...
+  help: The help section is work in progress\.\.\.
 
 events:
   # Confirmation message sent when user selects an option in the context of a callback query question
   callbackQueryOptionSelected: "You selected: *{{selectedText}}*"
 
   # Message sent when user completes an interaction
-  interactionCompleted: Your data have been received correctly. Thank you for your report!
+  interactionCompleted: Your data have been received correctly\. Thank you for your report\!
 
 keyboards:
   # Text to display in the keyboard whenever the user's location is asked
@@ -18,22 +20,22 @@ keyboards:
 
 errors:
   # Message sent when an unknown error occurs
-  unknown: Ops, something went wrong on our hand. Please, try again later
+  unknown: Ops, something went wrong on our hand\. Please, try again later
 
   # Message sent when the id of chat cannot be found
   chatIdNotFound: Sorry, I couldn't recognize this chat
 
   # Message sent when the user's interaction cannot be retrieved from the database
-  retrieveInteraction: We are experiencing problems retrieving your data. Please, try again later
+  retrieveInteraction: We are experiencing problems retrieving your data\. Please, try again later
 
   # Message sent when the creation of a new interaction fails
-  createInteraction: We are experiencing problems persisting you data. Please, try again later
+  createInteraction: We are experiencing problems persisting you data\. Please, try again later
 
   #  Message sent when an error occurs during the update of an interaction
-  updateInteraction: We are experiencing problems saving your answer. Please, try again later
+  updateInteraction: We are experiencing problems saving your answer\. Please, try again later
 
   #  Message sent when no ongoing interaction is found on the database
-  noInteractionsFound: It seems you don't have any ongoing interaction. Start one with the **/collect** command
+  noInteractionsFound: It seems you don't have any ongoing interaction\. Start one with the `/collect` command
 
   #  Message sent when more than one ongoing interaction is found on the database
   tooManyInteractionsFound: It seems you have multiple ongoing interactions
@@ -42,11 +44,11 @@ errors:
   unknownStep: Sorry, I couldn't determine the state of your interaction
 
   # Message sent when the response provided by the user does not match the question type
-  wrongStepType: The answer you have provided is not suitable for the question. Please, try again
+  wrongStepType: The answer you have provided is not suitable for the question\. Please, try again
 
   # Message sent when the option selected by the user in the context of a callback query question is not valid
-  unknownOption: The answer you have selected is not valid. Please, try again
+  unknownOption: The answer you have selected is not valid\. Please, try again
 
   # Message sent when an error occurs trying to save a user-provided media
-  savingMedia: We could not save your media. Please, try again
+  savingMedia: We could not save your media\. Please, try again
 

@@ -28,6 +28,9 @@ You can easily provide your own custom translations inside a folder referenced b
 `.yml` files will not be accepted) named as `ietf_language_code.yaml` (e.g., `en.yaml`). An explanation of what IETF 
 language tags are can be found [here](https://en.wikipedia.org/wiki/IETF_language_tag).
 
-The keys used by the bot can be found in the [default english translation file](TODO).
+The bot always uses [Markdown V2](https://core.telegram.org/bots/api#markdownv2-style) as formatting option, so feel
+free to use it in your custom translation (pay attention to the characters that need to be escaped!).
+
+The keys used by the bot can be found in the [default english translation file](https://gitlab.com/geolab.como/geocollectorbot/-/blob/main/src/locales/en.yaml).
 
 Please note that if you provide your own translations, an `en.yaml` file should always be provided in your custom folder.
