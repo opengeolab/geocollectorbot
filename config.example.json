@@ -1,0 +1,94 @@
+{
+  "flow": {
+    "firstStepId": "site_of_interest",
+    "steps": [
+      {
+        "id": "site_of_interest",
+        "question": {
+          "en": "Where are you now?"
+        },
+        "config": {
+          "type": "multipleChoice",
+          "options": [
+            [
+              {
+                "text": "Parco Campo dei Fiori",
+                "value": "parco_campo_dei_fiori"
+              },
+              {
+                "text": "Parco Pineta",
+                "value": "parco_pineta"
+              }
+            ],
+            [
+              {
+                "text": "Parco Spina Verde",
+                "value": "parco_spina_verde"
+              },
+              {
+                "text": "Parco Gole della Breggia",
+                "value": "parco_gole_della_breggia"
+              }
+            ],
+            [
+              {
+                "text": "Bosco del Penz",
+                "value": "bosco_del_penz"
+              }
+            ]
+          ]
+        },
+        "nextStepId": "description"
+      },
+      {
+        "id": "description",
+        "question": {
+          "en": "Please, describe the issue"
+        },
+        "config": {
+          "type": "text"
+        },
+        "nextStepId": "location"
+      },
+      {
+        "id": "location",
+        "question": {
+          "en": "Please, provide your precise location"
+        },
+        "config": {
+          "type": "location"
+        },
+        "persistAs": "location",
+        "nextStepId": "photo"
+      },
+      {
+        "id": "photo",
+        "question": {
+          "en": "Please, provide a picture of the issue"
+        },
+        "config": {
+          "type": "media",
+          "subType": "photo"
+        },
+        "persistAs": "photo"
+      }
+    ]
+  },
+  "dataStorage": {
+    "type": "postgres",
+    "configuration": {
+      "user": "edoardo",
+      "password": "edoardo",
+      "host": "localhost",
+      "database": "geo_collector_bot",
+      "port": 5432,
+      "interactionsTable": "data"
+    }
+  },
+  "mediaStorage": {
+    "type": "fileSystem",
+    "configuration": {
+      "folderPath": "~/Documents/personal/geocollectorbot/media"
+    }
+  }
+}

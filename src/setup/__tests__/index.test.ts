@@ -51,24 +51,6 @@ describe('Setup', () => {
     expect(fastify.fastify).toHaveBeenCalledTimes(1)
     expect(fastify.fastify).toHaveBeenCalledWith({ logger: { level: 'trace' } })
 
-    // expect(mockSetupInternationalization).toHaveBeenCalledTimes(1)
-    // expect(mockSetupInternationalization).toHaveBeenCalledWith({ foo: 'bar' })
-    //
-    // expect(mockRetrieveConfiguration).toHaveBeenCalledTimes(1)
-    // expect(mockRetrieveConfiguration).toHaveBeenCalledWith({ foo: 'bar' }, mockLogger)
-    //
-    // expect(mockBuildDataStorageClient).toHaveBeenCalledTimes(1)
-    // expect(mockBuildDataStorageClient).toHaveBeenCalledWith(mockFastify)
-    //
-    // expect(mockBuildMediaStorageClient).toHaveBeenCalledTimes(1)
-    // expect(mockBuildMediaStorageClient).toHaveBeenCalledWith(mockFastify)
-    //
-    // expect(mockRegisterGetMediaRoute).toHaveBeenCalledTimes(1)
-    // expect(mockRegisterGetMediaRoute).toHaveBeenCalledWith(mockFastify)
-    //
-    // expect(mockBuildBot).toHaveBeenCalledTimes(1)
-    // expect(mockBuildBot).toHaveBeenCalledWith(mockFastify)
-
     expect(result.decorate).toHaveBeenCalledTimes(6)
     expect(result.decorate).toHaveBeenNthCalledWith(1, 'env', { LOG_LEVEL: 'trace' })
     expect(result.decorate).toHaveBeenNthCalledWith(2, 'i18n', mockI18n)
