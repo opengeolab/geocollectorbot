@@ -4,8 +4,6 @@ LABEL maintainer="GEOlab<http://www.geolab.polimi.it/>" \
       name="geo-collector-bot" \
       description="Telegram BOT for geodata collection"
 
-ENV HTTP_PORT=3000
-ENV LOG_LEVEL=info
 ENV NODE_ENV=production
 ENV PATH="${PATH}:/home/node/app/node_modules/.bin/"
 

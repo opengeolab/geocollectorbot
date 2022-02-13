@@ -6,13 +6,13 @@ The service needs some configuration in order to be used effectively.
 
 The service accepts the following environment variables.
 
-| Name                            |  Type   | Required | Description                                                                                                 | Default |
-|---------------------------------|:-------:|:--------:|-------------------------------------------------------------------------------------------------------------|:-------:|
-| HTTP_PORT                       | integer |    ✖     | Port on which the service will be exposed                                                                   |  8080   |
-| LOG_LEVEL                       | string  |    ✖     | [pino logger level](https://getpino.io/#/docs/api?id=level-string)                                          | `info`  |
-| CONFIGURATION_PATH              | string  |    ✓     | path to the [configuration file](#service-configuration)                                                    |    -    |
-| CUSTOM_TRANSLATIONS_FOLDER_PATH | string  |    ✖     | optional path to the folder containing [custom translation files](#custom-translations)                     |    -    |
-| TELEGRAM_AUTH_TOKEN             | string  |    ✓     | [unique authentication token](https://core.telegram.org/bots/api#authorizing-your-bot) of your Telegram Bot |    -    |
+| Name                            |  Type   | Required | Description                                                                                                 |        Default        |
+|---------------------------------|:-------:|:--------:|-------------------------------------------------------------------------------------------------------------|:---------------------:|
+| HTTP_PORT                       | integer |    ✓     | Port on which the service will be exposed                                                                   |         8080          |
+| LOG_LEVEL                       | string  |    ✓     | [pino logger level](https://getpino.io/#/docs/api?id=level-string)                                          |        `info`         |
+| CONFIGURATION_PATH              | string  |    ✓     | path to the [configuration file](#service-configuration)                                                    |  `/app/config.json`   |
+| CUSTOM_TRANSLATIONS_FOLDER_PATH | string  |    ✖     | optional path to the folder containing [custom translation files](#custom-translations)                     | `/app/custom_locales` |
+| TELEGRAM_AUTH_TOKEN             | string  |    ✓     | [unique authentication token](https://core.telegram.org/bots/api#authorizing-your-bot) of your Telegram Bot |           -           |
 
 # Service configuration
 
