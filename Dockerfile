@@ -5,9 +5,9 @@ LABEL maintainer="GEOlab<http://www.geolab.polimi.it/>" \
       description="Telegram BOT for geodata collection"
 
 ENV NODE_ENV=production
-ENV PATH="${PATH}:/home/node/app/node_modules/.bin/"
+ENV PATH="${PATH}:/home/app/node_modules/.bin/"
 
-WORKDIR /home/node/app
+WORKDIR /home/app
 
 COPY package.json .
 COPY yarn.lock .

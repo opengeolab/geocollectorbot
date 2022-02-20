@@ -13,6 +13,7 @@ dist
 .env*
 config.*
 !config.example.json
+!examples/**/config.json
 
 npm-debug.log*
 yarn-debug.log*

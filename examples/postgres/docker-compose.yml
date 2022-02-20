@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgis/postgis:14-3.2-alpine
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-q", "-d", "postgres", "-U", "root" ]
+      timeout: 45s
+      interval: 10s
+      retries: 10
+    restart: always
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=password
+      - APP_DB_USER=geo_collector_bot
+      - APP_DB_PASS=geo_collector_bot
+      - APP_DB_NAME=geo_collector_bot
+    ports:
+      - '5438:5432'
+    volumes:
+      - ./data:/var/lib/postgresql/data
+      - ./scripts:/docker-entrypoint-initdb.d
+
+  bot:
+    image: geo-collector-bot
+    depends_on:
+      - postgres
+    environment:
+      - TELEGRAM_AUTH_TOKEN=1963527030:AAHQSAXxJkg3stuqWn68kJLdu5NJIuBugm8
+      - LOG_LEVEL=trace
+    ports:
+      - '8080:8080'
+    volumes:
+      - ./config.json:/home/app/config.json

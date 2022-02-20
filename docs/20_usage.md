@@ -12,13 +12,20 @@ You will receive an **authentication token** that you will need to provide to th
 
 ```shell
 docker run --name geo-collector-bot \
-  -e HTTP_PORT="<http_port>" \
-  -e LOG_LEVEL="<log_level>" \
-  -e TELEGRAM_AUTH_TOKEN="<telegram_auth_token" \
-  -e CONFIGURATION_PATH="<configuration_path>" \
-  -e CUSTOM_TRANSLATIONS_FOLDER_PATH="<custom_translations_folder_path>" \
-  -v [path_to_application_file]:/app/application.yml \
-  -p <host_http_port>:<container_http_port> \
+  -e TELEGRAM_AUTH_TOKEN="<telegram_auth_token>" \
+  -v <absolute_path_to_config_file>:/app/config.json \
+  # -v <absolute_path_to_custom_translations_folder>:/app/custom_locales \
+  -p 8080:8080 \
+  geo-collector-bot
+```
+
+```shell
+docker run --name geo-collector-bot \
+  --network=host \
+  -e TELEGRAM_AUTH_TOKEN="1963527030:AAHQSAXxJkg3stuqWn68kJLdu5NJIuBugm8" \
+  -v /home/edoardo/Documents/personal/geocollectorbot/config.example.json:/home/app/config.json \
+  -v /home/edoardo/Documents/personal/geocollectorbot/examples/postgres/media:/home/app/media \
+  -p 8080:8080 \
   geo-collector-bot
 ```
 
@@ -29,4 +36,3 @@ The Bot exposes the following commands.
 - `/start` to start the Bot.
 - `/help` to get information about the Bot.
 - `/collect` to start a new data gathering process.
-- 
