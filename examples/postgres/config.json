@@ -58,19 +58,7 @@
         "config": {
           "type": "location"
         },
-        "persistAs": "location",
-        "nextStepId": "photo"
-      },
-      {
-        "id": "photo",
-        "question": {
-          "en": "Please, provide a picture of the issue"
-        },
-        "config": {
-          "type": "media",
-          "subType": "photo"
-        },
-        "persistAs": "photo"
+        "persistAs": "location"
       }
     ]
   },
@@ -83,12 +71,6 @@
       "database": "geo_collector_bot",
       "port": 5432,
       "interactionsTable": "interactions"
-    }
-  },
-  "mediaStorage": {
-    "type": "fileSystem",
-    "configuration": {
-      "folderPath": "/home/app/media"
     }
   }
 }

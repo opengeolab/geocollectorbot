@@ -26,7 +26,7 @@ services:
     depends_on:
       - postgres
     environment:
-      - TELEGRAM_AUTH_TOKEN=1963527030:AAHQSAXxJkg3stuqWn68kJLdu5NJIuBugm8
+      - TELEGRAM_AUTH_TOKEN=${TELEGRAM_AUTH_TOKEN}
       - LOG_LEVEL=trace
     ports:
       - '8080:8080'
