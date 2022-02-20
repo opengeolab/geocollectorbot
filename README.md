@@ -4,42 +4,14 @@
 [![Pipeline Status](https://gitlab.com/geolab.como/geocollectorbot/badges/main/pipeline.svg)](https://gitlab.com/geolab.como/geocollectorbot)
 
 Telegram BOT for geodata collection, developed within the project [INSUBRI.PARKS](https://insubriparksturismo.eu) funded 
-by the Interreg Co-operation Programme 2014 -2020 (ID 605472)
+by the Interreg Co-operation Programme 2014 -2020 (ID 605472).
 
-## Local development
+## Documentation
 
-To develop the service locally you need:
-
-- Node 14+
-- Yarn 1.x.x
-
-To set up Node, please if possible try to use [nvm](https://github.com/nvm-sh/nvm), so you can manage multiple
-versions easily. Once you have installed nvm, you can go inside the directory of the project and simply run
-`nvm install` and the `.nvmrc` file will install and select the correct version of Node if you don’t already have it.
-
-To install Yarn, run `npm install --global yarn`.
-
-Now you can launch:
-
-```shell
-yarn install
-```
-
-This command will install the dependencies. Now you can create your local copy of the `env` variables needed for
-launching the application.
-
-```shell
-cp ./example.env ./.env
-```
-
-Once you have all your dependency in place, you can launch:
-
-```shell
-yarn build
-yarn start
-```
-
-and you will have the service exposed on your machine on the port `8000`.
+To know how the Bot works you can follow the documentation:
+* [overview](./docs/10_overview.md)
+* [usage](./docs/20_usage.md)
+* [configuration](./docs/30_configuration.md)
 
 ## Contributions
 

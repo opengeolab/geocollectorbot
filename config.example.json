@@ -77,8 +77,8 @@
   "dataStorage": {
     "type": "postgres",
     "configuration": {
-      "user": "edoardo",
-      "password": "edoardo",
+      "user": "user",
+      "password": "user",
       "host": "localhost",
       "database": "geo_collector_bot",
       "port": 5432,
@@ -88,7 +88,7 @@
   "mediaStorage": {
     "type": "fileSystem",
     "configuration": {
-      "folderPath": "~/Documents/personal/geocollectorbot/media"
+      "folderPath": "~/geocollectorbot/media"
     }
   }
 }
