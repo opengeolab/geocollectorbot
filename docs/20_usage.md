@@ -7,6 +7,7 @@ The Bot exposes the following commands.
 - `/start` to start the Bot.
 - `/help` to get information about the Bot.
 - `/collect` to start a new data gathering process.
+- `/abort` to abort the currently ongoing interaction.
 
 ## Create a new Bot
 
