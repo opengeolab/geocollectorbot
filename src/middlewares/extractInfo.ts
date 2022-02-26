@@ -2,7 +2,7 @@ import { MiddlewareBuilder } from '../models/Buildes'
 import { ProcessError } from '../utils/Errors'
 
 export const buildExtractInfoMiddleware: MiddlewareBuilder = ({ log: logger }) => (ctx, next) => {
-  logger.trace({ chatId: ctx.chat?.id }, 'Executing middleware "extractInfo"')
+  logger.trace({ chatId: ctx.chat?.id }, "Executing middleware 'extractInfo'")
 
   const { chat } = ctx
   const chatId = chat?.id

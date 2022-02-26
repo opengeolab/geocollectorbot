@@ -9,6 +9,7 @@ import {
   buildPhotoHandler,
   buildTextHandler,
   buildCollectCommandHandler,
+  buildAbortCommandHandler,
 } from '../handlers'
 import {
   buildSetLanguageMiddleware,
@@ -32,6 +33,7 @@ export const buildBot = (service: FastifyInstance): Telegraf<DecoratedContext> =
     .command('collect', buildCollectCommandHandler(service))
     //
     .use(buildRetrieveInteractionMiddleware(service))
+    .command('abort', buildAbortCommandHandler(service))
     .on('text', buildTextHandler(service))
     .action(/^mcq::/, buildCallbackQueryHandler(service))
     .on('location', buildLocationHandler(service))

@@ -10,7 +10,7 @@ export const buildCollectCommandHandler: HandlerBuilder<Update.MessageUpdate> = 
 
   return async ctx => {
     const { chatId } = ctx
-    logger.trace({ chatId }, 'Executing command "/collect"')
+    logger.trace({ chatId }, "Executing command '/collect'")
 
     // TODO check if there is already an ongoing interaction
 

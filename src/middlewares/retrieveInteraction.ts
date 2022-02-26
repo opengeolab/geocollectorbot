@@ -11,7 +11,7 @@ export const buildRetrieveInteractionMiddleware: MiddlewareBuilder = ({ configur
 
   return async (ctx, next) => {
     const { chatId } = ctx
-    logger.trace({ chatId }, 'Executing middleware "retrieveInteraction"')
+    logger.trace({ chatId }, "Executing middleware 'retrieveInteraction'")
 
     const interaction = await getInteractionFromStorageClient(logger, dataStorageClient, ctx)
     ctx.interaction = interaction

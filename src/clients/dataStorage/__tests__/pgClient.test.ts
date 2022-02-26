@@ -71,6 +71,38 @@ describe('Postgres client', () => {
     })
   })
 
+  describe('abortInteraction', () => {
+    const id = 'interaction_id'
+
+    const expectedQuery = 'UPDATE interactions_table ' +
+      'SET interaction_state=$1,updated_at=$2 ' +
+      'WHERE id=$3'
+
+    const expectedValue = [InteractionState.ABORTED, nowIsoString, id]
+
+    it('should throw if query fails', async () => {
+      const expectedError = new Error('Query error')
+      mockPoolQuery.mockRejectedValue(expectedError)
+
+      const executor = pgClient.abortInteraction(id)
+      await expect(executor)
+        .rejects
+        .toStrictEqual(expectedError)
+
+      expect(mockPoolQuery).toHaveBeenCalledTimes(1)
+      expect(mockPoolQuery).toHaveBeenCalledWith(expectedQuery, expectedValue)
+    })
+
+    it('should correctly query the db', async () => {
+      mockPoolQuery.mockResolvedValue({ rowCount: 1 })
+
+      await pgClient.abortInteraction(id)
+
+      expect(mockPoolQuery).toHaveBeenCalledTimes(1)
+      expect(mockPoolQuery).toHaveBeenCalledWith(expectedQuery, expectedValue)
+    })
+  })
+
   describe('getOngoingInteractions', () => {
     const expectedQuery = 'SELECT * FROM interactions_table WHERE chat_id=$1 AND interaction_state=$2'
     const expectedValue = [123, InteractionState.ONGOING]

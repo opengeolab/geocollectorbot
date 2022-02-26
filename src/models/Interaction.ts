@@ -1,6 +1,7 @@
 export enum InteractionState {
   ONGOING = 'ongoing',
-  COMPLETED = 'completed'
+  COMPLETED = 'completed',
+  ABORTED = 'aborted'
 }
 
 export enum BaseInteractionKeys {

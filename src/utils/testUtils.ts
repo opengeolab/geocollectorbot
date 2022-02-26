@@ -26,6 +26,7 @@ export const mockLogger: FastifyLoggerInstance = {
 
 export const getMockDataStorageClient = (props: Partial<DataStorageClient> = {}): DataStorageClient => ({
   createInteraction: props.createInteraction || jest.fn(),
+  abortInteraction: props.abortInteraction || jest.fn(),
   getOngoingInteractions: props.getOngoingInteractions || jest.fn(),
   createSpatialPayload: props.createSpatialPayload || jest.fn(),
   updateInteraction: props.updateInteraction || jest.fn(),

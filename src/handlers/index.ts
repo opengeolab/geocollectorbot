@@ -1,3 +1,4 @@
+import { buildAbortCommandHandler } from './abortCommandHandler'
 import { buildCallbackQueryHandler } from './callbackQueryHandler'
 import { buildCollectCommandHandler } from './collectCommandHandler'
 import { buildHelpCommandHandler } from './helpCommandHandler'
@@ -7,6 +8,7 @@ import { buildStartCommandHandler } from './startCommandHandler'
 import { buildTextHandler } from './textHandler'
 
 export {
+  buildAbortCommandHandler,
   buildCallbackQueryHandler,
   buildCollectCommandHandler,
   buildHelpCommandHandler,

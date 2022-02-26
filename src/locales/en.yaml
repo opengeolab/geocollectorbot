@@ -14,6 +14,9 @@ events:
   # Message sent when user completes an interaction
   interactionCompleted: Your data have been received correctly\. Thank you for your report\!
 
+  # Message sent when the ongoing interaction is correctly aborted
+  interactionAborted: Your current interaction has been aborted correctly\. Start a new one with the `/collect` command\.
+
 keyboards:
   # Text to display in the keyboard whenever the user's location is asked
   location: Send my current location
@@ -30,6 +33,9 @@ errors:
 
   # Message sent when the creation of a new interaction fails
   createInteraction: We are experiencing problems persisting you data\. Please, try again later
+
+  # Message sent when the abort of an ongoing interaction fails
+  abortInteraction: We are experiencing problems aborting ypur current interaction\. Please, try again later
 
   #  Message sent when an error occurs during the update of an interaction
   updateInteraction: We are experiencing problems saving your answer\. Please, try again later

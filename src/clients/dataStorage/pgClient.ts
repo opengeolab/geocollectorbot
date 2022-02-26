@@ -64,6 +64,13 @@ export class PgClient implements DataStorageClient {
     await this.pool.query(query, values)
   }
 
+  async abortInteraction (id: string | number) {
+    const body: Partial<Interaction> = { interactionState: InteractionState.ABORTED }
+
+    this.logger.debug({ id }, 'Aborting interaction')
+    await this.updateInteraction(id, body)
+  }
+
   async getOngoingInteractions (chatId: number): Promise<Interaction[]> {
     const query = `SELECT * FROM ${this.table} WHERE ${PgBaseInteractionKeys.CHAT_ID}=$1 AND ${PgBaseInteractionKeys.INTERACTION_STATE}=$2`
     const values = [chatId, InteractionState.ONGOING]

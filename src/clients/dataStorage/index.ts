@@ -8,6 +8,8 @@ import { PgBaseInteractionKeys, PgClient } from './pgClient'
 export interface DataStorageClient {
   createInteraction(chatId: number, firstStepId: string): Promise<void>
 
+  abortInteraction(id: string | number): Promise<void>
+
   getOngoingInteractions(chatId: number): Promise<Interaction[]>
 
   createSpatialPayload(lat: number, lon: number): any

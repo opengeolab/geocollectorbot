@@ -2,7 +2,7 @@ import { MiddlewareBuilder } from '../models/Buildes'
 import { DEFAULT_LANGUAGE } from '../utils/constants'
 
 export const buildSetLanguageMiddleware: MiddlewareBuilder = ({ log: logger, i18n }) => (ctx, next) => {
-  logger.trace({ chatId: ctx.chat?.id }, 'Executing middleware "setLanguage"')
+  logger.trace({ chatId: ctx.chat?.id }, "Executing middleware 'setLanguage'")
 
   const { from: user } = ctx
 
