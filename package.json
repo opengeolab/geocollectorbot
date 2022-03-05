@@ -4,6 +4,9 @@
   "description": "Telegram BOT for geodata collection, developed within the Interreg Project INSUBRI.PARKS",
   "license": "MIT",
   "author": "Edoardo Pessina <edoardopessina.priv@gmail.com>",
+  "repository": "git+ssh://git@gitlab.com/geolab.como/geocollectorbot.git",
+  "bugs": "https://gitlab.com/geolab.como/geocollectorbot/issues",
+  "homepage": "https://gitlab.com/geolab.como/geocollectorbot#readme",
   "scripts": {
     "prepare": "husky install",
     "lint": "eslint src --ext .js,.ts,.tsx",
@@ -58,7 +61,8 @@
     "ts-node": "^10.1.0",
     "typescript": "^4.2.3"
   },
-  "repository": "git+ssh://git@gitlab.com/geolab.como/geocollectorbot.git",
-  "bugs": "https://gitlab.com/geolab.como/geocollectorbot/issues",
-  "homepage": "https://gitlab.com/geolab.como/geocollectorbot#readme"
+  "engines": {
+    "node": "14.18.1",
+    "npm": "8.3.0"
+  }
 }
