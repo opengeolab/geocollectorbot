@@ -21,6 +21,7 @@ psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-E
       description character varying,
       location geometry,
       site_of_interest character varying,
+      photo character varying,
       CONSTRAINT data_pkey PRIMARY KEY (id)
 	  );
   COMMIT;

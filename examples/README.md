@@ -31,7 +31,7 @@ docker-compose up
 This command will create two containers, one running PostgreSQL and the other running the Bot. On top of that, it will
 execute a script that will enable PostGIS extension and create the necessary table on the database.
 
-The data will be persisted in a volume called `data` that is created in the directory: even if you shout down the container,
-the interactions will remain on your machine.
+The data and the media will be persisted in two volumes called `data` and `media` respectively, both of which are automatically
+created in the directory. Even if you shout down the container, the interactions and the media will remain on your machine.
 
 The database can be accessed on `localhost:5438`, and the Bot on `localhost:8080`.

@@ -6,13 +6,13 @@ The service needs some configuration in order to be used effectively.
 
 The service accepts the following environment variables.
 
-| Name                            |  Type   | Required | Description                                                                                                 |          Default           |
-|---------------------------------|:-------:|:--------:|-------------------------------------------------------------------------------------------------------------|:--------------------------:|
-| HTTP_PORT                       | integer |    ✓     | Port on which the service will be exposed                                                                   |            8080            |
-| LOG_LEVEL                       | string  |    ✓     | [pino logger level](https://getpino.io/#/docs/api?id=level-string)                                          |           `info`           |
-| CONFIGURATION_PATH              | string  |    ✓     | path to the [configuration file](#service-configuration)                                                    |  `/home/app/config.json`   |
-| CUSTOM_TRANSLATIONS_FOLDER_PATH | string  |    ✖     | optional path to the folder containing [custom translation files](#custom-translations)                     | `/home/app/custom_locales` |
-| TELEGRAM_AUTH_TOKEN             | string  |    ✓     | [unique authentication token](https://core.telegram.org/bots/api#authorizing-your-bot) of your Telegram Bot |             -              |
+| Name                            |  Type   | Required | Description                                                                                                 |           Default           |
+|---------------------------------|:-------:|:--------:|-------------------------------------------------------------------------------------------------------------|:---------------------------:|
+| HTTP_PORT                       | integer |    ✓     | Port on which the service will be exposed                                                                   |            8080             |
+| LOG_LEVEL                       | string  |    ✓     | [pino logger level](https://getpino.io/#/docs/api?id=level-string)                                          |           `info`            |
+| CONFIGURATION_PATH              | string  |    ✓     | path to the [configuration file](#service-configuration)                                                    |  `/home/node/config.json`   |
+| CUSTOM_TRANSLATIONS_FOLDER_PATH | string  |    ✖     | optional path to the folder containing [custom translation files](#custom-translations)                     | `/home/node/custom_locales` |
+| TELEGRAM_AUTH_TOKEN             | string  |    ✓     | [unique authentication token](https://core.telegram.org/bots/api#authorizing-your-bot) of your Telegram Bot |              -              |
 
 # Service configuration
 
@@ -224,6 +224,9 @@ corresponding step.
 The `dataStorage` property is used to configure where the media send by users should be persisted. The Bot is built to
 support multiple storage types, but for now only **file system** can be used.
 
+Regardless of the storage used, the Bot will persist on the database the path to be called to retrieve the media in the
+form of `/media/:media_id`.
+
 ### File system
 
 To use file system as storage, the property `mediaStorage` should have the following structure:
@@ -236,6 +239,12 @@ To use file system as storage, the property `mediaStorage` should have the follo
   }
 }
 ```
+
+:::tip
+If you are using the file system ad media storage in a Docker container, remember to bind a volume to the configured
+`folderPath` (that in this case will refer to a location inside the container) to persist the saved media after the
+container is stopped.
+:::
 
 # Custom translations
 

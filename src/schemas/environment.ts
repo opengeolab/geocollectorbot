@@ -2,8 +2,8 @@ import { FromSchema } from 'json-schema-to-ts'
 
 const DEFAULT_PORT = 8080
 const DEFAULT_LOG_LEVEL = 'info'
-const DEFAULT_CONFIG_PATH = '/home/app/config.json'
-const CUSTOM_TRANSLATIONS_FOLDER_PATH = '/home/app/custom_locales'
+const DEFAULT_CONFIG_PATH = '/home/node/config.json'
+const CUSTOM_TRANSLATIONS_FOLDER_PATH = '/home/node/custom_locales'
 
 export const environmentSchema = {
   type: 'object',

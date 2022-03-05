@@ -31,4 +31,5 @@ services:
     ports:
       - '8080:8080'
     volumes:
-      - ./config.json:/home/app/config.json
+      - ./config.json:/home/node/config.json
+      - ./media:/home/node/media

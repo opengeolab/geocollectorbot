@@ -37,7 +37,7 @@ the following command:
 docker run --name geo-collector-bot \
   --detach \
   -e TELEGRAM_AUTH_TOKEN="<telegram_auth_token>" \
-  -v <absolute_path_to_config_file>:/home/app/config.json \
+  -v <absolute_path_to_config_file>:/home/node/config.json \
   -p 8080:8080 \
   geo-collector-bot
 ```
@@ -58,15 +58,15 @@ Let's go through the lines of the command one by one.
 The other [variables](./30_configuration.md#environment-variables) are not set here since we want to use their default value,
 but you can provide your own values with the same syntax (i.e., `-e <variable_name>=<variable_value>`).
 
-`-v <absolute_path_to_config_file>:/home/app/config.json` mounts a new [volume](https://docs.docker.com/storage/volumes/)
+`-v <absolute_path_to_config_file>:/home/node/config.json` mounts a new [volume](https://docs.docker.com/storage/volumes/)
 containing the [configuration file](./30_configuration.md#service-configuration). You need to substitute `<absolute_path_to_config_file>`
 with the absolute path of your configuration file *on the host*.
 <br>
-Please note that with this command, *in the container* the file will be placed under `/home/app/config.json` which is the
+Please note that with this command, *in the container* the file will be placed under `/home/node/config.json` which is the
 default value of the `CONFIGURATION_PATH` environment variable. If you provide a different value for this variable you need
 to change tht mount path accordingly.
 
-`-v <absolute_path_to_custom_translations_folder>:/home/app/custom_locales` mounts a new volume containing the
+`-v <absolute_path_to_custom_translations_folder>:/home/node/custom_locales` mounts a new volume containing the
 [custom translation files](./30_configuration.md#custom-translations). The line is not in the command above, add it if you
 need the functionality.
 
