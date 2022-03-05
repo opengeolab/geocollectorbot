@@ -12,6 +12,7 @@ export const baseEnv: Environment = {
   LOG_LEVEL: 'silent',
   CONFIGURATION_PATH: join(__dirname, '../__mocks__/configmap.json'),
   TELEGRAM_AUTH_TOKEN: 'telegram_auth_token',
+  UPDATE_MODE: 'polling',
 }
 
 export const mockLogger: FastifyLoggerInstance = {
@@ -42,6 +43,7 @@ type MockFastifyProps = {
   env?: Record<string, any>
   decorate?: jest.Mock
   get?: jest.Mock
+  post?: jest.Mock
   bot?: Record<string, any>
   dataStorageClient?: Record<string, any>
   mediaStorageClient?: Record<string, any>
@@ -52,6 +54,7 @@ type MockFastifyProps = {
 export const getMockFastify = (props: MockFastifyProps = {}): FastifyInstance => ({
   decorate: props.decorate || jest.fn(),
   get: props.get || jest.fn(),
+  post: props.post || jest.fn(),
   log: mockLogger,
   env: props.env || baseEnv,
   configuration: props.configuration || {},

@@ -32,7 +32,7 @@ export const buildService = async (): Promise<FastifyInstance> => {
   fastify.decorate('mediaStorageClient', mediaStorageClient)
   registerGetMediaRoute(fastify)
 
-  const bot = buildBot(fastify)
+  const bot = await buildBot(fastify)
   fastify.decorate('bot', bot)
   await fastify.bot.launch()
 

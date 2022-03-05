@@ -19,10 +19,26 @@ import {
 } from '../middlewares'
 import { DecoratedContext } from '../models/DecoratedContext'
 
-export const buildBot = (service: FastifyInstance): Telegraf<DecoratedContext> => {
-  const { env: { TELEGRAM_AUTH_TOKEN } } = service
+const BOT_WEBHOOK_PATH = '/bot'
+
+const setupWebhook = async (service: FastifyInstance, bot: Telegraf<DecoratedContext<any>>) => {
+  const { env: { PUBLIC_URL } } = service
+
+  if (!PUBLIC_URL) {
+    throw new Error('You must provide the PUBLIC_URL env variable to use webhook mode')
+  }
+
+  service.post(BOT_WEBHOOK_PATH, (request, reply) => { bot.handleUpdate(request.body as any, reply.raw) })
+
+  await bot.telegram.setWebhook(`${PUBLIC_URL}${BOT_WEBHOOK_PATH}`)
+}
+
+export const buildBot = async (service: FastifyInstance): Promise<Telegraf<DecoratedContext>> => {
+  const { env: { TELEGRAM_AUTH_TOKEN, UPDATE_MODE } } = service
 
   const bot = new Telegraf<DecoratedContext>(TELEGRAM_AUTH_TOKEN)
+
+  if (UPDATE_MODE === 'webhook') { await setupWebhook(service, bot) }
 
   bot
     .use(buildSetLanguageMiddleware(service))

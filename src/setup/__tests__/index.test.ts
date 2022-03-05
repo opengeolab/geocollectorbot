@@ -43,7 +43,7 @@ describe('Setup', () => {
   const mockRegisterGetMediaRoute = jest.spyOn(mediaStorage, 'registerGetMediaRoute')
 
   const mockBot = {} as unknown as Telegraf<DecoratedContext>
-  const mockBuildBot = jest.spyOn(bot, 'buildBot').mockReturnValue(mockBot)
+  const mockBuildBot = jest.spyOn(bot, 'buildBot').mockResolvedValue(mockBot)
 
   it('should build service correctly', async () => {
     const result = await buildService()

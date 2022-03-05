@@ -8,11 +8,23 @@ The service accepts the following environment variables.
 
 | Name                            |  Type   | Required | Description                                                                                                 |           Default           |
 |---------------------------------|:-------:|:--------:|-------------------------------------------------------------------------------------------------------------|:---------------------------:|
-| HTTP_PORT                       | integer |    ✓     | Port on which the service will be exposed                                                                   |            8080             |
+| HTTP_PORT                       | integer |    ✓     | port on which the service will be exposed                                                                   |            8080             |
 | LOG_LEVEL                       | string  |    ✓     | [pino logger level](https://getpino.io/#/docs/api?id=level-string)                                          |           `info`            |
 | CONFIGURATION_PATH              | string  |    ✓     | path to the [configuration file](#service-configuration)                                                    |  `/home/node/config.json`   |
 | CUSTOM_TRANSLATIONS_FOLDER_PATH | string  |    ✖     | optional path to the folder containing [custom translation files](#custom-translations)                     | `/home/node/custom_locales` |
 | TELEGRAM_AUTH_TOKEN             | string  |    ✓     | [unique authentication token](https://core.telegram.org/bots/api#authorizing-your-bot) of your Telegram Bot |              -              |
+| UPDATE_MODE                     | string  |    ✖     | defines how the Bot will receive updated. Possible values are `webhook` and `polling`                       |          `polling`          |
+| PUBLIC_URL                      | string  |    ✖     | public url on which the Bot is exposed. Needed (and required) if UPDATE_MODE is `webhook`                   |              -              |
+
+## Update mode
+
+Telegram Bots can receive updates from the Telegram server in two ways, **polling** or **webhook**, as explained 
+[here](https://core.telegram.org/bots/api#getting-updates).
+
+Geo Collector Bot supports both of these modalities, through the **UPDATE_MODE** environment variable.
+
+If the variable is set to `webhook`, you also need to provide a value to the **PUBLIC_URL** environment variable. This
+should be the public url on which your instance of this service is reachable (e.g., https://geo-collector-bot.herokuapp.com).
 
 # Service configuration
 
