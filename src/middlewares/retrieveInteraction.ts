@@ -54,7 +54,6 @@ const getInteractionFromStorageClient = async (
     throw new ProcessError('No ongoing interaction found', ctx.t('errors.noInteractionsFound'))
   }
 
-  // TODO handle the "too many interactions" case
   if (interactionsCount > 1) {
     logger.error({ chatId, interactionsCount }, 'Too many ongoing interactions found')
     throw new ProcessError('Too many ongoing interactions found', ctx.t('errors.tooManyInteractionsFound'))

@@ -25,7 +25,6 @@ export const buildPhotoHandler: HandlerBuilder<Update.MessageUpdate> = service =
 
   const stepValueBuilder: StepValueBuilder<Message.PhotoMessage> = async ({ service: { log: logger }, ctx, message }) => {
     const { photo: photos } = message
-    // TODO chose correct size
     const photo = photos[photos.length - 1]
     const { file_id: fileId } = photo
 

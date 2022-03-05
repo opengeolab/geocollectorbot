@@ -2,7 +2,7 @@ commands:
   # Message sent when user invokes command "/start"
   start: |
     Hello from Geo Collector Bot\!
-    Start collecting data with the `/collect` command\.
+    Start collecting data with the `/collect` command
 
   # Message sent when user invokes command "/help"
   help: The help section is work in progress\.\.\.
@@ -15,7 +15,9 @@ events:
   interactionCompleted: Your data have been received correctly\. Thank you for your report\!
 
   # Message sent when the ongoing interaction is correctly aborted
-  interactionAborted: Your current interaction has been aborted correctly\. Start a new one with the `/collect` command\.
+  interactionAborted: |
+    Your current interaction has been aborted correctly\.
+    Start a new one with the `/collect` command
 
 keyboards:
   # Text to display in the keyboard whenever the user's location is asked
@@ -27,6 +29,11 @@ errors:
 
   # Message sent when the id of chat cannot be found
   chatIdNotFound: Sorry, I couldn't recognize this chat
+
+  # Message sent when the user issues the /collect command but an interaction for the chat is already ongoing
+  ongoingInteractionAlreadyExists: |
+    It seeems you alredy have an ongoing interaction\.
+    Please, complete it or abort it with the `/abort` commad\.
 
   # Message sent when the user's interaction cannot be retrieved from the database
   retrieveInteraction: We are experiencing problems retrieving your data\. Please, try again later
