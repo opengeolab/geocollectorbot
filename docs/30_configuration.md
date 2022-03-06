@@ -255,6 +255,35 @@ If you are using the file system ad media storage in a Docker container, remembe
 container is stopped.
 :::
 
+## Configuration values interpolation
+
+Each string value in the data storage and media storage configuration can be substituted at run time with an environment
+variable if it is annotated with a [Handlebars template](https://handlebarsjs.com/).
+
+For example, lets consider the following data storage configuration:
+
+```json
+{
+  "type": "postgres",
+  "configuration": {
+    "connectionString": "{{CONNECTION_STRING}}",
+    "interactionsTable": "interactions"
+  }
+}
+```
+
+If in your environment you have the `CONNECTION_STRING` variable, the final configuration will look like this:
+
+```json
+{
+  "type": "postgres",
+  "configuration": {
+    "connectionString": "connection_string_from_environment",
+    "interactionsTable": "interactions"
+  }
+}
+```
+
 # Custom translations
 
 This Bot is built to be multi-language. By default, only English translation is offered, and English is the default and

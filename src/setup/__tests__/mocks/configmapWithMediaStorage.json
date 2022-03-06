@@ -1,0 +1,37 @@
+{
+  "flow": {
+    "firstStepId": "question_1",
+    "steps": [
+      {
+        "id": "question_1",
+        "question": "First question",
+        "config": {
+          "type": "text"
+        },
+        "nextStepId": "question_2"
+      },
+      {
+        "id": "question_2",
+        "question": "Second question",
+        "config": {
+          "type": "text"
+        },
+        "persistAs": "second_question"
+      }
+    ]
+  },
+  "dataStorage": {
+    "type": "postgres",
+    "configuration": {
+      "connectionString": "postgresql://user:password@host:5432/database",
+      "interactionsTable": "interactions_table",
+      "ssl": false
+    }
+  },
+  "mediaStorage": {
+    "type": "fileSystem",
+    "configuration": {
+      "folderPath": "folder-path"
+    }
+  }
+}

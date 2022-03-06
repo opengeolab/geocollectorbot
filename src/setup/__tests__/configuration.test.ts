@@ -1,16 +1,20 @@
 import { join } from 'path'
 
+import * as flow from '../../lib/configurationParser'
+import * as envInterpolator from '../../utils/envInterpolator'
 import { getMockFastify, mockLogger } from '../../utils/testUtils'
 import { retrieveConfiguration } from '../configuration'
-import * as flow from '../flow'
 
 import configmap from './mocks/configmap.json'
+import configmapWithMediaStorage from './mocks/configmapWithMediaStorage.json'
 
 describe('Configuration', () => {
   describe('retrieveConfiguration', () => {
     const parseFlowMock = jest.spyOn(flow, 'parseFlow')
+    const interpolateEnvMock = jest.spyOn(envInterpolator, 'interpolateEnv')
 
     const validConfigMapPath = join(__dirname, './mocks/configmap.json')
+    const validConfigMapWithMediaStoragePath = join(__dirname, './mocks/configmapWithMediaStorage.json')
     const invalidConfigMapPath = join(__dirname, './mocks/invalidConfigMap.json')
 
     it('should throw if configuration is not valid', async () => {
@@ -38,7 +42,7 @@ describe('Configuration', () => {
       expect(parseFlowMock).toHaveBeenCalledWith(configmap, mockLogger)
     })
 
-    it('should return correct configuration', async () => {
+    it('should return correct configuration without media storage', async () => {
       const mockFlow = { firstStepId: 'foo', steps: {} }
       parseFlowMock.mockReturnValue(mockFlow)
 
@@ -56,6 +60,33 @@ describe('Configuration', () => {
 
       expect(parseFlowMock).toHaveBeenCalledTimes(1)
       expect(parseFlowMock).toHaveBeenCalledWith(configmap, mockLogger)
+
+      expect(interpolateEnvMock).toHaveBeenCalledTimes(1)
+      expect(interpolateEnvMock).toHaveBeenCalledWith(configmap.dataStorage, mockService)
+    })
+
+    it('should return correct configuration with media storage', async () => {
+      const mockFlow = { firstStepId: 'foo', steps: {} }
+      parseFlowMock.mockReturnValue(mockFlow)
+
+      const mockService = getMockFastify({ env: { CONFIGURATION_PATH: validConfigMapWithMediaStoragePath } })
+
+      const expectedConfiguration = {
+        dataStorage: configmapWithMediaStorage.dataStorage,
+        mediaStorage: configmapWithMediaStorage.mediaStorage,
+        flow: mockFlow,
+      }
+
+      const configuration = await retrieveConfiguration(mockService)
+
+      expect(configuration).toStrictEqual(expectedConfiguration)
+
+      expect(parseFlowMock).toHaveBeenCalledTimes(1)
+      expect(parseFlowMock).toHaveBeenCalledWith(configmapWithMediaStorage, mockLogger)
+
+      expect(interpolateEnvMock).toHaveBeenCalledTimes(2)
+      expect(interpolateEnvMock).toHaveBeenNthCalledWith(1, configmapWithMediaStorage.dataStorage, mockService)
+      expect(interpolateEnvMock).toHaveBeenNthCalledWith(2, configmapWithMediaStorage.mediaStorage, mockService)
     })
   })
 })

@@ -6,7 +6,7 @@ import { DataStorageConfig } from '../../schemas/configuration/dataStorage'
 import { RawFlow } from '../../schemas/configuration/flow'
 import { MediaStorageConfig } from '../../schemas/configuration/mediaStorage'
 import { mockLogger } from '../../utils/testUtils'
-import { parseFlow } from '../flow'
+import { parseFlow } from '../configurationParser'
 
 describe('Flow', () => {
   describe('parseFlow', () => {

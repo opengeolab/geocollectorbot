@@ -3,10 +3,10 @@ import fs from 'fs/promises'
 import Ajv from 'ajv'
 import { FastifyInstance } from 'fastify'
 
+import { parseFlow } from '../lib/configurationParser'
 import { Configuration } from '../models/Configuration'
 import { configurationSchema, RawConfiguration } from '../schemas/configuration'
-
-import { parseFlow } from './flow'
+import { interpolateEnv } from '../utils/envInterpolator'
 
 export const retrieveConfiguration = async (service: FastifyInstance): Promise<Configuration> => {
   const { env: { CONFIGURATION_PATH }, log: logger } = service
@@ -22,6 +22,9 @@ export const retrieveConfiguration = async (service: FastifyInstance): Promise<C
   }
 
   const parsedFlow = parseFlow(configurationContent, logger)
+
+  interpolateEnv(configurationContent.dataStorage, service)
+  configurationContent.mediaStorage && interpolateEnv(configurationContent.mediaStorage, service)
 
   return {
     dataStorage: configurationContent.dataStorage,
