@@ -1,73 +1,53 @@
 commands:
-  # Message sent when user invokes command "/start"
   start: |
     Hello from Geo Collector Bot\!
     Start collecting data with the */collect* command
 
-  # Message sent when user invokes command "/help"
   help: |
-    This Bot designed for collecting data trought a flow of questions\.
+    This Bot designed for for easily sharing problems that you may discover while you visit a regional park\.
 
     The commands you have at your disposal are:
     \- */collect* to start the collect process
     \- */abort* to stop the collect process
-    \- */help* to visualize this message
 
 events:
-  # Confirmation message sent when user selects an option in the context of a callback query question
   callbackQueryOptionSelected: "You selected: *{{selectedText}}*"
 
-  # Message sent when user completes an interaction
   interactionCompleted: Your data have been received correctly\. Thank you for your report\!
 
-  # Message sent when the ongoing interaction is correctly aborted
   interactionAborted: |
     Your current interaction has been aborted correctly\.
     Start a new one with the */collect* command
 
 keyboards:
-  # Text to display in the keyboard whenever the user's location is asked
   location: Send my current location
 
 errors:
-  # Message sent when an unknown error occurs
   unknown: Ops, something went wrong on our hand\. Please, try again later
 
-  # Message sent when the id of chat cannot be found
   chatIdNotFound: Sorry, I couldn't recognize this chat
 
-  # Message sent when the user issues the /collect command but an interaction for the chat is already ongoing
   ongoingInteractionAlreadyExists: |
     It seeems you alredy have an ongoing interaction\.
     Please, complete it or abort it with the */abort* commad\.
 
-  # Message sent when the user's interaction cannot be retrieved from the database
   retrieveInteraction: We are experiencing problems retrieving your data\. Please, try again later
 
-  # Message sent when the creation of a new interaction fails
   createInteraction: We are experiencing problems persisting you data\. Please, try again later
 
-  # Message sent when the abort of an ongoing interaction fails
   abortInteraction: We are experiencing problems aborting your current interaction\. Please, try again later
 
-  #  Message sent when an error occurs during the update of an interaction
   updateInteraction: We are experiencing problems saving your answer\. Please, try again later
 
-  #  Message sent when no ongoing interaction is found on the database
   noInteractionsFound: It seems you don't have any ongoing interaction\. Start one with the */collect* command
 
-  #  Message sent when more than one ongoing interaction is found on the database
   tooManyInteractionsFound: It seems you have multiple ongoing interactions
 
-  #  Message sent when the current step of the ongoing interaction can not be determined
   unknownStep: Sorry, I couldn't determine the state of your interaction
 
-  # Message sent when the response provided by the user does not match the question type
   wrongStepType: The answer you have provided is not suitable for the question\. Please, try again
 
-  # Message sent when the option selected by the user in the context of a callback query question is not valid
   unknownOption: The answer you have selected is not valid\. Please, try again
 
-  # Message sent when an error occurs trying to save a user-provided media
   savingMedia: We could not save your media\. Please, try again
 

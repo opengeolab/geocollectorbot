@@ -5,7 +5,8 @@
       {
         "id": "site_of_interest",
         "question": {
-          "en": "Where are you now?"
+          "en": "Where are you now?",
+          "it": "Dove ti trovi in questo momento?"
         },
         "config": {
           "type": "multipleChoice",
@@ -43,7 +44,8 @@
       {
         "id": "description",
         "question": {
-          "en": "Please, describe the issue"
+          "en": "Please, describe the issue",
+          "it": "Fornisci una breve descrizione del problema"
         },
         "config": {
           "type": "text"
@@ -53,11 +55,26 @@
       {
         "id": "location",
         "question": {
-          "en": "Please, provide your precise location"
+          "en": "Please, provide your precise location",
+          "it": "Invia la tua posizione precisa"
         },
         "config": {
           "type": "location"
-        }
+        },
+        "persistAs": "location",
+        "nextStepId": "photo"
+      },
+      {
+        "id": "photo",
+        "question": {
+          "en": "Please, provide a picture of the issue",
+          "it": "Fornisci una foto che mostri il problema"
+        },
+        "config": {
+          "type": "media",
+          "subType": "photo"
+        },
+        "persistAs": "photo"
       }
     ]
   },
@@ -67,6 +84,12 @@
       "connectionString": "{{DATABASE_URL}}",
       "interactionsTable": "interactions",
       "ssl": true
+    }
+  },
+  "mediaStorage": {
+    "type": "fileSystem",
+    "configuration": {
+      "folderPath": "/app/media"
     }
   }
 }

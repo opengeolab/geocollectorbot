@@ -1,0 +1,53 @@
+commands:
+  start: |
+    Benvenuto, io sono Geo Collector Bot\!
+    Comincia a raccogliere dati con il comando */collect*
+
+  help: |
+    Questo Bot è stato creato per permetterti di condividere facilmente qualsiasi problema tu posso incontrare mentre visiti uno dei parchi regionali\.
+
+    I comandi a tua disposizione sono:
+    \- */collect* per iniziare a raccogliere dati
+    \- */abort* per fermare un processo di raccolta dati in corso
+
+events:
+  callbackQueryOptionSelected: "Hai selezionato: *{{selectedText}}*"
+
+  interactionCompleted: I tuoi dati sono stai salvati correttamente\. Grazie per il tuo contributo\!
+
+  interactionAborted: |
+    Il processo di raccolta dati in corso è stato fermato con successo\.
+    Iniziane uno nuovo con il comando */collect*
+
+keyboards:
+  location: Invia la mia posizione corrente
+
+errors:
+  unknown: Ops, qualcosa è andato storto\. Riprova più tardi
+
+  chatIdNotFound: Mi dispiace, non sono riuscito a capire da dove mi stai scrivendo
+
+  ongoingInteractionAlreadyExists: |
+    Sembra che tu abbia un già processo di raccolta dati in corso\.
+    Completalo o fermalo con il comando */abort*\.
+
+  retrieveInteraction: Stiamo avendo dei problemi a recuperare i dati del tuo processo di raccolta\. Riprova più tardi
+
+  createInteraction: Stiamo avendo dei problemi a inziare un nuovo processo di raccolta\. Riprova più tardi
+
+  abortInteraction: Stiamo avendo dei problemi a fermare il tuo processo di raccolta\. Riprova più tardi
+
+  updateInteraction: Stiamo avendo dei problemi a salvare la tua risposta\. Riprova più tardi
+
+  noInteractionsFound: Sembra che tu non abbia un processo di raccolta dati in corso\. Iniziane uno con il comando */collect*
+
+  tooManyInteractionsFound: Sembra che tu abbia troppi processi di raccolta dati in corso
+
+  unknownStep: Mi dispiace, non sono riuscito a capire a che punto del processo tu sia
+
+  wrongStepType: La risposta che hai fornito non corrisponde al tipo di domanda\. Riprova
+
+  unknownOption: La risposta che hai selezionato non è valida\. Riprova
+
+  savingMedia: Non siamo riusciti a salvare il tuo allegato\. Riprova
+
