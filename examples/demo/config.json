@@ -57,17 +57,6 @@
         },
         "config": {
           "type": "location"
-        },
-        "nextStepId": "photo"
-      },
-      {
-        "id": "photo",
-        "question": {
-          "en": "Please, provide a picture of the issue"
-        },
-        "config": {
-          "type": "media",
-          "subType": "photo"
         }
       }
     ]
@@ -75,18 +64,9 @@
   "dataStorage": {
     "type": "postgres",
     "configuration": {
-      "user": "root",
-      "password": "password",
-      "host": "postgres",
-      "database": "geo_collector_bot",
-      "port": 5432,
-      "interactionsTable": "interactions"
-    }
-  },
-  "mediaStorage": {
-    "type": "fileSystem",
-    "configuration": {
-      "folderPath": "/home/node/media"
+      "connectionString": "{{DATABASE_URL}}",
+      "interactionsTable": "interactions",
+      "ssl": true
     }
   }
 }
