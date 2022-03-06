@@ -41,9 +41,16 @@ export class PgClient implements DataStorageClient {
   }
 
   constructor (configuration: PgConfiguration, logger: FastifyLoggerInstance) {
-    this.pool = new Pool(configuration)
+    const { connectionString, interactionsTable, ssl } = configuration
+
     this.logger = logger
-    this.table = configuration.interactionsTable
+
+    this.pool = new Pool({
+      connectionString,
+      ssl: ssl ? { rejectUnauthorized: false } : false,
+    })
+
+    this.table = interactionsTable
   }
 
   async createInteraction (chatId: number, firstStepId: string) {

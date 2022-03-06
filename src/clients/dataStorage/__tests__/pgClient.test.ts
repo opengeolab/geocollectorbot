@@ -27,12 +27,9 @@ describe('Postgres client', () => {
   (Pool as unknown as jest.Mock).mockReturnValue(mockPool)
 
   const config: PgConfiguration = {
-    user: 'user',
-    password: 'password',
-    host: 'host',
-    database: 'database',
-    port: 80,
+    connectionString: 'postgresql://user:password@host:5432/database',
     interactionsTable: 'interactions_table',
+    ssl: false,
   }
 
   const chatId = 123
@@ -42,6 +39,42 @@ describe('Postgres client', () => {
   beforeEach(() => { pgClient = new PgClient(config, mockLogger) })
 
   afterAll(() => jest.restoreAllMocks())
+
+  describe('constructor', () => {
+    it('should build without ssl', () => {
+      const customConfig: PgConfiguration = {
+        connectionString: 'postgresql://user:password@host:5432/database',
+        interactionsTable: 'interactions_table',
+        ssl: false,
+      }
+
+      // eslint-disable-next-line no-new
+      new PgClient(customConfig, mockLogger)
+
+      expect(Pool).toHaveBeenCalledTimes(2)
+      expect(Pool).toHaveBeenLastCalledWith({
+        connectionString: customConfig.connectionString,
+        ssl: false,
+      })
+    })
+
+    it('should build with ssl', () => {
+      const customConfig: PgConfiguration = {
+        connectionString: 'postgresql://user:password@host:5432/database',
+        interactionsTable: 'interactions_table',
+        ssl: true,
+      }
+
+      // eslint-disable-next-line no-new
+      new PgClient(customConfig, mockLogger)
+
+      expect(Pool).toHaveBeenCalledTimes(2)
+      expect(Pool).toHaveBeenLastCalledWith({
+        connectionString: customConfig.connectionString,
+        ssl: { rejectUnauthorized: false },
+      })
+    })
+  })
 
   describe('createInteraction', () => {
     const firstStepId = 'first_step'

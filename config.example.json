@@ -77,12 +77,9 @@
   "dataStorage": {
     "type": "postgres",
     "configuration": {
-      "user": "user",
-      "password": "user",
-      "host": "localhost",
-      "database": "geo_collector_bot",
-      "port": 5432,
-      "interactionsTable": "data"
+      "connectionString": "postgresql://user:password@localhost:5432/geo_collector_bot",
+      "interactionsTable": "data",
+      "ssl": false
     }
   },
   "mediaStorage": {

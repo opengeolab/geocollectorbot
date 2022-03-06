@@ -24,12 +24,9 @@ describe('Data storage client', () => {
       const config: DataStorageConfig = {
         type: 'postgres',
         configuration: {
-          user: 'user',
-          password: 'password',
-          host: 'host',
-          database: 'database',
-          port: 80,
+          connectionString: 'postgresql://user:password@host:5432/database',
           interactionsTable: 'interactions_table',
+          ssl: false,
         },
       }
 

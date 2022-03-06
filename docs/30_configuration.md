@@ -198,12 +198,9 @@ To use PostgreSQL as storage, the property `dataStorage` should have the followi
 {
   "type": "postgres",
   "configuration": {
-    "user": "pg user",
-    "password": "pg password",
-    "host": "pg host",
-    "database": "name of the database",
-    "port": 123,
-    "interactionsTable": "name of the table where interactions are saved"
+    "connectionString": "db connection string",
+    "interactionsTable": "name of the table where interactions are saved",
+    "ssl": false
   }
 }
 ```

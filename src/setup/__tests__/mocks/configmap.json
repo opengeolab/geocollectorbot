@@ -23,12 +23,9 @@
   "dataStorage": {
     "type": "postgres",
     "configuration": {
-      "user": "user",
-      "password": "password",
-      "host": "host",
-      "database": "database",
-      "port": 80,
-      "interactionsTable": "interactions_table"
+      "connectionString": "postgresql://user:password@host:5432/database",
+      "interactionsTable": "interactions_table",
+      "ssl": false
     }
   }
 }
