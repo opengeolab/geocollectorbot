@@ -8,7 +8,7 @@ The service accepts the following environment variables.
 
 | Name                            |  Type   | Required | Description                                                                                                 |           Default           |
 |---------------------------------|:-------:|:--------:|-------------------------------------------------------------------------------------------------------------|:---------------------------:|
-| HTTP_PORT                       | integer |    ✓     | port on which the service will be exposed                                                                   |            8080             |
+| PORT                            | integer |    ✓     | port on which the service will be exposed                                                                   |            8080             |
 | LOG_LEVEL                       | string  |    ✓     | [pino logger level](https://getpino.io/#/docs/api?id=level-string)                                          |           `info`            |
 | CONFIGURATION_PATH              | string  |    ✓     | path to the [configuration file](#service-configuration)                                                    |  `/home/node/config.json`   |
 | CUSTOM_TRANSLATIONS_FOLDER_PATH | string  |    ✖     | optional path to the folder containing [custom translation files](#custom-translations)                     | `/home/node/custom_locales` |

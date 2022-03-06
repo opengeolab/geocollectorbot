@@ -1,3 +1,5 @@
 import { buildService } from './setup'
 
-buildService().then(fastify => fastify.listen(fastify.env.HTTP_PORT, '0.0.0.0'))
+const DEFAULT_PORT = 8080
+
+buildService().then(fastify => fastify.listen(fastify.env.PORT || DEFAULT_PORT, '0.0.0.0'))

@@ -8,7 +8,7 @@ import { DecoratedContext } from '../models/DecoratedContext'
 import { Environment } from '../schemas/environment'
 
 export const baseEnv: Environment = {
-  HTTP_PORT: 'http_port',
+  PORT: 'http_port',
   LOG_LEVEL: 'silent',
   CONFIGURATION_PATH: join(__dirname, '../__mocks__/configmap.json'),
   TELEGRAM_AUTH_TOKEN: 'telegram_auth_token',
