@@ -1,4 +1,3 @@
-import { FastifyInstance } from 'fastify'
 import * as Handlebars from 'handlebars'
 
 function interpolateObjectValuesDeep (obj: Record<string, any>, env: Record<string, any>) {
@@ -15,10 +14,4 @@ function interpolateObjectValuesDeep (obj: Record<string, any>, env: Record<stri
     })
 }
 
-export const interpolateEnv = (obj: Record<string, any>, service: FastifyInstance): void => {
-  service.log.debug({ env: process.env, obj }, 'Pre')
-
-  interpolateObjectValuesDeep(obj, process.env)
-
-  service.log.debug({ obj }, 'Post')
-}
+export const interpolateEnv = (obj: Record<string, any>): void => { interpolateObjectValuesDeep(obj, process.env) }

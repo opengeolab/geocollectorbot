@@ -1,9 +1,8 @@
 import { interpolateEnv } from '../envInterpolator'
-import { getMockFastify } from '../testUtils'
 
 describe('Env interpolator', () => {
   describe('interpolateEnv', () => {
-    const mockService = getMockFastify({ env: { foo: 'bar_env' } })
+    process.env.foo = 'bar_env'
 
     it('should interpolate object', () => {
       const obj: Record<string, any> = {
@@ -28,7 +27,7 @@ describe('Env interpolator', () => {
         nullProp: null,
       }
 
-      interpolateEnv(obj, mockService)
+      interpolateEnv(obj)
 
       expect(obj).toStrictEqual({
         toInterpolate: 'bar_env',

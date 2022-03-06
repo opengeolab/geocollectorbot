@@ -62,7 +62,7 @@ describe('Configuration', () => {
       expect(parseFlowMock).toHaveBeenCalledWith(configmap, mockLogger)
 
       expect(interpolateEnvMock).toHaveBeenCalledTimes(1)
-      expect(interpolateEnvMock).toHaveBeenCalledWith(configmap.dataStorage, mockService)
+      expect(interpolateEnvMock).toHaveBeenCalledWith(configmap.dataStorage)
     })
 
     it('should return correct configuration with media storage', async () => {
@@ -85,8 +85,8 @@ describe('Configuration', () => {
       expect(parseFlowMock).toHaveBeenCalledWith(configmapWithMediaStorage, mockLogger)
 
       expect(interpolateEnvMock).toHaveBeenCalledTimes(2)
-      expect(interpolateEnvMock).toHaveBeenNthCalledWith(1, configmapWithMediaStorage.dataStorage, mockService)
-      expect(interpolateEnvMock).toHaveBeenNthCalledWith(2, configmapWithMediaStorage.mediaStorage, mockService)
+      expect(interpolateEnvMock).toHaveBeenNthCalledWith(1, configmapWithMediaStorage.dataStorage)
+      expect(interpolateEnvMock).toHaveBeenNthCalledWith(2, configmapWithMediaStorage.mediaStorage)
     })
   })
 })

@@ -23,8 +23,8 @@ export const retrieveConfiguration = async (service: FastifyInstance): Promise<C
 
   const parsedFlow = parseFlow(configurationContent, logger)
 
-  interpolateEnv(configurationContent.dataStorage, service)
-  configurationContent.mediaStorage && interpolateEnv(configurationContent.mediaStorage, service)
+  interpolateEnv(configurationContent.dataStorage)
+  configurationContent.mediaStorage && interpolateEnv(configurationContent.mediaStorage)
 
   return {
     dataStorage: configurationContent.dataStorage,
