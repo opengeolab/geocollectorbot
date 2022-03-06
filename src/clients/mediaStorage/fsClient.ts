@@ -1,3 +1,4 @@
+import { existsSync, mkdirSync } from 'fs'
 import { writeFile } from 'fs/promises'
 import { Readable } from 'stream'
 
@@ -14,7 +15,13 @@ export class FsClient implements MediaStorageClient {
 
   constructor (service: FastifyInstance, configuration: FsConfiguration) {
     this.logger = service.log
+
     this.folderPath = configuration.folderPath
+
+    if (!existsSync(this.folderPath)) {
+      this.logger.debug({ folderPath: this.folderPath }, 'Media folder not existing. Creating it...')
+      mkdirSync(this.folderPath)
+    }
 
     service.register(fastifyStatic, { root: this.folderPath })
   }
