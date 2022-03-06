@@ -1,1 +1,1 @@
-worker: node --unhandled-rejections=strict build/index.js
+web: node --unhandled-rejections=strict build/index.js
