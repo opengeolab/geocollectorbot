@@ -4,7 +4,7 @@
 [![Pipeline Status](https://gitlab.com/geolab.como/geocollectorbot/badges/main/pipeline.svg)](https://gitlab.com/geolab.como/geocollectorbot)
 
 Telegram BOT for geodata collection, developed within the project [INSUBRI.PARKS](https://insubriparksturismo.eu) funded 
-by the Interreg Co-operation Programme 2014 -2020 (ID 605472).
+by the Interreg Co-operation Programme Italy–Switzerland 2014 -2020 (ID 605472).
 
 ## Demo
 
