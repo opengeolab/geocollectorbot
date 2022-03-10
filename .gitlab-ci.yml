@@ -1,14 +1,22 @@
+variables:
+  IMAGE_NAME: geo-collector-bot
+
 workflow:
   rules:
     - if: "$CI_COMMIT_TAG"
     - if: "$CI_COMMIT_BRANCH"
 
 default:
+  services:
+    - name: docker:19.03.15-dind
+      alias: docker
   image: node:fermium-alpine
 
 stages:
   - prepare
   - test
+  - post-test
+  - package
 
 install-dependencies:
   stage: prepare
@@ -36,3 +44,42 @@ test:
     reports:
       junit:
         - junit.xml
+
+build:
+  stage: post-test
+  cache:
+    key: "${CI_COMMIT_REF_SLUG}"
+    paths:
+      - node_modules
+      - build
+  variables:
+    NODE_ENV: production
+  script:
+    - yarn build
+  rules:
+    - if: "$CI_COMMIT_TAG"
+    - if: "$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH"
+  artifacts:
+    when: on_success
+    expire_in: 1 day
+    paths:
+      - build
+
+build-docker:
+  image: docker:stable
+  stage: package
+  variables:
+    REMOTE_IMAGE_NAME: "${CI_REGISTRY}/${CI_REGISTRY_USER}/${IMAGE_NAME}"
+    DOCKER_PATH: "."
+    DOCKER_TAG: latest
+    COMMIT_SHA_FILEPATH: "/home/node/commit.sha"
+  script:
+    - test -z "${CI_COMMIT_TAG}" || export DOCKER_TAG=$(echo ${CI_COMMIT_TAG} | sed s/^v//)
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY_BASE
+    - docker build --build-arg COMMIT_SHA=${CI_COMMIT_SHA} --pull -t ${REMOTE_IMAGE_NAME}:${DOCKER_TAG} ${DOCKER_PATH}
+    - test -z "${COMMIT_SHA_FILEPATH}" || docker run --rm ${REMOTE_IMAGE_NAME}:${DOCKER_TAG} cat ${COMMIT_SHA_FILEPATH}
+    - docker push ${REMOTE_IMAGE_NAME}:${DOCKER_TAG}
+  dependencies:
+    - build
+  rules:
+    - if: "$CI_COMMIT_TAG"
