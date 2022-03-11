@@ -9,7 +9,7 @@ by the Interreg Co-operation Programme Italy–Switzerland 2014 -2020 (ID 605472
 ## Demo
 
 A working demo of the Bot deployed on Heroku can be found at [t.me/geo_collector_bot](http://t.me/geo_collector_bot). Read
-the [dedicated documentation](https://gitlab.com/geolab.como/geocollectorbot/-/tree/main/examples/demo) for more
+the [documentation](https://gitlab.com/geolab.como/geocollectorbot/-/tree/main/examples/demo) for more
 information.
 
 ## Documentation
