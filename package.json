@@ -1,6 +1,6 @@
 {
   "name": "geo-collector-bot",
-  "version": "0.3.0",
+  "version": "0.1.0",
   "description": "Telegram BOT for geodata collection, developed within the Interreg Project INSUBRI.PARKS",
   "license": "MIT",
   "author": "Edoardo Pessina <edoardopessina.priv@gmail.com>",

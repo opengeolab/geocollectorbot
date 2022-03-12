@@ -39,7 +39,7 @@ docker run --name geo-collector-bot \
   -e TELEGRAM_AUTH_TOKEN="<telegram_auth_token>" \
   -v <absolute_path_to_config_file>:/home/node/config.json \
   -p 8080:8080 \
-  geo-collector-bot
+  geolabpolimi/geo-collector-bot
 ```
 
 Now your Bot will be available on `localhost:8080`.
@@ -72,7 +72,7 @@ need the functionality.
 
 `-p 8080:8080` exposes the port on which the Bot runs.
 
-`geo-collector-bot` is the name of the image to run.
+`geolabpolimi/geo-collector-bot` is the name of the image to run.
 
 ## Run locally
 

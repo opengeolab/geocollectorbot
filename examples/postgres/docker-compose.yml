@@ -22,7 +22,7 @@ services:
       - ./scripts:/docker-entrypoint-initdb.d
 
   bot:
-    image: geo-collector-bot
+    image: geolabpolimi/geo-collector-bot
     depends_on:
       - postgres
     environment:
