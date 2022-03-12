@@ -14,6 +14,7 @@ psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-E
     CREATE TABLE IF NOT EXISTS interactions (
       id SERIAL,
       chat_id bigint NOT NULL,
+      username character varying,
       curr_step_id character varying,
       interaction_state character varying,
       created_at timestamp with time zone,

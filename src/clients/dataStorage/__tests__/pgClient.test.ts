@@ -33,6 +33,7 @@ describe('Postgres client', () => {
   }
 
   const chatId = 123
+  const username = 'user_name'
 
   let pgClient: DataStorageClient
 
@@ -78,14 +79,14 @@ describe('Postgres client', () => {
 
   describe('createInteraction', () => {
     const firstStepId = 'first_step'
-    const expectedQuery = 'INSERT INTO interactions_table (chat_id,curr_step_id,interaction_state,created_at,updated_at) VALUES ($1, $2, $3, $4, $5)'
-    const expectedValue = [123, firstStepId, InteractionState.ONGOING, nowIsoString, nowIsoString]
+    const expectedQuery = 'INSERT INTO interactions_table (chat_id,username,curr_step_id,interaction_state,created_at,updated_at) VALUES ($1, $2, $3, $4, $5, $6)'
+    const expectedValue = [chatId, username, firstStepId, InteractionState.ONGOING, nowIsoString, nowIsoString]
 
     it('should throw if query fails', async () => {
       const expectedError = new Error('Query error')
       mockPoolQuery.mockRejectedValue(expectedError)
 
-      const executor = pgClient.createInteraction(chatId, firstStepId)
+      const executor = pgClient.createInteraction(chatId, username, firstStepId)
       await expect(executor)
         .rejects
         .toStrictEqual(expectedError)
@@ -97,7 +98,7 @@ describe('Postgres client', () => {
     it('should correctly query the db', async () => {
       mockPoolQuery.mockResolvedValue('query_result')
 
-      await pgClient.createInteraction(chatId, firstStepId)
+      await pgClient.createInteraction(chatId, username, firstStepId)
 
       expect(mockPoolQuery).toHaveBeenCalledTimes(1)
       expect(mockPoolQuery).toHaveBeenCalledWith(expectedQuery, expectedValue)
@@ -154,14 +155,25 @@ describe('Postgres client', () => {
     })
 
     it('should correctly query the db', async () => {
-      const pgRows: PgInteraction[] = [{
-        id: 'id',
-        chat_id: chatId,
-        curr_step_id: 'current_step_id',
-        interaction_state: InteractionState.ONGOING,
-        created_at: 'created_at',
-        updated_at: 'updated_at',
-      }]
+      const pgRows: PgInteraction[] = [
+        {
+          id: 'id_1',
+          chat_id: chatId,
+          curr_step_id: 'current_step_id',
+          interaction_state: InteractionState.ONGOING,
+          created_at: 'created_at',
+          updated_at: 'updated_at',
+        },
+        {
+          id: 'id_2',
+          chat_id: chatId,
+          username,
+          curr_step_id: 'current_step_id',
+          interaction_state: InteractionState.ONGOING,
+          created_at: 'created_at',
+          updated_at: 'updated_at',
+        },
+      ]
 
       mockPoolQuery.mockResolvedValue({ rows: pgRows })
 
@@ -169,8 +181,18 @@ describe('Postgres client', () => {
 
       expect(rows).toStrictEqual([
         {
-          id: 'id',
+          id: 'id_1',
           chatId: 123,
+          username: undefined,
+          currStepId: 'current_step_id',
+          interactionState: InteractionState.ONGOING,
+          createdAt: 'created_at',
+          updatedAt: 'updated_at',
+        },
+        {
+          id: 'id_2',
+          chatId: 123,
+          username,
           currStepId: 'current_step_id',
           interactionState: InteractionState.ONGOING,
           createdAt: 'created_at',

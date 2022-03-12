@@ -6,7 +6,7 @@ import { DataStorageConfig } from '../../schemas/configuration/dataStorage'
 import { PgBaseInteractionKeys, PgClient } from './pgClient'
 
 export interface DataStorageClient {
-  createInteraction(chatId: number, firstStepId: string): Promise<void>
+  createInteraction(chatId: number, username: string | undefined, firstStepId: string): Promise<void>
 
   abortInteraction(id: string | number): Promise<void>
 

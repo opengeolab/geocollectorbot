@@ -29,7 +29,9 @@ should be the public url on which your instance of this service is reachable (e.
 # Service configuration
 
 The service needs to be configured to work properly, and this configuration should be provided through a JSON file. The
-schema of the configuration can be found [TODO], while an example can be found [TODO].
+schema of the configuration can be found 
+[here](https://gitlab.com/geolab.como/geocollectorbot/-/blob/main/src/schemas/configuration/index.ts), while an example 
+can be found [here](https://gitlab.com/geolab.como/geocollectorbot/-/blob/main/config.example.json).
 
 The configuration has three main blocks, [the flow of questions](#questions-flow), the [data storage configuration](#data-storage),
 and optionally the [media storage configuration](#media-storage), resulting in the following object:
@@ -87,7 +89,7 @@ the end if the interaction.
 There is a set of reserved keys used by the Bot, and properties `id` and `persistAs` cannot be equal to one of those
 keys.
 
-The reserved keys are **id**, **chatId**, **currStepId**, **interactionState**, **createdAt**, and **updatedAt**.
+The reserved keys are **id**, **chatId**, **username**, **currStepId**, **interactionState**, **createdAt**, and **updatedAt**.
 
 On top of those, each [data storage](#data-storage) has a set of its own reserved keys. Consult the relative documentation
 to know which values are prohibited.
@@ -208,13 +210,16 @@ To use PostgreSQL as storage, the property `dataStorage` should have the followi
 The table you create to save your interaction should have the following base columns:
 
 ```shell
-id integer NOT NULL DEFAULT nextval('data_id_seq'::regclass)
+id SERIAL
 chat_id bigint NOT NULL
+username character varying
 curr_step_id character varying
 interaction_state character varying
 created_at timestamp with time zone
 updated_at timestamp with time zone
 ```
+
+with `id` being the **primary key** of the table.
 
 :::warning
 The name of those base columns cannot be used as property `id` or `persistAs` of your steps, on top of the keys listed

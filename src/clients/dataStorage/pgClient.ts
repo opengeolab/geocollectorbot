@@ -10,6 +10,7 @@ import { DataStorageClient } from './index'
 export enum PgBaseInteractionKeys {
   ID = 'id',
   CHAT_ID = 'chat_id',
+  USERNAME = 'username',
   CURRENT_STEP_ID = 'curr_step_id',
   INTERACTION_STATE = 'interaction_state',
   CREATED_AT = 'created_at',
@@ -19,6 +20,7 @@ export enum PgBaseInteractionKeys {
 export type PgInteraction = {
   [PgBaseInteractionKeys.ID]: string
   [PgBaseInteractionKeys.CHAT_ID]: number
+  [PgBaseInteractionKeys.USERNAME]?: string
   [PgBaseInteractionKeys.CURRENT_STEP_ID]: string
   [PgBaseInteractionKeys.INTERACTION_STATE]: InteractionState
   [PgBaseInteractionKeys.CREATED_AT]: string
@@ -34,6 +36,7 @@ export class PgClient implements DataStorageClient {
   private readonly keysMap: Record<BaseInteractionKeys, PgBaseInteractionKeys> = {
     [BaseInteractionKeys.ID]: PgBaseInteractionKeys.ID,
     [BaseInteractionKeys.CHAT_ID]: PgBaseInteractionKeys.CHAT_ID,
+    [BaseInteractionKeys.USERNAME]: PgBaseInteractionKeys.USERNAME,
     [BaseInteractionKeys.CURRENT_STEP_ID]: PgBaseInteractionKeys.CURRENT_STEP_ID,
     [BaseInteractionKeys.INTERACTION_STATE]: PgBaseInteractionKeys.INTERACTION_STATE,
     [BaseInteractionKeys.CREATED_AT]: PgBaseInteractionKeys.CREATED_AT,
@@ -53,19 +56,20 @@ export class PgClient implements DataStorageClient {
     this.table = interactionsTable
   }
 
-  async createInteraction (chatId: number, firstStepId: string) {
+  async createInteraction (chatId: number, username: string | undefined, firstStepId: string) {
     const now = new Date(Date.now()).toISOString()
 
     const properties: PgBaseInteractionKeys[] = [
       PgBaseInteractionKeys.CHAT_ID,
+      PgBaseInteractionKeys.USERNAME,
       PgBaseInteractionKeys.CURRENT_STEP_ID,
       PgBaseInteractionKeys.INTERACTION_STATE,
       PgBaseInteractionKeys.CREATED_AT,
       PgBaseInteractionKeys.UPDATED_AT,
     ]
 
-    const query = `INSERT INTO ${this.table} (${properties.join(',')}) VALUES ($1, $2, $3, $4, $5)`
-    const values = [chatId, firstStepId, InteractionState.ONGOING, now, now]
+    const query = `INSERT INTO ${this.table} (${properties.join(',')}) VALUES ($1, $2, $3, $4, $5, $6)`
+    const values = [chatId, username, firstStepId, InteractionState.ONGOING, now, now]
 
     this.logger.debug({ query, values }, 'Creating new interaction')
     await this.pool.query(query, values)
@@ -88,6 +92,7 @@ export class PgClient implements DataStorageClient {
     return rows.map(row => ({
       [BaseInteractionKeys.ID]: row[PgBaseInteractionKeys.ID],
       [BaseInteractionKeys.CHAT_ID]: row[PgBaseInteractionKeys.CHAT_ID],
+      [BaseInteractionKeys.USERNAME]: row[PgBaseInteractionKeys.USERNAME],
       [BaseInteractionKeys.CURRENT_STEP_ID]: row[PgBaseInteractionKeys.CURRENT_STEP_ID],
       [BaseInteractionKeys.INTERACTION_STATE]: row[PgBaseInteractionKeys.INTERACTION_STATE],
       [BaseInteractionKeys.CREATED_AT]: row[PgBaseInteractionKeys.CREATED_AT],

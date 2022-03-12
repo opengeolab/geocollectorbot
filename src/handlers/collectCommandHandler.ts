@@ -10,8 +10,9 @@ export const buildCollectCommandHandler: HandlerBuilder<Update.MessageUpdate> = 
   const { flow: { firstStepId, steps } } = configuration
 
   return async ctx => {
-    const { chatId } = ctx
-    logger.trace({ chatId }, "Executing command '/collect'")
+    const { chatId, from } = ctx
+    const { username } = from || {}
+    logger.trace({ chatId, username }, "Executing command '/collect'")
 
     let ongoingInteractions: Interaction[]
     try {
@@ -27,7 +28,7 @@ export const buildCollectCommandHandler: HandlerBuilder<Update.MessageUpdate> = 
     }
 
     try {
-      await dataStorageClient.createInteraction(chatId as number, firstStepId)
+      await dataStorageClient.createInteraction(chatId as number, username, firstStepId)
     } catch (error) {
       logger.error({ error, chatId }, 'Error creating new interaction')
       throw new ProcessError('Error creating new interaction', ctx.t('errors.createInteraction'))

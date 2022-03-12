@@ -7,6 +7,7 @@ export enum InteractionState {
 export enum BaseInteractionKeys {
   ID = 'id',
   CHAT_ID = 'chatId',
+  USERNAME = 'username',
   CURRENT_STEP_ID = 'currStepId',
   INTERACTION_STATE = 'interactionState',
   CREATED_AT = 'createdAt',
@@ -16,6 +17,7 @@ export enum BaseInteractionKeys {
 export type Interaction = {
   [BaseInteractionKeys.ID]: string | number
   [BaseInteractionKeys.CHAT_ID]: number
+  [BaseInteractionKeys.USERNAME]?: string
   [BaseInteractionKeys.CURRENT_STEP_ID]: string
   [BaseInteractionKeys.INTERACTION_STATE]: InteractionState
   [BaseInteractionKeys.CREATED_AT]: string

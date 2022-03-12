@@ -77,7 +77,7 @@ describe('Collect command handler', () => {
     expect(mockGetOngoingInteractions).toHaveBeenCalledWith('chat_id')
 
     expect(mockStorageClient.createInteraction).toHaveBeenCalledTimes(1)
-    expect(mockStorageClient.createInteraction).toHaveBeenCalledWith('chat_id', 'first_step')
+    expect(mockStorageClient.createInteraction).toHaveBeenCalledWith('chat_id', undefined, 'first_step')
 
     expect(mockComposeReply).toHaveBeenCalledTimes(0)
     expect(mockContext.reply).toHaveBeenCalledTimes(0)
@@ -88,11 +88,11 @@ describe('Collect command handler', () => {
     mockCreateInteraction.mockResolvedValue(undefined)
     mockComposeReply.mockReturnValue(['question'])
 
-    const mockContext = getMockContext()
+    const mockContext = getMockContext({ from: { username: 'user_name' } })
     await handler(mockContext, jest.fn())
 
     expect(mockStorageClient.createInteraction).toHaveBeenCalledTimes(1)
-    expect(mockStorageClient.createInteraction).toHaveBeenCalledWith('chat_id', 'first_step')
+    expect(mockStorageClient.createInteraction).toHaveBeenCalledWith('chat_id', 'user_name', 'first_step')
 
     expect(mockContext.nextStep).toStrictEqual({ question: 'first_question' })
 

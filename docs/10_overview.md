@@ -65,6 +65,7 @@ On our database we have a new record with the following structure:
 {
   "id": "123", // Unique identifier of the interaction
   "chatId": "456", // Unique identifier of the user's chat
+  "username": "user_name", // Username of the user performing the interactions
   "currStepId": "description", // Id of the current step (in this case equal to the id of the first step)
   "interactionState": "ongoing", // State of the interaction
 }
@@ -87,6 +88,7 @@ the interaction on the database. The record will now be:
 {
   "id": "123", // Unique identifier of the interaction
   "chatId": "456", // Unique identifier of the user's chat
+  "username": "user_name", // Username of the user performing the interactions
   "currStepId": "location", // Id of the current step (in this case equal to the id of the second step)
   "interactionState": "ongoing", // State of the interaction
   "description": "Answer to the first question"
@@ -104,6 +106,7 @@ The record is updated for the last time ending up being:
 {
   "id": "123", // Unique identifier of the interaction
   "chatId": "456", // Unique identifier of the user's chat
+  "username": "user_name", // Username of the user performing the interactions
   "currStepId": "location", // Id of the current step (in this case equal to the id of the last step)
   "interactionState": "completed", // State of the interaction
   "description": "Answer to the first question",
