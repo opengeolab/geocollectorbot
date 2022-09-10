@@ -4,15 +4,24 @@ import { dataStorageSchema } from './dataStorage'
 import { flowSchema, RawFlow } from './flow'
 import { mediaStorageSchema } from './mediaStorage'
 
-export const configurationSchema = {
+const configurationSchemaForType = {
   type: 'object',
   properties: {
-    flow: flowSchema,
     dataStorage: dataStorageSchema,
     mediaStorage: mediaStorageSchema,
   },
   additionalProperties: false,
-  required: ['flow', 'dataStorage'],
+  required: ['dataStorage'],
 } as const
 
-export type RawConfiguration = Omit<FromSchema<typeof configurationSchema>, 'flow'> & { flow: RawFlow }
+export const configurationSchema = {
+  type: 'object',
+  properties: {
+    ...configurationSchemaForType.properties,
+    flow: flowSchema,
+  },
+  additionalProperties: false,
+  required: [...configurationSchemaForType.required, 'flow'],
+}
+
+export type RawConfiguration = FromSchema<typeof configurationSchemaForType> & { flow: RawFlow }

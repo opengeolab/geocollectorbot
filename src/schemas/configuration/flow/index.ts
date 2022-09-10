@@ -2,10 +2,19 @@ import { FromSchema } from 'json-schema-to-ts'
 
 import { RawStep, stepSchema } from './step'
 
-export const flowSchema = {
+const flowSchemaForType = {
   type: 'object',
   properties: {
     firstStepId: { type: 'string' },
+  },
+  additionalProperties: false,
+  required: ['firstStepId'],
+} as const
+
+export const flowSchema = {
+  type: 'object',
+  properties: {
+    ...flowSchemaForType.properties,
     steps: {
       type: 'array',
       items: stepSchema,
@@ -13,7 +22,7 @@ export const flowSchema = {
     },
   },
   additionalProperties: false,
-  required: ['firstStepId', 'steps'],
-} as const
+  required: [...flowSchemaForType.required, 'steps'],
+}
 
-export type RawFlow = Omit<FromSchema<typeof flowSchema>, 'steps'> & { steps: RawStep[] }
+export type RawFlow = FromSchema<typeof flowSchemaForType> & { steps: RawStep[] }

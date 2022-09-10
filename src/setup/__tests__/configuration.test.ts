@@ -24,7 +24,7 @@ describe('Configuration', () => {
 
       await expect(executor)
         .rejects
-        .toEqual(new Error('Invalid configuration: [{"instancePath":"","schemaPath":"#/required","keyword":"required","params":{"missingProperty":"flow"},"message":"must have required property \'flow\'"}]'))
+        .toEqual(new Error('Invalid configuration: [{"instancePath":"","schemaPath":"#/required","keyword":"required","params":{"missingProperty":"dataStorage"},"message":"must have required property \'dataStorage\'"}]'))
 
       expect(parseFlowMock).toHaveBeenCalledTimes(0)
     })

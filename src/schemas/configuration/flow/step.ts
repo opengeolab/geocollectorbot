@@ -4,17 +4,26 @@ import { localizedTextSchema } from '../../localizedText'
 
 import { StepConfig, stepConfigSchemas } from './stepConfig'
 
-export const stepSchema = {
+const stepSchemaForType = {
   type: 'object',
   properties: {
     id: { type: 'string' },
     question: localizedTextSchema,
-    config: { oneOf: stepConfigSchemas },
     persistAs: { type: 'string' },
     nextStepId: { type: 'string' },
   },
   additionalProperties: false,
-  required: ['id', 'question', 'config'],
+  required: ['id', 'question'],
 } as const
 
-export type RawStep = Omit<FromSchema<typeof stepSchema>, 'config'> & { config: StepConfig }
+export const stepSchema = {
+  type: 'object',
+  properties: {
+    ...stepSchemaForType.properties,
+    config: { oneOf: stepConfigSchemas },
+  },
+  additionalProperties: false,
+  required: [...stepSchemaForType.required, 'config'],
+}
+
+export type RawStep = FromSchema<typeof stepSchemaForType> & { config: StepConfig }

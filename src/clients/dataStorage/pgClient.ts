@@ -1,5 +1,4 @@
 import { FastifyLoggerInstance } from 'fastify'
-import { Object } from 'json-schema-to-ts/lib/meta-types'
 import { Pool } from 'pg'
 
 import { BaseInteractionKeys, Interaction, InteractionState } from '../../models/Interaction'
