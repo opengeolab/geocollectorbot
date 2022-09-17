@@ -27,6 +27,7 @@ export const retrieveConfiguration = async (service: FastifyInstance): Promise<C
   configurationContent.mediaStorage && interpolateEnv(configurationContent.mediaStorage)
 
   return {
+    settings: configurationContent.settings,
     dataStorage: configurationContent.dataStorage,
     mediaStorage: configurationContent.mediaStorage,
     flow: parsedFlow,

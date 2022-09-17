@@ -4,9 +4,23 @@ import { dataStorageSchema } from './dataStorage'
 import { flowSchema, RawFlow } from './flow'
 import { mediaStorageSchema } from './mediaStorage'
 
+const settingsSchema = {
+  type: 'object',
+  properties: {
+    includeUserInfoInGetInteractionsApi: {
+      description: 'If set to true, user\'s data will be returned by the get interactions api',
+      type: 'boolean',
+    },
+  },
+  additionalProperties: false,
+} as const
+
+export type RawConfigurationSettings = FromSchema<typeof settingsSchema>
+
 const configurationSchemaForType = {
   type: 'object',
   properties: {
+    settings: settingsSchema,
     dataStorage: dataStorageSchema,
     mediaStorage: mediaStorageSchema,
   },

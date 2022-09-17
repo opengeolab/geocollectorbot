@@ -49,6 +49,7 @@ describe('Configuration', () => {
       const mockService = getMockFastify({ env: { CONFIGURATION_PATH: validConfigMapPath } })
 
       const expectedConfiguration = {
+        settings: configmap.settings,
         dataStorage: configmap.dataStorage,
         mediaStorage: undefined,
         flow: mockFlow,
@@ -72,6 +73,7 @@ describe('Configuration', () => {
       const mockService = getMockFastify({ env: { CONFIGURATION_PATH: validConfigMapWithMediaStoragePath } })
 
       const expectedConfiguration = {
+        settings: undefined,
         dataStorage: configmapWithMediaStorage.dataStorage,
         mediaStorage: configmapWithMediaStorage.mediaStorage,
         flow: mockFlow,

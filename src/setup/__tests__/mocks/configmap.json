@@ -1,4 +1,7 @@
 {
+  "settings": {
+    "includeUserInfoInGetInteractionsApi": true
+  },
   "flow": {
     "firstStepId": "question_1",
     "steps": [

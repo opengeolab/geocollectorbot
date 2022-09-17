@@ -77,6 +77,78 @@ describe('Postgres client', () => {
     })
   })
 
+  describe('getAllInteractions', () => {
+    const expectedQuery = 'SELECT * FROM interactions_table'
+
+    const pgRows: PgInteraction[] = [
+      {
+        id: 'id_1',
+        username: 'user_name',
+        chat_id: chatId,
+        curr_step_id: 'current_step_id',
+        interaction_state: InteractionState.ONGOING,
+        created_at: 'created_at',
+        updated_at: 'updated_at',
+        foo: 'bar',
+      },
+    ]
+
+    it('should throw if query fails', async () => {
+      const expectedError = new Error('Query error')
+      mockPoolQuery.mockRejectedValue(expectedError)
+
+      const executor = pgClient.getAllInteractions()
+      await expect(executor)
+        .rejects
+        .toStrictEqual(expectedError)
+
+      expect(mockPoolQuery).toHaveBeenCalledTimes(1)
+      expect(mockPoolQuery).toHaveBeenCalledWith(expectedQuery)
+    })
+
+    it('should correctly query the db with user data', async () => {
+      mockPoolQuery.mockResolvedValue({ rows: pgRows })
+
+      const rows = await pgClient.getAllInteractions(true)
+
+      expect(rows).toStrictEqual([
+        {
+          id: 'id_1',
+          chatId: 123,
+          username: 'user_name',
+          currStepId: 'current_step_id',
+          interactionState: InteractionState.ONGOING,
+          createdAt: 'created_at',
+          updatedAt: 'updated_at',
+          foo: 'bar',
+        },
+      ])
+
+      expect(mockPoolQuery).toHaveBeenCalledTimes(1)
+      expect(mockPoolQuery).toHaveBeenCalledWith(expectedQuery)
+    })
+
+    it('should correctly query the db without user data', async () => {
+      mockPoolQuery.mockResolvedValue({ rows: pgRows })
+
+      const rows = await pgClient.getAllInteractions(false)
+
+      expect(rows).toStrictEqual([
+        {
+          id: 'id_1',
+          currStepId: 'current_step_id',
+          interactionState: InteractionState.ONGOING,
+          createdAt: 'created_at',
+          updatedAt: 'updated_at',
+          foo: 'bar',
+        },
+      ])
+
+      expect(mockPoolQuery).toHaveBeenCalledTimes(1)
+      expect(mockPoolQuery).toHaveBeenCalledWith(expectedQuery)
+    })
+  })
+
   describe('createInteraction', () => {
     const firstStepId = 'first_step'
     const expectedQuery = 'INSERT INTO interactions_table (chat_id,username,curr_step_id,interaction_state,created_at,updated_at) VALUES ($1, $2, $3, $4, $5, $6)'

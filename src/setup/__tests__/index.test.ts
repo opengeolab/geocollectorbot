@@ -20,6 +20,7 @@ jest.mock('fastify', () => {
     addHook: jest.fn(),
     ready: jest.fn(),
     post: jest.fn(),
+    get: jest.fn(),
   } as unknown as FastifyInstance & PromiseLike<FastifyInstance>
 
   return { fastify: jest.fn().mockReturnValue(mockFastify) }

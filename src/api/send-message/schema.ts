@@ -1,6 +1,8 @@
 import { FastifySchema } from 'fastify'
 import { FromSchema } from 'json-schema-to-ts'
 
+import { apiErrorResponseSchema } from '../../schemas/apiErrorResponse'
+
 const bodySchema = {
   type: 'object',
   properties: {
@@ -39,6 +41,8 @@ const responseSchema = {
 const schema: FastifySchema = {
   body: bodySchema,
   response: {
+    '4xx': apiErrorResponseSchema,
+    '5xx': apiErrorResponseSchema,
     200: responseSchema,
   },
 }

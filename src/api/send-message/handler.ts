@@ -17,7 +17,9 @@ const handler: RouteHandlerMethod<
   RawReplyDefaultExpression,
   {Body: Body}
 > = async function (request, reply) {
-  const { bot } = this
+  const { bot, log } = this
+  log.debug('POST - /send-message', { body: request.body })
+
   const { body: { chatIds, message } } = request
 
   const promises = chatIds.map(chatId => bot.telegram.sendMessage(chatId, message))

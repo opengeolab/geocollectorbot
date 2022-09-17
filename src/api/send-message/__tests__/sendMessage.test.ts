@@ -1,12 +1,13 @@
 import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify'
 
-import sendMessageHander from '../handler'
+import { mockLogger } from '../../../utils/testUtils'
+import sendMessageHandler from '../handler'
 
 describe('POST - /send-message', () => {
   const mockSendMessage = jest.fn()
   const mockBot = { telegram: { sendMessage: mockSendMessage } }
 
-  const mockFastify = { bot: mockBot } as unknown as FastifyInstance
+  const mockFastify = { bot: mockBot, log: mockLogger } as unknown as FastifyInstance
 
   const mockRequest = { body: { chatIds: ['chat_1', 'chat_2'], message: 'test_message' } } as unknown as FastifyRequest
 
@@ -14,7 +15,7 @@ describe('POST - /send-message', () => {
   const mockStatus = jest.fn().mockReturnValue({ send: mockSend })
   const mockReply = { status: mockStatus } as unknown as FastifyReply
 
-  const handler = sendMessageHander.bind(mockFastify)
+  const handler = sendMessageHandler.bind(mockFastify)
 
   it('should send message to all chats successfully', async () => {
     mockSendMessage.mockResolvedValue({})

@@ -55,6 +55,42 @@ export class PgClient implements DataStorageClient {
     this.table = interactionsTable
   }
 
+  async getAllInteractions (shouldIncludeUserInfo?: boolean): Promise<Partial<Interaction>[]> {
+    const query = `SELECT * FROM ${this.table}`
+
+    this.logger.debug({ query }, 'Retrieving interactions')
+    const { rows } = await this.pool.query<PgInteraction>(query)
+
+    return rows.map(row => {
+      const {
+        [PgBaseInteractionKeys.ID]: id,
+        [PgBaseInteractionKeys.CHAT_ID]: chatId,
+        [PgBaseInteractionKeys.USERNAME]: username,
+        [PgBaseInteractionKeys.CURRENT_STEP_ID]: currentStepId,
+        [PgBaseInteractionKeys.INTERACTION_STATE]: interactionState,
+        [PgBaseInteractionKeys.CREATED_AT]: createdAt,
+        [PgBaseInteractionKeys.UPDATED_AT]: updatedAt,
+        ...rest
+      } = row
+
+      const redactedInteraction: Partial<Interaction> = {
+        [BaseInteractionKeys.ID]: id,
+        [BaseInteractionKeys.CURRENT_STEP_ID]: currentStepId,
+        [BaseInteractionKeys.INTERACTION_STATE]: interactionState,
+        [BaseInteractionKeys.CREATED_AT]: createdAt,
+        [BaseInteractionKeys.UPDATED_AT]: updatedAt,
+        ...rest,
+      }
+
+      if (shouldIncludeUserInfo) {
+        redactedInteraction[BaseInteractionKeys.CHAT_ID] = chatId
+        redactedInteraction[BaseInteractionKeys.USERNAME] = username
+      }
+
+      return redactedInteraction
+    })
+  }
+
   async createInteraction (chatId: number, username: string | undefined, firstStepId: string) {
     const now = new Date(Date.now()).toISOString()
 

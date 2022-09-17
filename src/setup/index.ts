@@ -1,6 +1,7 @@
 import { envSchema, EnvSchemaOpt } from 'env-schema'
 import { FastifyInstance, FastifyServerOptions, fastify as buildFastify } from 'fastify'
 
+import * as getInteractions from '../api/get-interactions'
 import * as sendMessage from '../api/send-message'
 import { buildDataStorageClient } from '../clients/dataStorage'
 import { buildMediaStorageClient, registerGetMediaRoute } from '../clients/mediaStorage'
@@ -38,6 +39,7 @@ export const buildService = async (): Promise<FastifyInstance> => {
   await fastify.bot.launch()
 
   fastify.post('/send-message', { schema: sendMessage.schema }, sendMessage.handler)
+  fastify.get('/interactions', { schema: getInteractions.schema }, getInteractions.handler)
 
   fastify.addHook('onClose', onFastifyCloseHandler)
 
