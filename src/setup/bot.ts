@@ -16,6 +16,7 @@ import {
   buildExtractInfoMiddleware,
   buildRetrieveInteractionMiddleware,
   buildHandleErrorMiddleware,
+  buildUnsupportedUpdateMiddleware,
 } from '../middlewares'
 import { DecoratedContext } from '../models/DecoratedContext'
 
@@ -54,6 +55,8 @@ export const buildBot = async (service: FastifyInstance): Promise<Telegraf<Decor
     .action(/^mcq::/, buildCallbackQueryHandler(service))
     .on('location', buildLocationHandler(service))
     .on('photo', buildPhotoHandler(service))
+    //
+    .use(buildUnsupportedUpdateMiddleware(service))
     //
     .catch(buildHandleErrorMiddleware(service))
 

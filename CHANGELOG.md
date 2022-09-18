@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - [#3](https://github.com/opengeolab/geocollectorbot/issues/3): exposed `POST - /send-message` route to programmatically send messaged to chats
 - [#7](https://github.com/opengeolab/geocollectorbot/issues/7): exposed `GET - /interactions` route to return all saved interactions
+- Bot now responds to messages of unsupported type with an appropriate error message 
 
 ## [1.0.0] 2022-03-12
 - First release

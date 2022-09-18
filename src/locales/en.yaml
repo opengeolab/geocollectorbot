@@ -71,3 +71,5 @@ errors:
   # Message sent when an error occurs trying to save a user-provided media
   savingMedia: We could not save your media\. Please, try again
 
+  # Message sent when the Bot receives an unsupported message type
+  unsupportedUpdateType: Sorry, we currently do not support this type of messages\. Please, try again
