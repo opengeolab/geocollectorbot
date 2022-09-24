@@ -1,4 +1,15 @@
+<div align="center">
+
+<img 
+  src="https://raw.githubusercontent.com/opengeolab/geocollectorbot/main/docs/img/geocollector_bot_logo.png"
+  alt="logo"
+  width="120" 
+  height="120"
+/>
+
 # Geo Collector Bot
+
+</div>
 
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![Pipeline Status](https://gitlab.com/geolab.como/geocollectorbot/badges/main/pipeline.svg)](https://gitlab.com/geolab.como/geocollectorbot)
