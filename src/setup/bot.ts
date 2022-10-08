@@ -2,23 +2,24 @@ import { FastifyInstance } from 'fastify'
 import { Telegraf } from 'telegraf'
 
 import {
-  buildStartCommandHandler,
+  buildAbortCommandHandler,
   buildCallbackQueryHandler,
+  buildCollectCommandHandler,
   buildHelpCommandHandler,
   buildLocationHandler,
-  buildPhotoHandler,
+  buildMediaHandler,
+  buildStartCommandHandler,
   buildTextHandler,
-  buildCollectCommandHandler,
-  buildAbortCommandHandler,
 } from '../handlers'
 import {
-  buildSetLanguageMiddleware,
   buildExtractInfoMiddleware,
-  buildRetrieveInteractionMiddleware,
   buildHandleErrorMiddleware,
+  buildRetrieveInteractionMiddleware,
+  buildSetLanguageMiddleware,
   buildUnsupportedUpdateMiddleware,
 } from '../middlewares'
 import { DecoratedContext } from '../models/DecoratedContext'
+import { MediaStepSubtype } from '../models/Flow'
 
 const BOT_WEBHOOK_PATH = '/bot'
 
@@ -54,7 +55,8 @@ export const buildBot = async (service: FastifyInstance): Promise<Telegraf<Decor
     .on('text', buildTextHandler(service))
     .action(/^mcq::/, buildCallbackQueryHandler(service))
     .on('location', buildLocationHandler(service))
-    .on('photo', buildPhotoHandler(service))
+    .on('photo', buildMediaHandler(service, { mediaType: MediaStepSubtype.PHOTO }))
+    .on('video', buildMediaHandler(service, { mediaType: MediaStepSubtype.VIDEO }))
     //
     .use(buildUnsupportedUpdateMiddleware(service))
     //

@@ -52,7 +52,7 @@ const parseSteps = (
 
     foundDbKeys.push(dbKey)
 
-    if (type === StepType.MEDIA && !hasMediaStorage) {
+    if ((type === StepType.SINGLE_MEDIA || type === StepType.MULTIPLE_MEDIA) && !hasMediaStorage) {
       logger.error({ step: currSteps }, 'Error parsing steps configuration: missing media storage config')
       throw new Error('Error parsing steps configuration: missing media storage config')
     }

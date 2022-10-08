@@ -8,7 +8,7 @@ import { DecoratedContext } from '../../models/DecoratedContext'
 import { MediaStepSubtype, StepType } from '../../models/Flow'
 import { ProcessError } from '../../utils/Errors'
 import { getMockContext, getMockFastify, getMockMediaStorageClient } from '../../utils/testUtils'
-import { buildPhotoHandler } from '../photoHandler'
+import { buildMediaHandler } from '../mediaHandler'
 
 jest.mock('axios', () => ({ get: jest.fn() }))
 
@@ -28,7 +28,7 @@ describe('Photo handler', () => {
 
   let handler: MiddlewareFn<DecoratedContext>
 
-  beforeEach(() => { handler = buildPhotoHandler(mockService) as MiddlewareFn<DecoratedContext> })
+  beforeEach(() => { handler = buildMediaHandler(mockService, { mediaType: MediaStepSubtype.PHOTO }) as MiddlewareFn<DecoratedContext> })
 
   it('should build correctly', async () => {
     mockHandleIncomingMessage.mockResolvedValue()
@@ -48,7 +48,7 @@ describe('Photo handler', () => {
       const props = {
         service: mockService,
         ctx: mockContext,
-        currStep: { config: { type: 'wrong_type', subType: MediaStepSubtype.PHOTO } },
+        currStep: { config: { type: 'wrong_type' } },
       } as unknown as StepProps<Message.TextMessage>
 
       const [[,, valueBuilder]] = mockHandleIncomingMessage.mock.calls
@@ -60,7 +60,7 @@ describe('Photo handler', () => {
       expect(mockContext.t).toHaveBeenCalledWith('errors.wrongStepType')
     })
 
-    it('should throw if wrong step sub type', async () => {
+    it('should throw if wrong media type', async () => {
       mockHandleIncomingMessage.mockResolvedValue()
 
       await handler(mockContext, jest.fn())
@@ -68,7 +68,7 @@ describe('Photo handler', () => {
       const props = {
         service: mockService,
         ctx: mockContext,
-        currStep: { config: { type: StepType.MEDIA, subType: 'wrong_sub_type' } },
+        currStep: { config: { type: StepType.SINGLE_MEDIA, acceptOnly: MediaStepSubtype.VIDEO } },
       } as unknown as StepProps<Message.TextMessage>
 
       const [[,, valueBuilder]] = mockHandleIncomingMessage.mock.calls
@@ -77,10 +77,10 @@ describe('Photo handler', () => {
         .toThrow(new ProcessError('Wrong current step type', 'translation_errors.wrongStepType'))
 
       expect(mockContext.t).toHaveBeenCalledTimes(1)
-      expect(mockContext.t).toHaveBeenCalledWith('errors.wrongStepType')
+      expect(mockContext.t).toHaveBeenCalledWith('errors.wrongMediaType', { acceptedMediaType: MediaStepSubtype.VIDEO })
     })
 
-    it('should return if right step type and sub type', async () => {
+    it('should return if right step type', async () => {
       mockHandleIncomingMessage.mockResolvedValue()
 
       await handler(mockContext, jest.fn())
@@ -88,7 +88,7 @@ describe('Photo handler', () => {
       const props = {
         service: mockService,
         ctx: mockContext,
-        currStep: { config: { type: StepType.MEDIA, subType: MediaStepSubtype.PHOTO } },
+        currStep: { config: { type: StepType.SINGLE_MEDIA } },
       } as unknown as StepProps<Message.TextMessage>
 
       const [[,, valueBuilder]] = mockHandleIncomingMessage.mock.calls
@@ -177,7 +177,7 @@ describe('Photo handler', () => {
       const [[,,, valueBuilder]] = mockHandleIncomingMessage.mock.calls
       const result = await valueBuilder(props)
 
-      expect(result).toEqual('save_media_result')
+      expect(result).toEqual(['save_media_result'])
 
       expect(mockGetFile).toHaveBeenCalledTimes(1)
       expect(mockGetFile).toHaveBeenCalledWith('file_id')

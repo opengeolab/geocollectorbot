@@ -6,7 +6,7 @@ commands:
 
   # Message sent when user invokes command "/help"
   help: |
-    This Bot designed for collecting data trought a flow of questions\.
+    This Bot is designed for collecting data through a flow of questions\.
 
     The commands you have at your disposal are:
     \- */collect* to start the collect process
@@ -38,8 +38,8 @@ errors:
 
   # Message sent when the user issues the /collect command but an interaction for the chat is already ongoing
   ongoingInteractionAlreadyExists: |
-    It seeems you alredy have an ongoing interaction\.
-    Please, complete it or abort it with the */abort* commad\.
+    It seems you already have an ongoing interaction\.
+    Please, complete it or abort it with the */abort* command\.
 
   # Message sent when the user's interaction cannot be retrieved from the database
   retrieveInteraction: We are experiencing problems retrieving your data\. Please, try again later
@@ -64,6 +64,9 @@ errors:
 
   # Message sent when the response provided by the user does not match the question type
   wrongStepType: The answer you have provided is not suitable for the question\. Please, try again
+
+  # Message sent when the media provided is of wrong type
+  wrongMediaType: "This question only accepts {{acceptedMediaType}} messages\\. Please, try again"
 
   # Message sent when the option selected by the user in the context of a callback query question is not valid
   unknownOption: The answer you have selected is not valid\. Please, try again

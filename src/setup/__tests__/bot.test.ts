@@ -4,6 +4,7 @@ import { Update } from 'telegraf/typings/core/types/typegram'
 
 import * as handlers from '../../handlers'
 import * as middlewares from '../../middlewares'
+import { MediaStepSubtype } from '../../models/Flow'
 import { baseEnv, getMockFastify } from '../../utils/testUtils'
 import { buildBot } from '../bot'
 
@@ -63,8 +64,8 @@ describe('Bot', () => {
   const mockLocationHandler = jest.fn()
   const mockBuildLocationHandler = jest.spyOn(handlers, 'buildLocationHandler').mockReturnValue(mockLocationHandler)
 
-  const mockPhotoHandler = jest.fn()
-  const mockBuildPhotoHandler = jest.spyOn(handlers, 'buildPhotoHandler').mockReturnValue(mockPhotoHandler)
+  const mockMediaHandler = jest.fn()
+  const mockBuildMediaHandler = jest.spyOn(handlers, 'buildMediaHandler').mockReturnValue(mockMediaHandler)
 
   const mockHandleErrorMiddleware = jest.fn()
   const mockBuildHandleErrorMiddleware = jest.spyOn(middlewares, 'buildHandleErrorMiddleware').mockReturnValue(mockHandleErrorMiddleware)
@@ -98,10 +99,11 @@ describe('Bot', () => {
     expect(mockBot.command).toHaveBeenNthCalledWith(1, 'collect', mockCollectCommandHandler)
     expect(mockBot.command).toHaveBeenNthCalledWith(2, 'abort', mockAbortCommandHandler)
 
-    expect(mockBot.on).toHaveBeenCalledTimes(3)
+    expect(mockBot.on).toHaveBeenCalledTimes(4)
     expect(mockBot.on).toHaveBeenNthCalledWith(1, 'text', mockTextHandler)
     expect(mockBot.on).toHaveBeenNthCalledWith(2, 'location', mockLocationHandler)
-    expect(mockBot.on).toHaveBeenNthCalledWith(3, 'photo', mockPhotoHandler)
+    expect(mockBot.on).toHaveBeenNthCalledWith(3, 'photo', mockMediaHandler)
+    expect(mockBot.on).toHaveBeenNthCalledWith(4, 'video', mockMediaHandler)
 
     expect(mockBot.action).toHaveBeenCalledTimes(1)
     expect(mockBot.action).toHaveBeenCalledWith(/^mcq::/, mockCallbackQueryHandler)
@@ -142,8 +144,9 @@ describe('Bot', () => {
     expect(mockBuildLocationHandler).toHaveBeenCalledTimes(1)
     expect(mockBuildLocationHandler).toHaveBeenCalledWith(mockService)
 
-    expect(mockBuildPhotoHandler).toHaveBeenCalledTimes(1)
-    expect(mockBuildPhotoHandler).toHaveBeenCalledWith(mockService)
+    expect(mockBuildMediaHandler).toHaveBeenCalledTimes(2)
+    expect(mockBuildMediaHandler).toHaveBeenNthCalledWith(1, mockService, { mediaType: MediaStepSubtype.PHOTO })
+    expect(mockBuildMediaHandler).toHaveBeenNthCalledWith(2, mockService, { mediaType: MediaStepSubtype.VIDEO })
 
     expect(mockBuildHandleErrorMiddleware).toHaveBeenCalledTimes(1)
     expect(mockBuildHandleErrorMiddleware).toHaveBeenCalledWith(mockService)

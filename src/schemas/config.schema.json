@@ -99,17 +99,34 @@
               "additionalProperties": false
             },
             {
-              "title": "MediaFlowStepConfig",
+              "title": "SingleMediaFlowStepConfig",
               "type": "object",
               "properties": {
                 "type": {
-                  "const": "media"
+                  "const": "singleMedia"
                 },
-                "subType": {
-                  "const": "photo"
+                "acceptOnly": {
+                  "enum": ["photo", "video"]
                 }
               },
-              "required": ["type", "subType"],
+              "required": ["type"],
+              "additionalProperties": false
+            },
+            {
+              "title": "MultipleMediaFlowStepConfig",
+              "type": "object",
+              "properties": {
+                "type": {
+                  "const": "multipleMedia"
+                },
+                "maxItems": {
+                  "type": "number"
+                },
+                "acceptOnly": {
+                  "enum": ["photo", "video"]
+                }
+              },
+              "required": ["type"],
               "additionalProperties": false
             }
           ]

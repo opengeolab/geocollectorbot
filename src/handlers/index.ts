@@ -3,7 +3,7 @@ import { buildCallbackQueryHandler } from './callbackQueryHandler'
 import { buildCollectCommandHandler } from './collectCommandHandler'
 import { buildHelpCommandHandler } from './helpCommandHandler'
 import { buildLocationHandler } from './locationHandler'
-import { buildPhotoHandler } from './photoHandler'
+import { buildMediaHandler } from './mediaHandler'
 import { buildStartCommandHandler } from './startCommandHandler'
 import { buildTextHandler } from './textHandler'
 
@@ -13,7 +13,7 @@ export {
   buildCollectCommandHandler,
   buildHelpCommandHandler,
   buildLocationHandler,
-  buildPhotoHandler,
+  buildMediaHandler,
   buildStartCommandHandler,
   buildTextHandler,
 }

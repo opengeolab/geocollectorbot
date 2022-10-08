@@ -167,7 +167,7 @@ describe('Question Composer', () => {
     const ctx = getMockContext({ from: { language_code: 'language_code' } })
     const step = { question: 'question' } as unknown as FlowStep
 
-    const composer = getQuestionComposerByType(StepType.MEDIA)
+    const composer = getQuestionComposerByType(StepType.SINGLE_MEDIA)
     expect(composer.name).toEqual('composeMediaQuestion')
 
     const result = composer({ ctx, step })

@@ -17,7 +17,8 @@ export type FlowStepConfig =
   | TextFlowStepConfig
   | MultipleChoiceFlowStepConfig
   | LocationFlowStepConfig
-  | MediaFlowStepConfig
+  | SingleMediaFlowStepConfig
+  | MultipleMediaFlowStepConfig
 
 export interface BotConfiguration {
   $schema?: string
@@ -94,7 +95,12 @@ export interface MultipleChoiceFlowStepConfig {
 export interface LocationFlowStepConfig {
   type: "location"
 }
-export interface MediaFlowStepConfig {
-  type: "media"
-  subType: "photo"
+export interface SingleMediaFlowStepConfig {
+  type: "singleMedia"
+  acceptOnly?: "photo" | "video"
+}
+export interface MultipleMediaFlowStepConfig {
+  type: "multipleMedia"
+  maxItems?: number
+  acceptOnly?: "photo" | "video"
 }

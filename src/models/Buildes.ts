@@ -10,4 +10,7 @@ export type MiddlewareBuilder = (service: FastifyInstance) => MiddlewareFn<Decor
 
 export type ErrorMiddlewareBuilder = (service: FastifyInstance) => (error: unknown, ctx: DecoratedContext) => MaybePromise<void>
 
-export type HandlerBuilder<U extends Deunionize<Update>> = (service: FastifyInstance) => Middleware<DecoratedContext<U>>
+export type HandlerBuilder<
+  U extends Deunionize<Update>,
+  O extends Record<string, unknown> = {},
+> = (service: FastifyInstance, options?: O) => Middleware<DecoratedContext<U>>

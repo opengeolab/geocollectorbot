@@ -4,11 +4,13 @@ export enum StepType {
   TEXT = 'text',
   MULTIPLE_CHOICE = 'multipleChoice',
   LOCATION = 'location',
-  MEDIA = 'media'
+  SINGLE_MEDIA = 'singleMedia',
+  MULTIPLE_MEDIA = 'multipleMedia'
 }
 
 export enum MediaStepSubtype {
-  PHOTO = 'photo'
+  PHOTO = 'photo',
+  VIDEO = 'video'
 }
 
 export type ParsedSteps = Record<string, FlowStep>

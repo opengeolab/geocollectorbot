@@ -205,7 +205,7 @@ describe('Flow', () => {
           {
             id: 'step_1',
             question: 'question_1',
-            config: { type: StepType.MEDIA, subType: MediaStepSubtype.PHOTO },
+            config: { type: StepType.SINGLE_MEDIA, acceptOnly: MediaStepSubtype.PHOTO },
           },
         ],
       }
@@ -235,7 +235,7 @@ describe('Flow', () => {
           {
             id: 'step_2',
             question: 'question_2',
-            config: { type: StepType.MEDIA, subType: MediaStepSubtype.PHOTO },
+            config: { type: StepType.SINGLE_MEDIA, acceptOnly: MediaStepSubtype.PHOTO },
             persistAs: 'persist_as',
           },
         ],
@@ -254,7 +254,7 @@ describe('Flow', () => {
           step_2: {
             id: 'step_2',
             question: 'question_2',
-            config: { type: StepType.MEDIA, subType: MediaStepSubtype.PHOTO },
+            config: { type: StepType.SINGLE_MEDIA, acceptOnly: MediaStepSubtype.PHOTO },
             persistAs: 'persist_as',
             nextStepId: undefined,
           },

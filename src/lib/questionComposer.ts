@@ -77,7 +77,8 @@ const stepTypeToComposer: Record<StepType, QuestionComposer> = {
   [StepType.TEXT]: composeTextQuestion,
   [StepType.MULTIPLE_CHOICE]: composeMultipleChoiceQuestion,
   [StepType.LOCATION]: composeLocationQuestion,
-  [StepType.MEDIA]: composeMediaQuestion,
+  [StepType.SINGLE_MEDIA]: composeMediaQuestion,
+  [StepType.MULTIPLE_MEDIA]: composeMediaQuestion,
 }
 
 export const getQuestionComposerByType = (type?: StepType) => stepTypeToComposer[type || StepType.TEXT] || stepTypeToComposer[StepType.TEXT]
