@@ -120,6 +120,10 @@
     }
   },
   "properties": {
+    "$schema": {
+      "type": "string"
+    },
+
     "settings": {
       "title": "Settings",
       "type": "object",

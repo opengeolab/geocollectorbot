@@ -1,4 +1,4 @@
-FROM node:fermium-alpine
+FROM node:gallium-alpine
 
 LABEL maintainer="GEOlab<http://www.geolab.polimi.it/>" \
       name="geo-collector-bot" \

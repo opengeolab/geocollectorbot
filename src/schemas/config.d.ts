@@ -20,6 +20,7 @@ export type FlowStepConfig =
   | MediaFlowStepConfig
 
 export interface BotConfiguration {
+  $schema?: string
   settings?: Settings
   dataStorage: DataStorage
   mediaStorage?: MediaStorage
