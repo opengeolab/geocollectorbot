@@ -2,7 +2,7 @@ import { FastifyLoggerInstance } from 'fastify'
 import { Pool } from 'pg'
 
 import { BaseInteractionKeys, Interaction, InteractionState } from '../../models/Interaction'
-import { PgConfiguration } from '../../schemas/configuration/dataStorage/pg'
+import { PgConfig } from '../../schemas/config'
 
 import { DataStorageClient } from './index'
 
@@ -42,7 +42,7 @@ export class PgClient implements DataStorageClient {
     [BaseInteractionKeys.UPDATED_AT]: PgBaseInteractionKeys.UPDATED_AT,
   }
 
-  constructor (configuration: PgConfiguration, logger: FastifyLoggerInstance) {
+  constructor (configuration: PgConfig['configuration'], logger: FastifyLoggerInstance) {
     const { connectionString, interactionsTable, ssl } = configuration
 
     this.logger = logger

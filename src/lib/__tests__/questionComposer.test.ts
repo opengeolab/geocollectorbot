@@ -1,4 +1,5 @@
-import { Step, StepType } from '../../models/Flow'
+import { StepType } from '../../models/Flow'
+import { FlowStep } from '../../schemas/config'
 import * as localizer from '../../utils/localizer'
 import * as multipleChoiceParser from '../../utils/multipleChoiceParser'
 import { getMockContext } from '../../utils/testUtils'
@@ -21,7 +22,7 @@ describe('Question Composer', () => {
 
   it('should return question without user language', () => {
     const ctx = getMockContext()
-    const step = { question: 'question' } as unknown as Step
+    const step = { question: 'question' } as unknown as FlowStep
 
     const composer = getQuestionComposerByType(StepType.TEXT)
     expect(composer.name).toEqual('composeTextQuestion')
@@ -38,7 +39,7 @@ describe('Question Composer', () => {
 
   it('should return question for text step', () => {
     const ctx = getMockContext({ from: { language_code: 'language_code' } })
-    const step = { question: 'question' } as unknown as Step
+    const step = { question: 'question' } as unknown as FlowStep
 
     const composer = getQuestionComposerByType(StepType.TEXT)
     expect(composer.name).toEqual('composeTextQuestion')
@@ -69,7 +70,7 @@ describe('Question Composer', () => {
           [{ text: 'text_2', value: 'value_2' }],
         ],
       },
-    } as unknown as Step
+    } as unknown as FlowStep
 
     const composer = getQuestionComposerByType(StepType.MULTIPLE_CHOICE)
     expect(composer.name).toEqual('composeMultipleChoiceQuestion')
@@ -108,7 +109,7 @@ describe('Question Composer', () => {
       id: 'step_id',
       question: 'question',
       config: { options: [[{ text: 'text_1', value: 'value_1' }]] },
-    } as unknown as Step
+    } as unknown as FlowStep
 
     const composer = getQuestionComposerByType(StepType.MULTIPLE_CHOICE)
     expect(composer.name).toEqual('composeMultipleChoiceQuestion')
@@ -135,7 +136,7 @@ describe('Question Composer', () => {
 
   it('should return question for location step', () => {
     const ctx = getMockContext({ from: { language_code: 'language_code' } })
-    const step = { question: 'question' } as unknown as Step
+    const step = { question: 'question' } as unknown as FlowStep
 
     const composer = getQuestionComposerByType(StepType.LOCATION)
     expect(composer.name).toEqual('composeLocationQuestion')
@@ -164,7 +165,7 @@ describe('Question Composer', () => {
 
   it('should return question for media step', () => {
     const ctx = getMockContext({ from: { language_code: 'language_code' } })
-    const step = { question: 'question' } as unknown as Step
+    const step = { question: 'question' } as unknown as FlowStep
 
     const composer = getQuestionComposerByType(StepType.MEDIA)
     expect(composer.name).toEqual('composeMediaQuestion')

@@ -1,4 +1,4 @@
-import { MediaStorageConfig } from '../../../schemas/configuration/mediaStorage'
+import { MediaStorage } from '../../../schemas/config'
 import { getMockFastify } from '../../../utils/testUtils'
 import { FsClient } from '../fsClient'
 import { buildMediaStorageClient, GET_MEDIA_BASE_PATH, MediaStorageClient, registerGetMediaRoute } from '../index'
@@ -10,9 +10,9 @@ describe('Media storage client', () => {
   const mockBuildGetMediaHandler = jest.fn().mockReturnValue(mockHandler)
   const mockClient = { buildGetMediaHandler: mockBuildGetMediaHandler } as unknown as MediaStorageClient
 
-  const mockConfig = {} as unknown as MediaStorageConfig
+  const mockConfig = {} as unknown as MediaStorage
 
-  const buildMockService = (config?: MediaStorageConfig, client?: MediaStorageClient) => {
+  const buildMockService = (config?: MediaStorage, client?: MediaStorageClient) => {
     return getMockFastify({
       configuration: { mediaStorage: config },
       mediaStorageClient: client,
@@ -28,7 +28,7 @@ describe('Media storage client', () => {
     })
 
     it('should correctly build fileSystem client', () => {
-      const config: MediaStorageConfig = {
+      const config: MediaStorage = {
         type: 'fileSystem',
         configuration: { folderPath: 'folder_path' },
       }

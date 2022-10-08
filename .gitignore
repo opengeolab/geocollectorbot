@@ -12,6 +12,8 @@ dist
 .DS_Store
 .env*
 config.*
+!config.d.ts
+!config.schema.json
 !config.example.json
 !examples/**/config.json
 

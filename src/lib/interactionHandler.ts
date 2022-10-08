@@ -1,8 +1,8 @@
 import { FastifyInstance } from 'fastify'
 
 import { DecoratedContext } from '../models/DecoratedContext'
-import { Step } from '../models/Flow'
 import { BaseInteractionKeys, Interaction, InteractionState } from '../models/Interaction'
+import { FlowStep } from '../schemas/config'
 import { ProcessError } from '../utils/Errors'
 
 export const updateInteraction = async (
@@ -13,10 +13,10 @@ export const updateInteraction = async (
   const { chatId, currStep, nextStep, interaction } = ctx
   const { id: interactionId } = interaction
   const { persistAs } = currStep
-  const { id: nextStepId } = (nextStep || {}) as Step
+  const { id: nextStepId } = (nextStep || {}) as FlowStep
 
   const patchBody: Partial<Interaction> = {
-    [persistAs]: stepValue,
+    [persistAs!]: stepValue,
     ...(nextStepId && { [BaseInteractionKeys.CURRENT_STEP_ID]: nextStepId }),
     ...(!nextStepId && { [BaseInteractionKeys.INTERACTION_STATE]: InteractionState.COMPLETED }),
   }

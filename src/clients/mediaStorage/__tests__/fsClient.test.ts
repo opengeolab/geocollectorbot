@@ -5,7 +5,7 @@ import { Readable } from 'stream'
 
 import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify'
 
-import { FsConfiguration } from '../../../schemas/configuration/mediaStorage/fs'
+import { FsConfig } from '../../../schemas/config'
 import { mockLogger } from '../../../utils/testUtils'
 import { FsClient } from '../fsClient'
 import { GET_MEDIA_BASE_PATH } from '../index'
@@ -17,7 +17,7 @@ describe('FS client', () => {
   const mockFastifyRegister = jest.fn()
   const mockFastify = { log: mockLogger, register: mockFastifyRegister } as unknown as FastifyInstance
 
-  const mockConfig = { folderPath: 'folder_path' } as unknown as FsConfiguration
+  const mockConfig = { folderPath: 'folder_path' } as unknown as FsConfig['configuration']
 
   let fsClient: FsClient
 

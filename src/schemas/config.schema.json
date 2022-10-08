@@ -1,0 +1,218 @@
+{
+  "$id": "https://raw.githubusercontent.com/opengeolab/geocollectorbot/main/src/schemas/config.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "title": "BotConfiguration",
+  "type": "object",
+  "definitions": {
+    "localizedText": {
+      "title": "LocalizedText",
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "en": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": {
+            "type": "string"
+          },
+          "required": ["en"]
+        }
+      ]
+    },
+
+    "flowStep": {
+      "title": "FlowStep",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "question": {
+          "$ref": "#/definitions/localizedText"
+        },
+        "persistAs": {
+          "type": "string"
+        },
+        "nextStepId": {
+          "type": "string"
+        },
+        "config": {
+          "title": "FlowStepConfig",
+          "oneOf": [
+            {
+              "title": "TextFlowStepConfig",
+              "type": "object",
+              "properties": {
+                "type": {
+                  "const": "text"
+                }
+              },
+              "required": ["type"],
+              "additionalProperties": false
+            },
+            {
+              "title": "MultipleChoiceFlowStepConfig",
+              "type": "object",
+              "properties": {
+                "type": {
+                  "const": "multipleChoice"
+                },
+                "options": {
+                  "type": "array",
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "text": {
+                          "$ref": "#/definitions/localizedText"
+                        },
+                        "value": {
+                          "type": "string"
+                        }
+                      },
+                      "required": ["text", "value"],
+                      "additionalProperties": false
+                    },
+                    "minItems": 1
+                  },
+                  "minItems": 1
+                }
+              },
+              "required": ["type", "options"],
+              "additionalProperties": false
+            },
+            {
+              "title": "LocationFlowStepConfig",
+              "type": "object",
+              "properties": {
+                "type": {
+                  "const": "location"
+                }
+              },
+              "required": ["type"],
+              "additionalProperties": false
+            },
+            {
+              "title": "MediaFlowStepConfig",
+              "type": "object",
+              "properties": {
+                "type": {
+                  "const": "media"
+                },
+                "subType": {
+                  "const": "photo"
+                }
+              },
+              "required": ["type", "subType"],
+              "additionalProperties": false
+            }
+          ]
+        }
+      },
+      "required": ["id", "question", "config"],
+      "additionalProperties": false
+    }
+  },
+  "properties": {
+    "settings": {
+      "title": "Settings",
+      "type": "object",
+      "properties": {
+        "includeUserInfoInGetInteractionsApi": {
+          "description": "'If set to true, user's data will be returned by the get interactions api'",
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "dataStorage": {
+      "title": "DataStorage",
+      "oneOf": [
+        {
+          "title": "PgConfig",
+          "type": "object",
+          "properties": {
+            "type": {
+              "const": "postgres"
+            },
+            "configuration": {
+              "type": "object",
+              "properties": {
+                "connectionString": {
+                  "type": "string"
+                },
+                "interactionsTable": {
+                  "type": "string"
+                },
+                "ssl": {
+                  "type": "boolean",
+                  "default": false
+                }
+              },
+              "required": ["connectionString", "interactionsTable", "ssl"],
+              "additionalProperties": false
+            }
+          },
+          "required": ["type", "configuration"],
+          "additionalProperties": false
+        }
+      ]
+    },
+
+    "mediaStorage": {
+      "title": "MediaStorage",
+      "oneOf": [
+        {
+          "title": "FsConfig",
+          "type": "object",
+          "properties": {
+            "type": {
+              "const": "fileSystem"
+            },
+            "configuration": {
+              "type": "object",
+              "properties": {
+                "folderPath": {
+                  "type": "string"
+                }
+              },
+              "required": ["folderPath"],
+              "additionalProperties": false
+            }
+          },
+          "required": ["type", "configuration"],
+          "additionalProperties": false
+        }
+      ]
+    },
+
+    "flow": {
+      "title": "Flow",
+      "type": "object",
+      "properties": {
+        "firstStepId": {
+          "type": "string"
+        },
+        "steps": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/flowStep"
+          },
+          "minItems": 1
+        }
+      },
+      "required": ["firstStepId", "steps"],
+      "additionalProperties": false
+    }
+  },
+  "required": ["dataStorage", "flow"],
+  "additionalProperties": false
+}

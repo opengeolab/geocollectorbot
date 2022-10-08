@@ -3,7 +3,7 @@ import { Update } from 'telegraf/typings/core/types/typegram'
 import { CommonMessageBundle, ServiceMessageBundle } from 'typegram/message'
 
 import { DecoratedContext } from '../models/DecoratedContext'
-import { Step } from '../models/Flow'
+import { FlowStep } from '../schemas/config'
 
 import { updateInteraction } from './interactionHandler'
 import { composeReply } from './replyComposer'
@@ -11,7 +11,7 @@ import { composeReply } from './replyComposer'
 export type StepProps<MsgType extends ServiceMessageBundle | CommonMessageBundle> = {
   service: FastifyInstance
   ctx: DecoratedContext<Update.MessageUpdate>
-  currStep: Step
+  currStep: FlowStep
   message: MsgType
 }
 

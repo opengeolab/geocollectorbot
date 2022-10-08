@@ -1,5 +1,5 @@
 import { Configuration } from '../../../models/Configuration'
-import { DataStorageConfig } from '../../../schemas/configuration/dataStorage'
+import { DataStorage } from '../../../schemas/config'
 import { getMockFastify, mockLogger } from '../../../utils/testUtils'
 import { buildDataStorageClient, getDataStorageBaseKeys } from '../index'
 import { PgBaseInteractionKeys, PgClient } from '../pgClient'
@@ -10,7 +10,7 @@ jest.mock('../pgClient', () => ({
 }))
 
 describe('Data storage client', () => {
-  const buildMockService = (dataStorageConfig: DataStorageConfig) => {
+  const buildMockService = (dataStorageConfig: DataStorage) => {
     const configuration: Configuration = {
       flow: { firstStepId: 'foo', steps: {} },
       dataStorage: dataStorageConfig,
@@ -21,7 +21,7 @@ describe('Data storage client', () => {
 
   describe('buildDataStorageClient', () => {
     it('should correctly build Postgres client', () => {
-      const config: DataStorageConfig = {
+      const config: DataStorage = {
         type: 'postgres',
         configuration: {
           connectionString: 'postgresql://user:password@host:5432/database',

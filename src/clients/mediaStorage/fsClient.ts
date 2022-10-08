@@ -5,7 +5,7 @@ import { Readable } from 'stream'
 import { FastifyInstance, FastifyLoggerInstance, RouteHandlerMethod } from 'fastify'
 import fastifyStatic from 'fastify-static'
 
-import { FsConfiguration } from '../../schemas/configuration/mediaStorage/fs'
+import { FsConfig } from '../../schemas/config'
 
 import { GET_MEDIA_BASE_PATH, MediaStorageClient } from './index'
 
@@ -13,7 +13,7 @@ export class FsClient implements MediaStorageClient {
   private logger: FastifyLoggerInstance
   private readonly folderPath: string
 
-  constructor (service: FastifyInstance, configuration: FsConfiguration) {
+  constructor (service: FastifyInstance, configuration: FsConfig['configuration']) {
     this.logger = service.log
 
     this.folderPath = configuration.folderPath

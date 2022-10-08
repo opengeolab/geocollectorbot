@@ -1,4 +1,4 @@
-import { LocalizedText } from '../schemas/localizedText'
+import { LocalizedText } from '../schemas/config'
 
 import { DEFAULT_LANGUAGE } from './constants'
 

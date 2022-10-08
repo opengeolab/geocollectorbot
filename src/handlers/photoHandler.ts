@@ -7,7 +7,7 @@ import { Message, Update } from 'telegraf/typings/core/types/typegram'
 import { handleIncomingMessage, StepValidator, StepValueBuilder } from '../lib/messageHandler'
 import { HandlerBuilder } from '../models/Buildes'
 import { MediaStepSubtype, StepType } from '../models/Flow'
-import { MediaStepConfig } from '../schemas/configuration/flow/stepConfig'
+import { MediaFlowStepConfig } from '../schemas/config'
 import { ProcessError } from '../utils/Errors'
 
 export const buildPhotoHandler: HandlerBuilder<Update.MessageUpdate> = service => {
@@ -15,7 +15,7 @@ export const buildPhotoHandler: HandlerBuilder<Update.MessageUpdate> = service =
 
   const stepValidator: StepValidator<Message.PhotoMessage> = ({ ctx, service: { log: logger }, currStep }) => {
     const { config } = currStep
-    const { type, subType } = config as MediaStepConfig
+    const { type, subType } = config as MediaFlowStepConfig
 
     if (!(type === StepType.MEDIA && subType === MediaStepSubtype.PHOTO)) {
       logger.error({ currStep, acceptedType: StepType.MEDIA, acceptedSubType: MediaStepSubtype.PHOTO }, 'Wrong current step type')

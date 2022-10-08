@@ -1,7 +1,7 @@
 import { FastifyInstance, FastifyLoggerInstance } from 'fastify'
 
 import { Interaction } from '../../models/Interaction'
-import { DataStorageConfig } from '../../schemas/configuration/dataStorage'
+import { DataStorage } from '../../schemas/config'
 
 import { PgBaseInteractionKeys, PgClient } from './pgClient'
 
@@ -22,14 +22,14 @@ export interface DataStorageClient {
 }
 
 interface DataStorageClientConstructor {
-  new (config: DataStorageConfig['configuration'], logger: FastifyLoggerInstance): DataStorageClient
+  new (config: DataStorage['configuration'], logger: FastifyLoggerInstance): DataStorageClient
 }
 
-const storageTypeToClient: Record<DataStorageConfig['type'], DataStorageClientConstructor> = {
+const storageTypeToClient: Record<DataStorage['type'], DataStorageClientConstructor> = {
   postgres: PgClient,
 }
 
-const storageTypeToBaseKeys: Record<DataStorageConfig['type'], string[]> = {
+const storageTypeToBaseKeys: Record<DataStorage['type'], string[]> = {
   postgres: Object.values(PgBaseInteractionKeys),
 }
 
@@ -41,4 +41,4 @@ export const buildDataStorageClient = (service: FastifyInstance): DataStorageCli
   return new Client(configuration, service.log)
 }
 
-export const getDataStorageBaseKeys = (type: DataStorageConfig['type']): string[] => storageTypeToBaseKeys[type]
+export const getDataStorageBaseKeys = (type: DataStorage['type']): string[] => storageTypeToBaseKeys[type]

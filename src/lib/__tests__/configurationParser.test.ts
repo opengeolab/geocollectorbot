@@ -1,10 +1,7 @@
 import * as dataStorage from '../../clients/dataStorage'
-import { Flow, MediaStepSubtype, StepType } from '../../models/Flow'
+import { ParsedFlow, MediaStepSubtype, StepType } from '../../models/Flow'
 import { BaseInteractionKeys } from '../../models/Interaction'
-import { RawConfiguration } from '../../schemas/configuration'
-import { DataStorageConfig } from '../../schemas/configuration/dataStorage'
-import { RawFlow } from '../../schemas/configuration/flow'
-import { MediaStorageConfig } from '../../schemas/configuration/mediaStorage'
+import { BotConfiguration, DataStorage, Flow, MediaStorage } from '../../schemas/config'
 import { mockLogger } from '../../utils/testUtils'
 import { parseFlow } from '../configurationParser'
 
@@ -14,16 +11,16 @@ describe('Flow', () => {
       .spyOn(dataStorage, 'getDataStorageBaseKeys')
       .mockReturnValue(['storage_base_key_1'])
 
-    const mockDataStorageConfig = { type: 'data_storage_type' } as unknown as DataStorageConfig
+    const mockDataStorageConfig = { type: 'data_storage_type' } as unknown as DataStorage
 
-    const getRowConfig = (flow: RawFlow, mediaStorage?: MediaStorageConfig): RawConfiguration => ({
+    const getRowConfig = (flow: Flow, mediaStorage?: MediaStorage): BotConfiguration => ({
       flow,
       dataStorage: mockDataStorageConfig,
       mediaStorage,
     })
 
     it('should throw if firstStepId not found', () => {
-      const rawFlow: RawFlow = {
+      const rawFlow: Flow = {
         firstStepId: 'unknown_step',
         steps: [
           {
@@ -42,7 +39,7 @@ describe('Flow', () => {
     })
 
     it('should throw if step id not unique', () => {
-      const rawFlow: RawFlow = {
+      const rawFlow: Flow = {
         firstStepId: 'step_1',
         steps: [
           {
@@ -74,7 +71,7 @@ describe('Flow', () => {
     })
 
     it('should throw if next step not found', () => {
-      const rawFlow: RawFlow = {
+      const rawFlow: Flow = {
         firstStepId: 'step_1',
         steps: [
           {
@@ -100,7 +97,7 @@ describe('Flow', () => {
     })
 
     it('should throw if circular', () => {
-      const rawFlow: RawFlow = {
+      const rawFlow: Flow = {
         firstStepId: 'step_1',
         steps: [
           {
@@ -120,7 +117,7 @@ describe('Flow', () => {
     })
 
     it('should throw if duplicate db key found', () => {
-      const rawFlow_1: RawFlow = {
+      const rawFlow_1: Flow = {
         firstStepId: 'step_1',
         steps: [
           {
@@ -142,7 +139,7 @@ describe('Flow', () => {
       expect(() => parseFlow(getRowConfig(rawFlow_1), mockLogger))
         .toThrow(new Error('Error parsing steps configuration: duplicate db key'))
 
-      const rawFlow_2: RawFlow = {
+      const rawFlow_2: Flow = {
         firstStepId: 'db_key',
         steps: [
           {
@@ -168,7 +165,7 @@ describe('Flow', () => {
     })
 
     it('should throw if db key is reserved', () => {
-      const rawFlow_1: RawFlow = {
+      const rawFlow_1: Flow = {
         firstStepId: 'step_1',
         steps: [
           {
@@ -183,7 +180,7 @@ describe('Flow', () => {
       expect(() => parseFlow(getRowConfig(rawFlow_1), mockLogger))
         .toThrow(new Error('Error parsing steps configuration: cannot use a db reserved key'))
 
-      const rawFlow_2: RawFlow = {
+      const rawFlow_2: Flow = {
         firstStepId: BaseInteractionKeys.CHAT_ID,
         steps: [
           {
@@ -202,7 +199,7 @@ describe('Flow', () => {
     })
 
     it('should throw if step of type media and no media storage config', () => {
-      const rawFlow: RawFlow = {
+      const rawFlow: Flow = {
         firstStepId: 'step_1',
         steps: [
           {
@@ -221,12 +218,12 @@ describe('Flow', () => {
     })
 
     it('should parse flow', () => {
-      const mediaConfig: MediaStorageConfig = {
+      const mediaConfig: MediaStorage = {
         type: 'fileSystem',
         configuration: { folderPath: '' },
       }
 
-      const rawFlow: RawFlow = {
+      const rawFlow: Flow = {
         firstStepId: 'step_1',
         steps: [
           {
@@ -244,7 +241,7 @@ describe('Flow', () => {
         ],
       }
 
-      const expectedFlow: Flow = {
+      const expectedFlow: ParsedFlow = {
         firstStepId: 'step_1',
         steps: {
           step_1: {

@@ -1,6 +1,6 @@
 import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify'
 
-import { RawConfigurationSettings } from '../../../schemas/configuration'
+import { Settings } from '../../../schemas/config'
 import { getMockDataStorageClient, mockLogger } from '../../../utils/testUtils'
 import getInteractions from '../handler'
 
@@ -8,7 +8,7 @@ describe('GET - /interactions', () => {
   const mockGetAllInteractions = jest.fn()
   const mockStorageClient = getMockDataStorageClient({ getAllInteractions: mockGetAllInteractions })
 
-  const getMockFastify = (settings?: RawConfigurationSettings): FastifyInstance => ({
+  const getMockFastify = (settings?: Settings): FastifyInstance => ({
     dataStorageClient: mockStorageClient,
     log: mockLogger,
     configuration: { settings },

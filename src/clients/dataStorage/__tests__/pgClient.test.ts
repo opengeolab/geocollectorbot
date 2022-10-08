@@ -1,7 +1,7 @@
 import { Pool } from 'pg'
 
 import { BaseInteractionKeys, Interaction, InteractionState } from '../../../models/Interaction'
-import { PgConfiguration } from '../../../schemas/configuration/dataStorage/pg'
+import { PgConfig } from '../../../schemas/config'
 import { mockLogger } from '../../../utils/testUtils'
 import { DataStorageClient } from '../index'
 import { PgClient, PgInteraction } from '../pgClient'
@@ -26,7 +26,7 @@ describe('Postgres client', () => {
 
   (Pool as unknown as jest.Mock).mockReturnValue(mockPool)
 
-  const config: PgConfiguration = {
+  const config: PgConfig['configuration'] = {
     connectionString: 'postgresql://user:password@host:5432/database',
     interactionsTable: 'interactions_table',
     ssl: false,
@@ -43,7 +43,7 @@ describe('Postgres client', () => {
 
   describe('constructor', () => {
     it('should build without ssl', () => {
-      const customConfig: PgConfiguration = {
+      const customConfig: PgConfig['configuration'] = {
         connectionString: 'postgresql://user:password@host:5432/database',
         interactionsTable: 'interactions_table',
         ssl: false,
@@ -60,7 +60,7 @@ describe('Postgres client', () => {
     })
 
     it('should build with ssl', () => {
-      const customConfig: PgConfiguration = {
+      const customConfig: PgConfig['configuration'] = {
         connectionString: 'postgresql://user:password@host:5432/database',
         interactionsTable: 'interactions_table',
         ssl: true,

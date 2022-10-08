@@ -1,21 +1,17 @@
 import { FastifyLoggerInstance } from 'fastify'
 
 import { getDataStorageBaseKeys } from '../clients/dataStorage'
-import { Flow, Steps, StepType } from '../models/Flow'
+import { ParsedFlow, ParsedSteps, StepType } from '../models/Flow'
 import { BaseInteractionKeys } from '../models/Interaction'
-import { RawConfiguration } from '../schemas/configuration'
-import { DataStorageConfig } from '../schemas/configuration/dataStorage'
-import { RawStep } from '../schemas/configuration/flow/step'
-import { MediaStorageConfig } from '../schemas/configuration/mediaStorage'
-import { LocalizedText } from '../schemas/localizedText'
+import { BotConfiguration, DataStorage, FlowStep, MediaStorage } from '../schemas/config'
 
 const parseSteps = (
   logger: FastifyLoggerInstance,
-  rawSteps: RawStep[],
+  rawSteps: FlowStep[],
   allStepsIds: string[],
-  dataStorageConfig: DataStorageConfig,
-  mediaStorageConfig?: MediaStorageConfig
-): Steps => {
+  dataStorageConfig: DataStorage,
+  mediaStorageConfig?: MediaStorage
+): ParsedSteps => {
   const hasMediaStorage = Boolean(mediaStorageConfig)
 
   const dataStorageBaseKeys = getDataStorageBaseKeys(dataStorageConfig.type)
@@ -63,17 +59,17 @@ const parseSteps = (
 
     currSteps[id] = {
       id,
-      question: question as LocalizedText,
+      question,
       config,
       persistAs: dbKey,
       nextStepId,
     }
 
     return currSteps
-  }, {} as Steps)
+  }, {} as ParsedSteps)
 }
 
-export const parseFlow = (rawConfig: RawConfiguration, logger: FastifyLoggerInstance): Flow => {
+export const parseFlow = (rawConfig: BotConfiguration, logger: FastifyLoggerInstance): ParsedFlow => {
   const { flow: rawFlow, dataStorage, mediaStorage } = rawConfig
   const { firstStepId, steps: rawSteps } = rawFlow
 

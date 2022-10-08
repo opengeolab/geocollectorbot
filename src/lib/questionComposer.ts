@@ -2,9 +2,8 @@ import { ExtraReplyMessage } from 'telegraf/typings/telegram-types'
 import { InlineKeyboardButton } from 'typegram/inline'
 
 import { DecoratedContext } from '../models/DecoratedContext'
-import { Step, StepType } from '../models/Flow'
-import { MultipleChoiceStepConfig } from '../schemas/configuration/flow/stepConfig'
-import { LocalizedText } from '../schemas/localizedText'
+import { StepType } from '../models/Flow'
+import { FlowStep, LocalizedText, MultipleChoiceFlowStepConfig } from '../schemas/config'
 import { resolveLocalizedText } from '../utils/localizer'
 import { buildCallbackData } from '../utils/multipleChoiceParser'
 
@@ -12,12 +11,12 @@ import { ReplyArgs } from './replyComposer'
 
 export type QuestionComposerProps = {
   ctx: DecoratedContext
-  step: Step
+  step: FlowStep
 }
 
 export type QuestionComposer = (props: QuestionComposerProps) => ReplyArgs
 
-const localizeText = ({ from: user }: DecoratedContext, { question }: Step): string => resolveLocalizedText(question, user?.language_code)
+const localizeText = ({ from: user }: DecoratedContext, { question }: FlowStep): string => resolveLocalizedText(question, user?.language_code)
 
 const composeTextQuestion: QuestionComposer = ({ ctx, step }) => {
   const text = localizeText(ctx, step)
@@ -29,7 +28,7 @@ const composeTextQuestion: QuestionComposer = ({ ctx, step }) => {
 const composeMultipleChoiceQuestion: QuestionComposer = ({ ctx, step }) => {
   const { from: user } = ctx
   const { id: stepId, config } = step
-  const { options } = config as MultipleChoiceStepConfig
+  const { options } = config as MultipleChoiceFlowStepConfig
 
   const text = localizeText(ctx, step)
 

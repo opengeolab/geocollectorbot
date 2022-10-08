@@ -2,7 +2,7 @@ import { Readable } from 'stream'
 
 import { FastifyInstance, RouteHandlerMethod } from 'fastify'
 
-import { MediaStorageConfig } from '../../schemas/configuration/mediaStorage'
+import { MediaStorage } from '../../schemas/config'
 
 import { FsClient } from './fsClient'
 
@@ -15,10 +15,10 @@ export interface MediaStorageClient {
 }
 
 interface MediaStorageClientConstructor {
-  new (service: FastifyInstance, config: MediaStorageConfig['configuration']): MediaStorageClient
+  new (service: FastifyInstance, config: MediaStorage['configuration']): MediaStorageClient
 }
 
-const mediaTypeToClient: Record<MediaStorageConfig['type'], MediaStorageClientConstructor> = {
+const mediaTypeToClient: Record<MediaStorage['type'], MediaStorageClientConstructor> = {
   fileSystem: FsClient,
 }
 

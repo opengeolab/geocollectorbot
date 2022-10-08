@@ -6,8 +6,7 @@ import { updateInteraction } from '../lib/interactionHandler'
 import { composeReply } from '../lib/replyComposer'
 import { DecoratedContext } from '../models/DecoratedContext'
 import { StepType } from '../models/Flow'
-import { MultipleChoiceStepConfig } from '../schemas/configuration/flow/stepConfig'
-import { LocalizedText } from '../schemas/localizedText'
+import { LocalizedText, MultipleChoiceFlowStepConfig } from '../schemas/config'
 import { ProcessError } from '../utils/Errors'
 import { resolveLocalizedText } from '../utils/localizer'
 import { parseCallbackData } from '../utils/multipleChoiceParser'
@@ -25,7 +24,7 @@ export const buildCallbackQueryHandler: (service: FastifyInstance) => CallbackQu
     await ctx.answerCbQuery()
 
     const { config, id: currStepId } = currStep
-    const { type, options } = config as MultipleChoiceStepConfig
+    const { type, options } = config as MultipleChoiceFlowStepConfig
 
     const { callback_query: callbackQuery } = update
     const { data } = callbackQuery as CallbackQuery.DataCallbackQuery

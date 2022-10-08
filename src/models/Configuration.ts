@@ -1,7 +1,7 @@
-import { RawConfiguration } from '../schemas/configuration'
+import { BotConfiguration } from '../schemas/config'
 
-import { Flow } from './Flow'
+import { ParsedFlow } from './Flow'
 
-export type Configuration = Omit<RawConfiguration, 'flow'> & {
-  flow: Flow
+export type Configuration = Omit<BotConfiguration, 'flow'> & {
+  flow: ParsedFlow
 }

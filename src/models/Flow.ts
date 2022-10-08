@@ -1,6 +1,4 @@
-import { RawFlow } from '../schemas/configuration/flow'
-import { StepConfig } from '../schemas/configuration/flow/stepConfig'
-import { LocalizedText } from '../schemas/localizedText'
+import type { Flow, FlowStep } from '../schemas/config'
 
 export enum StepType {
   TEXT = 'text',
@@ -13,16 +11,8 @@ export enum MediaStepSubtype {
   PHOTO = 'photo'
 }
 
-export type Step = {
-  id: string
-  question: LocalizedText
-  config: StepConfig
-  persistAs: string
-  nextStepId?: string
-}
+export type ParsedSteps = Record<string, FlowStep>
 
-export type Steps = Record<string, Step>
-
-export type Flow = Omit<RawFlow, 'steps'> & {
-  steps: Steps
+export type ParsedFlow = Omit<Flow, 'steps'> & {
+  steps: ParsedSteps
 }
