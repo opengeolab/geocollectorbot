@@ -13,6 +13,7 @@ export const baseEnv: Environment = {
   CONFIGURATION_PATH: join(__dirname, '../__mocks__/configmap.json'),
   TELEGRAM_AUTH_TOKEN: 'telegram_auth_token',
   UPDATE_MODE: 'polling',
+  GET_MEDIA_BASE_PATH: '/media',
 }
 
 export const mockLogger: FastifyLoggerInstance = {

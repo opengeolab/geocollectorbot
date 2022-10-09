@@ -6,8 +6,6 @@ import { MediaStorage } from '../../schemas/config'
 
 import { FsClient } from './fsClient'
 
-export const GET_MEDIA_BASE_PATH = '/media'
-
 export interface MediaStorageClient {
   saveMedia (mediaStream: Readable, fileId: string): Promise<string>
 
@@ -33,9 +31,9 @@ export const buildMediaStorageClient = (service: FastifyInstance): MediaStorageC
 }
 
 export const registerGetMediaRoute = (service: FastifyInstance): void => {
-  const { mediaStorageClient } = service
+  const { mediaStorageClient, env } = service
   if (!mediaStorageClient) { return }
 
   const handler = mediaStorageClient.buildGetMediaHandler()
-  service.get(`${GET_MEDIA_BASE_PATH}/:id`, handler)
+  service.get(`${env.GET_MEDIA_BASE_PATH}/:id`, handler)
 }

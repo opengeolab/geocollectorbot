@@ -4,6 +4,7 @@ const DEFAULT_LOG_LEVEL = 'info'
 const DEFAULT_CONFIG_PATH = '/home/node/config.json'
 const CUSTOM_TRANSLATIONS_FOLDER_PATH = '/home/node/custom_locales'
 const DEFAULT_UPDATE_MODE = 'polling'
+const DEFAULT_GET_MEDIA_BASE_PATH = 'polling'
 
 export const environmentSchema = {
   type: 'object',
@@ -19,8 +20,9 @@ export const environmentSchema = {
     TELEGRAM_AUTH_TOKEN: { type: 'string' },
     UPDATE_MODE: { type: 'string', enum: ['webhook', 'polling'], default: DEFAULT_UPDATE_MODE },
     PUBLIC_URL: { type: 'string' },
+    GET_MEDIA_BASE_PATH: { type: 'string', default: DEFAULT_GET_MEDIA_BASE_PATH },
   },
-  required: ['LOG_LEVEL', 'CONFIGURATION_PATH', 'TELEGRAM_AUTH_TOKEN', 'UPDATE_MODE'],
+  required: ['LOG_LEVEL', 'CONFIGURATION_PATH', 'TELEGRAM_AUTH_TOKEN', 'UPDATE_MODE', 'GET_MEDIA_BASE_PATH'],
 } as const
 
 export type Environment = FromSchema<typeof environmentSchema>

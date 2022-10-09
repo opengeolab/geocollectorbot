@@ -18,5 +18,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#6](https://github.com/opengeolab/geocollectorbot/issues/6): added support for video messages
 - [#7](https://github.com/opengeolab/geocollectorbot/issues/7): exposed `GET - /interactions` route to return all saved interactions
 
+### Changed
+- Get media route base path can now be configured from environment variable `GET_MEDIA_BASE_PATH`
+
 ## [1.0.0] 2022-03-12
 - First release

@@ -7,16 +7,18 @@ import fastifyStatic from 'fastify-static'
 
 import { FsConfig } from '../../schemas/config'
 
-import { GET_MEDIA_BASE_PATH, MediaStorageClient } from './index'
+import { MediaStorageClient } from './index'
 
 export class FsClient implements MediaStorageClient {
   private logger: FastifyLoggerInstance
   private readonly folderPath: string
+  private readonly getMediaBasePath: string
 
   constructor (service: FastifyInstance, configuration: FsConfig['configuration']) {
     this.logger = service.log
 
     this.folderPath = configuration.folderPath
+    this.getMediaBasePath = service.env.GET_MEDIA_BASE_PATH
 
     if (!existsSync(this.folderPath)) {
       this.logger.debug({ folderPath: this.folderPath }, 'Media folder not existing. Creating it...')
@@ -28,7 +30,7 @@ export class FsClient implements MediaStorageClient {
 
   async saveMedia (mediaStream: Readable, fileId: string): Promise<string> {
     await writeFile(`${this.folderPath}/${fileId}`, mediaStream)
-    return `${GET_MEDIA_BASE_PATH}/${fileId}`
+    return `${this.getMediaBasePath}/${fileId}`
   }
 
   buildGetMediaHandler (): RouteHandlerMethod {

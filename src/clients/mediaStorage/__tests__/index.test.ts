@@ -1,7 +1,7 @@
 import { MediaStorage } from '../../../schemas/config'
-import { getMockFastify } from '../../../utils/testUtils'
+import { baseEnv, getMockFastify } from '../../../utils/testUtils'
 import { FsClient } from '../fsClient'
-import { buildMediaStorageClient, GET_MEDIA_BASE_PATH, MediaStorageClient, registerGetMediaRoute } from '../index'
+import { buildMediaStorageClient, MediaStorageClient, registerGetMediaRoute } from '../index'
 
 jest.mock('../fsClient', () => ({ FsClient: jest.fn() }))
 
@@ -16,6 +16,7 @@ describe('Media storage client', () => {
     return getMockFastify({
       configuration: { mediaStorage: config },
       mediaStorageClient: client,
+      env: { ...baseEnv, GET_MEDIA_BASE_PATH: '/media' },
     })
   }
 
@@ -60,7 +61,7 @@ describe('Media storage client', () => {
       expect(mockBuildGetMediaHandler).toHaveBeenCalledTimes(1)
 
       expect(service.get).toHaveBeenCalledTimes(1)
-      expect(service.get).toHaveBeenCalledWith(`${GET_MEDIA_BASE_PATH}/:id`, mockHandler)
+      expect(service.get).toHaveBeenCalledWith('/media/:id', mockHandler)
     })
   })
 })

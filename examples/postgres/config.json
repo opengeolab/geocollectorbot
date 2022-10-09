@@ -1,4 +1,5 @@
 {
+  "$schema": "https://raw.githubusercontent.com/opengeolab/geocollectorbot/main/src/schemas/config.schema.json",
   "flow": {
     "firstStepId": "site_of_interest",
     "steps": [
@@ -66,8 +67,8 @@
           "en": "Please, provide a picture of the issue"
         },
         "config": {
-          "type": "media",
-          "subType": "photo"
+          "type": "singleMedia",
+          "acceptOnly": "photo"
         }
       }
     ]

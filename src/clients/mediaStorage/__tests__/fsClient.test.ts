@@ -8,14 +8,17 @@ import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify'
 import { FsConfig } from '../../../schemas/config'
 import { mockLogger } from '../../../utils/testUtils'
 import { FsClient } from '../fsClient'
-import { GET_MEDIA_BASE_PATH } from '../index'
 
 jest.mock('fs/promises', () => ({ writeFile: jest.fn() }))
 jest.mock('fs', () => ({ existsSync: jest.fn(), mkdirSync: jest.fn() }))
 
 describe('FS client', () => {
   const mockFastifyRegister = jest.fn()
-  const mockFastify = { log: mockLogger, register: mockFastifyRegister } as unknown as FastifyInstance
+  const mockFastify = {
+    log: mockLogger,
+    register: mockFastifyRegister,
+    env: { GET_MEDIA_BASE_PATH: '/media' },
+  } as unknown as FastifyInstance
 
   const mockConfig = { folderPath: 'folder_path' } as unknown as FsConfig['configuration']
 
@@ -55,7 +58,7 @@ describe('FS client', () => {
       (fsPromises.writeFile as jest.Mock).mockResolvedValue(undefined)
 
       const result = await fsClient.saveMedia(mockMediaStream, 'file_id')
-      expect(result).toEqual(`${GET_MEDIA_BASE_PATH}/file_id`)
+      expect(result).toEqual('/media/file_id')
 
       expect(fsPromises.writeFile).toHaveBeenCalledTimes(1)
       expect(fsPromises.writeFile).toHaveBeenCalledWith('folder_path/file_id', mockMediaStream)
