@@ -231,6 +231,7 @@ describe('Flow', () => {
             question: 'question_1',
             config: { type: StepType.TEXT },
             nextStepId: 'step_2',
+            skippable: true,
           },
           {
             id: 'step_2',
@@ -250,13 +251,13 @@ describe('Flow', () => {
             config: { type: StepType.TEXT },
             persistAs: 'step_1',
             nextStepId: 'step_2',
+            skippable: true,
           },
           step_2: {
             id: 'step_2',
             question: 'question_2',
             config: { type: StepType.SINGLE_MEDIA, acceptOnly: MediaStepSubtype.PHOTO },
             persistAs: 'persist_as',
-            nextStepId: undefined,
           },
         },
       }

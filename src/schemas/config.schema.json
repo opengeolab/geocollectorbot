@@ -130,6 +130,10 @@
               "additionalProperties": false
             }
           ]
+        },
+        "skippable": {
+          "type": "boolean",
+          "default": false
         }
       },
       "required": ["id", "question", "config"],

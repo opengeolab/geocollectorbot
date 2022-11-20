@@ -21,21 +21,21 @@ const parseSteps = (
   const foundDbKeys: string[] = []
 
   return rawSteps.reduce((currSteps, currRawStep) => {
-    const { id, question, nextStepId, config, persistAs } = currRawStep
-    const { type } = config
-    const dbKey = persistAs || id
+    const { persistAs, ...rest } = currRawStep
+    const { type } = currRawStep.config
+    const dbKey = persistAs || currRawStep.id
 
-    if (currSteps[id]) {
-      logger.error({ id }, 'Error parsing steps configuration: id is not unique')
+    if (currSteps[currRawStep.id]) {
+      logger.error({ id: currRawStep.id }, 'Error parsing steps configuration: id is not unique')
       throw new Error('Error parsing steps configuration: id is not unique')
     }
 
-    if (nextStepId != null && !allStepsIds.includes(nextStepId)) {
+    if (currRawStep.nextStepId != null && !allStepsIds.includes(currRawStep.nextStepId)) {
       logger.error({ step: currSteps }, 'Error parsing steps configuration: cannot find next step')
       throw new Error('Error parsing steps configuration: cannot find next step')
     }
 
-    if (nextStepId === id) {
+    if (currRawStep.nextStepId === currRawStep.id) {
       logger.error({ step: currSteps }, 'Error parsing steps configuration: circular dependency')
       throw new Error('Error parsing steps configuration: circular dependency')
     }
@@ -57,13 +57,7 @@ const parseSteps = (
       throw new Error('Error parsing steps configuration: missing media storage config')
     }
 
-    currSteps[id] = {
-      id,
-      question,
-      config,
-      persistAs: dbKey,
-      nextStepId,
-    }
+    currSteps[currRawStep.id] = { ...rest, persistAs: dbKey }
 
     return currSteps
   }, {} as ParsedSteps)

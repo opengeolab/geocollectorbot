@@ -46,6 +46,9 @@ describe('Bot', () => {
   const mockCollectCommandHandler = jest.fn()
   const mockBuildCollectCommandHandler = jest.spyOn(handlers, 'buildCollectCommandHandler').mockReturnValue(mockCollectCommandHandler)
 
+  const mockSkipCommandHandler = jest.fn()
+  const mockBuildSkipCommandHandler = jest.spyOn(handlers, 'buildSkipCommandHandler').mockReturnValue(mockSkipCommandHandler)
+
   const mockRetrieveInteractionMiddleware = jest.fn()
   const mockBuildRetrieveInteractionMiddleware = jest.spyOn(middlewares, 'buildRetrieveInteractionMiddleware').mockReturnValue(mockRetrieveInteractionMiddleware)
 
@@ -95,9 +98,10 @@ describe('Bot', () => {
     expect(mockBot.help).toHaveBeenCalledTimes(1)
     expect(mockBot.help).toHaveBeenCalledWith(mockHelpCommandHandler)
 
-    expect(mockBot.command).toHaveBeenCalledTimes(2)
+    expect(mockBot.command).toHaveBeenCalledTimes(3)
     expect(mockBot.command).toHaveBeenNthCalledWith(1, 'collect', mockCollectCommandHandler)
     expect(mockBot.command).toHaveBeenNthCalledWith(2, 'abort', mockAbortCommandHandler)
+    expect(mockBot.command).toHaveBeenNthCalledWith(3, 'skip', mockSkipCommandHandler)
 
     expect(mockBot.on).toHaveBeenCalledTimes(4)
     expect(mockBot.on).toHaveBeenNthCalledWith(1, 'text', mockTextHandler)
@@ -134,6 +138,9 @@ describe('Bot', () => {
 
     expect(mockBuildAbortCommandHandler).toHaveBeenCalledTimes(1)
     expect(mockBuildAbortCommandHandler).toHaveBeenCalledWith(mockService)
+
+    expect(mockBuildSkipCommandHandler).toHaveBeenCalledTimes(1)
+    expect(mockBuildSkipCommandHandler).toHaveBeenCalledWith(mockService)
 
     expect(mockBuildTextHandler).toHaveBeenCalledTimes(1)
     expect(mockBuildTextHandler).toHaveBeenCalledWith(mockService)

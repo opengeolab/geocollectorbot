@@ -60,6 +60,7 @@ export interface FlowStep {
   persistAs?: string
   nextStepId?: string
   config: FlowStepConfig
+  skippable?: boolean
 }
 export interface TextFlowStepConfig {
   type: "text"

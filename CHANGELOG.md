@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#3](https://github.com/opengeolab/geocollectorbot/issues/3): exposed `POST - /send-message` route to programmatically send messaged to chats
 - [#6](https://github.com/opengeolab/geocollectorbot/issues/6): added support for video messages
 - [#7](https://github.com/opengeolab/geocollectorbot/issues/7): exposed `GET - /interactions` route to return all saved interactions
+- [#9](https://github.com/opengeolab/geocollectorbot/issues/9): added the possibility to skip questions
 
 ### Changed
 - Get media route base path can now be configured from environment variable `GET_MEDIA_BASE_PATH`

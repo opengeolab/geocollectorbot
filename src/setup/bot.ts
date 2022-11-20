@@ -10,6 +10,7 @@ import {
   buildMediaHandler,
   buildStartCommandHandler,
   buildTextHandler,
+  buildSkipCommandHandler,
 } from '../handlers'
 import {
   buildExtractInfoMiddleware,
@@ -52,6 +53,7 @@ export const buildBot = async (service: FastifyInstance): Promise<Telegraf<Decor
     //
     .use(buildRetrieveInteractionMiddleware(service))
     .command('abort', buildAbortCommandHandler(service))
+    .command('skip', buildSkipCommandHandler(service))
     .on('text', buildTextHandler(service))
     .action(/^mcq::/, buildCallbackQueryHandler(service))
     .on('location', buildLocationHandler(service))

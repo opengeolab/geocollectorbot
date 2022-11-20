@@ -1,4 +1,5 @@
 {
+  "$schema": "../../../schemas/config.schema.json",
   "settings": {
     "includeUserInfoInGetInteractionsApi": true
   },
@@ -11,7 +12,8 @@
         "config": {
           "type": "text"
         },
-        "nextStepId": "question_2"
+        "nextStepId": "question_2",
+        "skippable": true
       },
       {
         "id": "question_2",
