@@ -1,6 +1,6 @@
 {
-  "$id": "https://raw.githubusercontent.com/opengeolab/geocollectorbot/main/src/schemas/config.schema.json",
-  "$schema": "http://json-schema.org/draft-07/schema",
+  "$id": "https://raw.githubusercontent.com/opengeolab/geocollectorbot/main/src/schemas/config.schema.json#",
+  "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "BotConfiguration",
   "type": "object",
   "definitions": {
@@ -235,6 +235,26 @@
         }
       },
       "required": ["firstStepId", "steps"],
+      "additionalProperties": false
+    },
+
+    "hooks":{
+      "type": "object",
+      "properties": {
+        "onComplete": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "const": "http-post"
+            },
+            "url": {
+              "type": "string"
+            }
+          },
+          "required": ["type", "url"],
+          "additionalProperties": false
+        }
+      },
       "additionalProperties": false
     }
   },

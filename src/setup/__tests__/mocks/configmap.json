@@ -32,5 +32,11 @@
       "interactionsTable": "interactions_table",
       "ssl": false
     }
+  },
+  "hooks": {
+    "onComplete": {
+      "type": "http-post",
+      "url": "https://www.example.com"
+    }
   }
 }

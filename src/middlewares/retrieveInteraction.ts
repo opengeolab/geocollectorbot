@@ -26,6 +26,7 @@ export const buildRetrieveInteractionMiddleware: MiddlewareBuilder = ({ configur
 
     ctx.currStep = currStep
     ctx.nextStep = steps[currStep.nextStepId as string]
+    ctx.isInteractionCompleted = !currStep.nextStepId
 
     return next()
   }

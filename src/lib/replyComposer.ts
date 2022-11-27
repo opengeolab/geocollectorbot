@@ -18,11 +18,10 @@ export const composeLocalizedReply = (ctx: DecoratedContext<any>, messageKey: st
 }
 
 export const composeReply = (logger: FastifyLoggerInstance, ctx: DecoratedContext<any>): ReplyArgs => {
-  const { chatId, nextStep } = ctx
+  const { chatId, nextStep, isInteractionCompleted } = ctx
   const { config } = nextStep || {} as FlowStep
   logger.trace({ chatId, nextStep }, 'Composing question')
 
-  const isInteractionCompleted = !nextStep
   const questionComposer = getQuestionComposerByType(config?.type as StepType)
 
   return isInteractionCompleted ?

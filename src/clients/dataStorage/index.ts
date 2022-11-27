@@ -8,6 +8,8 @@ import { PgBaseInteractionKeys, PgClient } from './pgClient'
 export interface DataStorageClient {
   getAllInteractions(shouldIncludeUserInfo?: boolean): Promise<Partial<Interaction>[]>
 
+  getInteractionById(id: string | number): Promise<Interaction>
+
   createInteraction(chatId: number, username: string | undefined, firstStepId: string): Promise<void>
 
   abortInteraction(id: string | number): Promise<void>
