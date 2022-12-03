@@ -29,6 +29,7 @@ export const retrieveConfiguration = async (service: FastifyInstance): Promise<C
     settings: configurationContent.settings,
     dataStorage: configurationContent.dataStorage,
     mediaStorage: configurationContent.mediaStorage,
+    hooks: configurationContent.hooks,
     flow: parsedFlow,
   }
 }

@@ -8,4 +8,7 @@ module.exports = {
     '!src/utils/testUtils.ts',
     '!src/index.ts',
   ],
+  moduleNameMapper: {
+    axios: 'axios/dist/node/axios.cjs',
+  },
 }

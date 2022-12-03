@@ -53,6 +53,7 @@ describe('Configuration', () => {
         dataStorage: configmap.dataStorage,
         mediaStorage: undefined,
         flow: mockFlow,
+        hooks: configmap.hooks,
       }
 
       const configuration = await retrieveConfiguration(mockService)
@@ -77,6 +78,7 @@ describe('Configuration', () => {
         dataStorage: configmapWithMediaStorage.dataStorage,
         mediaStorage: configmapWithMediaStorage.mediaStorage,
         flow: mockFlow,
+        hooks: undefined,
       }
 
       const configuration = await retrieveConfiguration(mockService)

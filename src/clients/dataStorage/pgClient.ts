@@ -91,6 +91,40 @@ export class PgClient implements DataStorageClient {
     })
   }
 
+  async getInteractionById (interactionId: string | number): Promise<Interaction> {
+    const query = `SELECT * FROM ${this.table} WHERE ${PgBaseInteractionKeys.ID}=$1`
+    const values = [interactionId]
+
+    this.logger.debug({ query, values }, 'Retrieving interaction by id')
+    const { rows } = await this.pool.query<PgInteraction>(query, values)
+
+    if (!rows || rows.length !== 1) { throw new Error(`Error getting interaction with id ${interactionId}`) }
+
+    const [row] = rows
+
+    const {
+      [PgBaseInteractionKeys.ID]: id,
+      [PgBaseInteractionKeys.CHAT_ID]: chatId,
+      [PgBaseInteractionKeys.USERNAME]: username,
+      [PgBaseInteractionKeys.CURRENT_STEP_ID]: currentStepId,
+      [PgBaseInteractionKeys.INTERACTION_STATE]: interactionState,
+      [PgBaseInteractionKeys.CREATED_AT]: createdAt,
+      [PgBaseInteractionKeys.UPDATED_AT]: updatedAt,
+      ...rest
+    } = row
+
+    return {
+      [BaseInteractionKeys.ID]: id,
+      [BaseInteractionKeys.CHAT_ID]: chatId,
+      [BaseInteractionKeys.USERNAME]: username,
+      [BaseInteractionKeys.CURRENT_STEP_ID]: currentStepId,
+      [BaseInteractionKeys.INTERACTION_STATE]: interactionState,
+      [BaseInteractionKeys.CREATED_AT]: createdAt,
+      [BaseInteractionKeys.UPDATED_AT]: updatedAt,
+      ...rest,
+    }
+  }
+
   async createInteraction (chatId: number, username: string | undefined, firstStepId: string) {
     const now = new Date(Date.now()).toISOString()
 

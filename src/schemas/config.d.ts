@@ -26,6 +26,12 @@ export interface BotConfiguration {
   dataStorage: DataStorage
   mediaStorage?: MediaStorage
   flow: Flow
+  hooks?: {
+    onComplete?: {
+      type: "http-post"
+      url: string
+    }
+  }
 }
 export interface Settings {
   /**

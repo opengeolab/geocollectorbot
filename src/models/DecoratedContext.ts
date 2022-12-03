@@ -14,4 +14,5 @@ export interface DecoratedContext<U extends Deunionize<Update> = Update> extends
   interaction: Interaction
   currStep: FlowStep
   nextStep?: FlowStep
+  isInteractionCompleted?: boolean
 }

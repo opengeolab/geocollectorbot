@@ -106,6 +106,7 @@ describe('Retrieve interaction middleware', () => {
     await middleware(mockCtx, mockNext)
 
     expect(mockCtx.interaction).toEqual(interaction)
+    expect(mockCtx.isInteractionCompleted).toBeFalsy()
     expect(mockCtx.currStep).toStrictEqual({ question: 'question_1', nextStepId: 'step_2' })
     expect(mockCtx.nextStep).toEqual({ question: 'question_2' })
 
@@ -121,6 +122,7 @@ describe('Retrieve interaction middleware', () => {
     await middleware(mockCtx, mockNext)
 
     expect(mockCtx.interaction).toEqual(interaction)
+    expect(mockCtx.isInteractionCompleted).toBeTruthy()
     expect(mockCtx.currStep).toStrictEqual({ question: 'question_2' })
     expect(mockCtx.nextStep).toBeUndefined()
 
