@@ -149,6 +149,84 @@ describe('Postgres client', () => {
     })
   })
 
+  describe('getInteractionById', () => {
+    const interactionId = 'interaction-id'
+    const expectedQuery = 'SELECT * FROM interactions_table WHERE id=$1'
+    const expectedValues = [interactionId]
+
+    const pgRows: PgInteraction[] = [
+      {
+        id: 'id_1',
+        username: 'user_name',
+        chat_id: chatId,
+        curr_step_id: 'current_step_id',
+        interaction_state: InteractionState.ONGOING,
+        created_at: 'created_at',
+        updated_at: 'updated_at',
+        foo: 'bar',
+      },
+    ]
+
+    it('should throw if query fails', async () => {
+      const expectedError = new Error('Query error')
+      mockPoolQuery.mockRejectedValue(expectedError)
+
+      const executor = pgClient.getInteractionById(interactionId)
+      await expect(executor)
+        .rejects
+        .toStrictEqual(expectedError)
+
+      expect(mockPoolQuery).toHaveBeenCalledTimes(1)
+      expect(mockPoolQuery).toHaveBeenCalledWith(expectedQuery, expectedValues)
+    })
+
+    it('should throw if no rows are found', async () => {
+      const expectedError = new Error(`Error getting interaction with id ${interactionId}`)
+      mockPoolQuery.mockResolvedValue({ rows: [] })
+
+      const executor = pgClient.getInteractionById(interactionId)
+      await expect(executor)
+        .rejects
+        .toStrictEqual(expectedError)
+
+      expect(mockPoolQuery).toHaveBeenCalledTimes(1)
+      expect(mockPoolQuery).toHaveBeenCalledWith(expectedQuery, expectedValues)
+    })
+
+    it('should throw if more than one row is found', async () => {
+      const expectedError = new Error(`Error getting interaction with id ${interactionId}`)
+      mockPoolQuery.mockResolvedValue({ rows: ['foo', 'bar'] })
+
+      const executor = pgClient.getInteractionById(interactionId)
+      await expect(executor)
+        .rejects
+        .toStrictEqual(expectedError)
+
+      expect(mockPoolQuery).toHaveBeenCalledTimes(1)
+      expect(mockPoolQuery).toHaveBeenCalledWith(expectedQuery, expectedValues)
+    })
+
+    it('should correctly query the db', async () => {
+      mockPoolQuery.mockResolvedValue({ rows: pgRows })
+
+      const rows = await pgClient.getInteractionById(interactionId)
+
+      expect(rows).toStrictEqual({
+        id: 'id_1',
+        chatId: 123,
+        username: 'user_name',
+        currStepId: 'current_step_id',
+        interactionState: InteractionState.ONGOING,
+        createdAt: 'created_at',
+        updatedAt: 'updated_at',
+        foo: 'bar',
+      })
+
+      expect(mockPoolQuery).toHaveBeenCalledTimes(1)
+      expect(mockPoolQuery).toHaveBeenCalledWith(expectedQuery, expectedValues)
+    })
+  })
+
   describe('createInteraction', () => {
     const firstStepId = 'first_step'
     const expectedQuery = 'INSERT INTO interactions_table (chat_id,username,curr_step_id,interaction_state,created_at,updated_at) VALUES ($1, $2, $3, $4, $5, $6)'

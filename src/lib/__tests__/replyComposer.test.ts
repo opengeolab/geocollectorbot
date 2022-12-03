@@ -10,7 +10,10 @@ describe('Reply Composer', () => {
     it('should work is interaction is not complete', () => {
       mockQuestionComposer.mockReturnValue('question')
 
-      const ctx = getMockContext({ nextStep: { config: { type: 'step_type' } } })
+      const ctx = getMockContext({
+        nextStep: { config: { type: 'step_type' } },
+        isInteractionCompleted: false,
+      })
 
       const reply = composeReply(mockLogger, ctx)
       expect(reply).toEqual('question')
@@ -25,7 +28,7 @@ describe('Reply Composer', () => {
     it('should work is interaction is complete', () => {
       mockQuestionComposer.mockReturnValue('question')
 
-      const ctx = getMockContext()
+      const ctx = getMockContext({ isInteractionCompleted: true })
 
       const reply = composeReply(mockLogger, ctx)
       expect(reply).toEqual([

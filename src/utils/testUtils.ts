@@ -76,6 +76,7 @@ export type MockContextProps = {
   currStep?: Record<string, any>
   nextStep?: Record<string, any>
   interaction?: Record<string, any>
+  isInteractionCompleted?: boolean
 }
 
 export const getMockContext = (props: MockContextProps = {}): DecoratedContext => ({
@@ -91,4 +92,5 @@ export const getMockContext = (props: MockContextProps = {}): DecoratedContext =
   currStep: props.currStep,
   nextStep: props.nextStep,
   interaction: props.interaction,
+  isInteractionCompleted: props.isInteractionCompleted,
 } as unknown as DecoratedContext)
