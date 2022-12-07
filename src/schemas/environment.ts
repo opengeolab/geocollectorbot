@@ -4,7 +4,7 @@ const DEFAULT_LOG_LEVEL = 'info'
 const DEFAULT_CONFIG_PATH = '/home/node/config.json'
 const CUSTOM_TRANSLATIONS_FOLDER_PATH = '/home/node/custom_locales'
 const DEFAULT_UPDATE_MODE = 'polling'
-const DEFAULT_GET_MEDIA_BASE_PATH = 'polling'
+const DEFAULT_GET_MEDIA_BASE_PATH = '/media'
 
 export const environmentSchema = {
   type: 'object',

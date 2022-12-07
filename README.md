@@ -19,11 +19,7 @@ by the Interreg Co-operation Programme Italy–Switzerland 2014 -2020 (ID 605472
 
 ## Documentation
 
-To know how the Bot works you can follow the documentation:
-* [overview](./docs/10_overview.md)
-* [usage](./docs/20_usage.md)
-* [configuration](./docs/30_configuration.md)
-* [examples](https://gitlab.com/geolab.como/geocollectorbot/-/tree/main/examples)
+To know how the Bot works you can follow the [official documentation](https://github.com/opengeolab/geocollectorbot_doc).
 
 ## Local development
 
