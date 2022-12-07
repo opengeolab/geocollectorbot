@@ -17,7 +17,4 @@ COPY ./build ./build
 RUN echo "geo-collector-bot: $COMMIT_SHA" >> ./commit.sha
 RUN yarn install --frozen-lockfile
 
-# TODO: this line is commented to make file system interaction work. It's a security issue, it needs to be fixed ASAP!
-#USER node
-
 CMD node --unhandled-rejections=strict build/index.js
