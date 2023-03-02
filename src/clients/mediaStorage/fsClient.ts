@@ -2,8 +2,8 @@ import { existsSync, mkdirSync } from 'fs'
 import { writeFile } from 'fs/promises'
 import { Readable } from 'stream'
 
+import fastifyStatic from '@fastify/static'
 import { FastifyInstance, FastifyLoggerInstance, RouteHandlerMethod } from 'fastify'
-import fastifyStatic from 'fastify-static'
 
 import { FsConfig } from '../../schemas/config'
 

@@ -1,4 +1,4 @@
-import { MaybePromise } from 'telegraf/typings/composer'
+import { MaybePromise } from 'telegraf/typings/util'
 
 import { DecoratedContext } from '../../models/DecoratedContext'
 import { ProcessError } from '../../utils/Errors'

@@ -27,7 +27,7 @@ export const buildCallbackQueryHandler: (service: FastifyInstance) => CallbackQu
     const { type, options } = config as MultipleChoiceFlowStepConfig
 
     const { callback_query: callbackQuery } = update
-    const { data } = callbackQuery as CallbackQuery.DataCallbackQuery
+    const { data } = callbackQuery as CallbackQuery.DataQuery
     const { stepId, value: selectedValue } = parseCallbackData(data)
 
     if (type !== StepType.MULTIPLE_CHOICE) {
