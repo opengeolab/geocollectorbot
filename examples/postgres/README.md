@@ -13,6 +13,11 @@ Here you need to create a `.env` file containing
 TELEGRAM_AUTH_TOKEN=<your_telegram_auth_token>
 ```
 
+and to make PostgreSQL initialization script executable
+```shell
+chmod +x ./scripts/01-init.sh 
+```
+
 Now you can spin up the services running
 ```shell
 docker-compose up

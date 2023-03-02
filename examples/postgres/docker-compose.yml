@@ -1,5 +1,7 @@
 version: '3.8'
 
+name: geo-collector-bot-postgres
+
 services:
   postgres:
     image: postgis/postgis:14-3.2-alpine
@@ -22,7 +24,7 @@ services:
       - ./scripts:/docker-entrypoint-initdb.d
 
   bot:
-    image: geolabpolimi/geo-collector-bot
+    image: geo-collector-bot:latest
     depends_on:
       - postgres
     environment:

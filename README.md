@@ -25,7 +25,7 @@ To know how the Bot works you can follow the [official documentation](https://gi
 
 To develop Servo locally you need:
 
-- Node 16+
+- Node 18+
 - Yarn 1.22+
 
 To set up Node, please if possible try to use [nvm](https://github.com/creationix/nvm), so you can manage multiple
