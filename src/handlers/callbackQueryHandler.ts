@@ -49,7 +49,7 @@ export const buildCallbackQueryHandler: (service: FastifyInstance) => CallbackQu
     await updateInteraction(service, ctx as DecoratedContext, selectedValue)
 
     const localizedSelectedText = resolveLocalizedText(selectedOption.text as LocalizedText, user?.language_code)
-    await ctx.reply(ctx.t('events.callbackQueryOptionSelected', { selectedText: localizedSelectedText }), { parse_mode: 'MarkdownV2' })
+    await ctx.reply(ctx.t('events.callbackQueryOptionSelected', { selectedText: localizedSelectedText }) as string, { parse_mode: 'MarkdownV2' })
 
     const replyArgs = composeReply(logger, ctx as DecoratedContext)
     await ctx.reply(...replyArgs)
