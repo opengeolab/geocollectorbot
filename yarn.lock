@@ -1989,10 +1989,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:^18.14.3":
-  version: 18.14.3
-  resolution: "@types/node@npm:18.14.3"
-  checksum: 341bd0d7afec96e78e89821a4f922c33feec5fed71396171bb78f7b9fca63ab491c35c390083381ddbaf7f5ec4170dfe527bb950b468824e0a276d04cc519b64
+"@types/node@npm:*, @types/node@npm:^18.14.5":
+  version: 18.14.5
+  resolution: "@types/node@npm:18.14.5"
+  checksum: 415fb0edc132baa9580f1b7a381a3f10b662f5d7a7d11641917fa0961788ccede3272badc414aadc47306e9fc35c5f6c59159ac470b46d3f3a15fb0446224c8c
   languageName: node
   linkType: hard
 
@@ -4117,7 +4117,7 @@ __metadata:
     "@types/i18next-fs-backend": ^1.1.2
     "@types/jest": ^29.4.0
     "@types/json-schema": ^7.0.11
-    "@types/node": ^18.14.3
+    "@types/node": ^18.14.5
     "@types/pg": ^8.6.6
     "@typescript-eslint/eslint-plugin": ^5.54.0
     "@typescript-eslint/parser": ^5.54.0
@@ -4140,8 +4140,8 @@ __metadata:
     json-schema-to-ts: ^2.7.2
     json-schema-to-typescript: ^12.0.0
     pg: ^8.9.0
-    rimraf: ^4.1.3
-    telegraf: ^4.4.2
+    rimraf: ^4.2.0
+    telegraf: 4.10.0
     ts-jest: ^29.0.5
     ts-node: ^10.9.1
     typescript: ^4.9.5
@@ -4250,6 +4250,18 @@ __metadata:
     minimatch: ^5.0.1
     once: ^1.3.0
   checksum: 92fbea3221a7d12075f26f0227abac435de868dd0736a17170663783296d0dd8d3d532a5672b4488a439bf5d7fb85cdd07c11185d6cd39184f0385cbdfb86a47
+  languageName: node
+  linkType: hard
+
+"glob@npm:^9.2.0":
+  version: 9.2.1
+  resolution: "glob@npm:9.2.1"
+  dependencies:
+    fs.realpath: ^1.0.0
+    minimatch: ^7.4.1
+    minipass: ^4.2.4
+    path-scurry: ^1.6.1
+  checksum: ef9b1c32491e6b532bdd0d2abcc3c9f48e83446609e11285869156982fc5a756dfbaa6f59f797712343bd1e22500ac15708692806633653fde4ef67c85e2aab7
   languageName: node
   linkType: hard
 
@@ -5564,7 +5576,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lru-cache@npm:^7.7.1":
+"lru-cache@npm:^7.14.1, lru-cache@npm:^7.7.1":
   version: 7.18.1
   resolution: "lru-cache@npm:7.18.1"
   checksum: ab0ec1360c552f1ffa54b1eaf0026126c5116a07bee156b92d1e971f4c8c88e9160f0fad4ab6fed4e0fdea84f25a4590ece085bc57ed9ab1d90b17f0b138c556
@@ -5719,6 +5731,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"minimatch@npm:^7.4.1":
+  version: 7.4.2
+  resolution: "minimatch@npm:7.4.2"
+  dependencies:
+    brace-expansion: ^2.0.1
+  checksum: 9e341b04e69d5ab03e4206dcb61c8a158e3b8709628bf5e1a4eaa9f3b72c0ba925e24ad959b1f6ce6835caa5a927131d5087fae6836b69e7d99d7d5e63ef0bd8
+  languageName: node
+  linkType: hard
+
 "minimist@npm:^1.2.0, minimist@npm:^1.2.5, minimist@npm:^1.2.6":
   version: 1.2.6
   resolution: "minimist@npm:1.2.6"
@@ -5786,7 +5807,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"minipass@npm:^4.0.0":
+"minipass@npm:^4.0.0, minipass@npm:^4.0.2, minipass@npm:^4.2.4":
   version: 4.2.4
   resolution: "minipass@npm:4.2.4"
   checksum: c664f2ae4401408d1e7a6e4f50aca45f87b1b0634bc9261136df5c378e313e77355765f73f59c4a5abcadcdf43d83fcd3eb14e4a7cdcce8e36508e2290345753
@@ -6187,6 +6208,16 @@ __metadata:
   version: 1.0.7
   resolution: "path-parse@npm:1.0.7"
   checksum: 49abf3d81115642938a8700ec580da6e830dde670be21893c62f4e10bd7dd4c3742ddc603fe24f898cba7eb0c6bc1777f8d9ac14185d34540c6d4d80cd9cae8a
+  languageName: node
+  linkType: hard
+
+"path-scurry@npm:^1.6.1":
+  version: 1.6.1
+  resolution: "path-scurry@npm:1.6.1"
+  dependencies:
+    lru-cache: ^7.14.1
+    minipass: ^4.0.2
+  checksum: 7ba57e823cb7bb879669a4e5e05a283cde1bb9e81b6d806b2609f8d8026d0aef08f4b655b17fc86b21c9c32807851bba95ca715db5ab0605fb13c7a3e9172e42
   languageName: node
   linkType: hard
 
@@ -6694,12 +6725,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rimraf@npm:^4.1.3":
-  version: 4.1.3
-  resolution: "rimraf@npm:4.1.3"
+"rimraf@npm:^4.2.0":
+  version: 4.2.0
+  resolution: "rimraf@npm:4.2.0"
+  dependencies:
+    glob: ^9.2.0
   bin:
     rimraf: dist/cjs/src/bin.js
-  checksum: 12c080cb3784186393a76a538b2ae7b3afbc2f609d9c51451d818295cc79d8dedbb61dd63b8f2aa0ec0f443e9d5247d559665501401fac3a39ffb67f6a58e843
+  checksum: 885baaec6d8e3a771bb3060f110c29070073a47fdcb26775ae165703173e79e845974dc8ed07e8eb4c3c85f126777968febdb385d0c274ad3b167db326e7f82e
   languageName: node
   linkType: hard
 
@@ -7149,21 +7182,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"telegraf@npm:^4.4.2":
-  version: 4.11.2
-  resolution: "telegraf@npm:4.11.2"
+"telegraf@npm:4.10.0":
+  version: 4.10.0
+  resolution: "telegraf@npm:4.10.0"
   dependencies:
     abort-controller: ^3.0.0
-    debug: ^4.3.4
+    debug: ^4.3.3
     mri: ^1.2.0
     node-fetch: ^2.6.7
     p-timeout: ^4.1.0
     safe-compare: ^1.1.4
     sandwich-stream: ^2.0.2
-    typegram: ^4.1.0
+    typegram: ^3.11.0
   bin:
     telegraf: lib/cli.mjs
-  checksum: 81662e6fe37258a40317a3fcd8b1e4f8e04439b12ef8387bcaccaea4163bb9f5eb7534a311a524e59320f975e34dacfc0d34425b10269aed13d98b9f3ae05aa2
+  checksum: 2166abba5fec08ff5c8f4a6a4df51f00fa6727532032fecfe7cf2584f0b900bf8fab9ee71e87bd0bb4ceebbc88edd5b97b3156aa15af67bc78cd422c94d415a6
   languageName: node
   linkType: hard
 
@@ -7430,10 +7463,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typegram@npm:^4.1.0":
-  version: 4.3.0
-  resolution: "typegram@npm:4.3.0"
-  checksum: 77d4738257230df9fa092ba9c5b29cde2954f2dd96f962a8568175ef391e5ba8304a8d27307958ff1ec45556ffb774df977ccc71c2f4cf33d9f6e350956e91b8
+"typegram@npm:^3.11.0":
+  version: 3.12.0
+  resolution: "typegram@npm:3.12.0"
+  checksum: 30f1579777a8c84f62d65b335490e1186e56179d37d622baa00d7be57bbbcb2b4d1dd9d1a6a081f012ef56c2fb9cdf8098733dbce4b2d98f824d109a5b2dc846
   languageName: node
   linkType: hard
 

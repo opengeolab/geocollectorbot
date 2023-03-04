@@ -1,8 +1,8 @@
 import { FastifyInstance } from 'fastify'
 import { Middleware, MiddlewareFn } from 'telegraf'
 import { Deunionize } from 'telegraf/src/deunionize'
+import { MaybePromise } from 'telegraf/typings/composer'
 import { Update } from 'telegraf/typings/core/types/typegram'
-import { MaybePromise } from 'telegraf/typings/util'
 
 import { DecoratedContext } from './DecoratedContext'
 

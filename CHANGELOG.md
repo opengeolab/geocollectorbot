@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Upgraded Node to version 18.x
 - Upgraded Yarn to version 3.x
+- Updated telegraf to version 4.10.0
 
 ## [1.1.0] 2022-12-07
 
