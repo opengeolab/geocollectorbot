@@ -1,5 +1,5 @@
+import { InlineKeyboardButton } from 'telegraf/typings/core/types/typegram'
 import { ExtraReplyMessage } from 'telegraf/typings/telegram-types'
-import { InlineKeyboardButton } from 'typegram/inline'
 
 import { DecoratedContext } from '../models/DecoratedContext'
 import { StepType } from '../models/Flow'

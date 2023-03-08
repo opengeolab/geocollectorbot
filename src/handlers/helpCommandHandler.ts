@@ -6,5 +6,5 @@ export const buildHelpCommandHandler: HandlerBuilder<Update.MessageUpdate> = ({ 
   /* istanbul ignore next */
   logger.trace({ chatId: ctx.chat?.id }, "Executing command '/help'")
 
-  await ctx.reply(ctx.t('commands.help'), { parse_mode: 'MarkdownV2' })
+  await ctx.reply(ctx.t('commands.help') as string, { parse_mode: 'MarkdownV2' })
 }

@@ -6,5 +6,5 @@ export const buildStartCommandHandler: HandlerBuilder<Update.MessageUpdate> = ({
   /* istanbul ignore next */
   logger.trace({ chatId: ctx.chat?.id }, "Executing command '/start'")
 
-  await ctx.reply(ctx.t('commands.start'), { parse_mode: 'MarkdownV2' })
+  await ctx.reply(ctx.t('commands.start') as string, { parse_mode: 'MarkdownV2' })
 }

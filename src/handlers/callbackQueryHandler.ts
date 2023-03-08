@@ -1,6 +1,5 @@
 import { FastifyInstance } from 'fastify'
 import Composer from 'telegraf/typings/composer'
-import { CallbackQuery } from 'telegraf/typings/core/types/typegram'
 
 import { updateInteraction } from '../lib/interactionHandler'
 import { composeReply } from '../lib/replyComposer'
@@ -27,8 +26,8 @@ export const buildCallbackQueryHandler: (service: FastifyInstance) => CallbackQu
     const { type, options } = config as MultipleChoiceFlowStepConfig
 
     const { callback_query: callbackQuery } = update
-    const { data } = callbackQuery as CallbackQuery.DataCallbackQuery
-    const { stepId, value: selectedValue } = parseCallbackData(data)
+    const { data } = callbackQuery
+    const { stepId, value: selectedValue } = parseCallbackData(data as string)
 
     if (type !== StepType.MULTIPLE_CHOICE) {
       logger.error({ currStep, acceptedType: StepType.TEXT }, 'Wrong current step type')
@@ -49,7 +48,7 @@ export const buildCallbackQueryHandler: (service: FastifyInstance) => CallbackQu
     await updateInteraction(service, ctx as DecoratedContext, selectedValue)
 
     const localizedSelectedText = resolveLocalizedText(selectedOption.text as LocalizedText, user?.language_code)
-    await ctx.reply(ctx.t('events.callbackQueryOptionSelected', { selectedText: localizedSelectedText }), { parse_mode: 'MarkdownV2' })
+    await ctx.reply(ctx.t('events.callbackQueryOptionSelected', { selectedText: localizedSelectedText }) as string, { parse_mode: 'MarkdownV2' })
 
     const replyArgs = composeReply(logger, ctx as DecoratedContext)
     await ctx.reply(...replyArgs)

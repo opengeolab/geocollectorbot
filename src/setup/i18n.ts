@@ -1,5 +1,5 @@
-import fs from 'fs/promises'
-import { join } from 'path'
+import fs, { readdir } from 'fs/promises'
+import { extname, join } from 'path'
 
 import { FastifyInstance } from 'fastify'
 import i18next, { i18n } from 'i18next'
@@ -22,13 +22,20 @@ export const setupInternationalization = async (service: FastifyInstance): Promi
     baseTranslationsFolderPath = localesFolder
   }
 
+  const dirContent = await readdir(baseTranslationsFolderPath, { withFileTypes: true })
+  const langs = dirContent
+    .filter(dirent => dirent.isFile() && extname(dirent.name) === '.yaml')
+    .map(dirent => dirent.name.replace(/\.yaml$/, ''))
+
   await i18next
     .use(i18nextBackend)
     .init({
       fallbackLng: DEFAULT_LANGUAGE,
       initImmediate: false,
-      backend: { loadPath: join(baseTranslationsFolderPath as string, '{{lng}}.yaml') },
+      backend: { loadPath: join(baseTranslationsFolderPath, '{{lng}}.yaml') },
     })
+
+  await i18next.loadLanguages(langs)
 
   return i18next
 }
