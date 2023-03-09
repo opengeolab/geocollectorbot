@@ -10,7 +10,7 @@ import { DEFAULT_LANGUAGE } from '../utils/constants'
 const localesFolder = join(__dirname, '../locales')
 
 export const setupInternationalization = async (service: FastifyInstance): Promise<i18n> => {
-  const { env: { CUSTOM_TRANSLATIONS_FOLDER_PATH }, log: logger } = service
+  const { env: { CUSTOM_TRANSLATIONS_FOLDER_PATH, LOG_LEVEL }, log: logger } = service
 
   let baseTranslationsFolderPath: string
   try {
@@ -30,6 +30,7 @@ export const setupInternationalization = async (service: FastifyInstance): Promi
   await i18next
     .use(i18nextBackend)
     .init({
+      debug: LOG_LEVEL === 'debug' || LOG_LEVEL === 'trace',
       fallbackLng: DEFAULT_LANGUAGE,
       initImmediate: false,
       backend: { loadPath: join(baseTranslationsFolderPath, '{{lng}}.yaml') },
