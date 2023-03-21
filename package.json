@@ -20,10 +20,7 @@
     "dev": "ts-node --files ./src/index.ts",
     "unit": "jest --passWithNoTests",
     "test": "yarn lint && yarn unit",
-    "coverage": "yarn unit --coverage",
-    "update-docker-version": "sed -i.bck \"s|version=\\\"[0-9]*\\.[0-9]*\\.[0-9]*.*\\\"|version=\\\"${npm_package_version}\\\"|\" Dockerfile",
-    "update-changelog": "node ./scripts/update-changelog.js ${npm_package_version}",
-    "version": "npm run update-changelog && npm run update-docker-version && rm -fr Dockerfile.bck && git add CHANGELOG.md Dockerfile"
+    "coverage": "yarn unit --coverage"
   },
   "dependencies": {
     "@fastify/static": "^5.0.2",
