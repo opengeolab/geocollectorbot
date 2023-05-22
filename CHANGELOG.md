@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.2] 2023-05-22
+
+- Added support to `linux/arm64` in Docker container
+
 ## [1.1.1] 2023-03-21
 
 - Upgraded Node to version 18.x
